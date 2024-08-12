@@ -15,7 +15,7 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> lastTime = std::chrono::high_resolution_clock::now();
 
 public:
-    Game() : window(sf::VideoMode(800, 600), "2D CLIENT"), player(100.0f, 350.0f), level() {}
+    Game() : window(sf::VideoMode(800, 600), "2D CLIENT"), player(100.0f, 400.0f), level() {}
 
     void run(); 
 };

@@ -20,11 +20,11 @@ void Player::update(long long dt)
 
     if (isJumping) {
         velocity.y += 0.9810f;
-        if (shape.getPosition().y >= 350.0f)
+        if (shape.getPosition().y >= 400.0f)
         {
             isJumping = false;
             velocity.y = 0.0f;
-            shape.setPosition(shape.getPosition().x, 350.0f);
+            shape.setPosition(shape.getPosition().x, 400.0f);
         }
     }
 
