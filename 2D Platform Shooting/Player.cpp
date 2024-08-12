@@ -20,13 +20,6 @@ void Player::update(long long dt)
 
     if (isJumping) {
         velocity.y += 0.9810f;
-        for (const auto& platform : level.platforms) {
-            if (handleCollision(platform.getGlobalBounds())) {
-                isJumping = false;
-                velocity.y = 0.0f;
-                shape.setPosition(shape.getPosition().x, platform.y);
-            }
-        }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isJumping) {
@@ -35,6 +28,14 @@ void Player::update(long long dt)
     }
 
     shape.move(velocity * (dt / 1000000000.0f));
+
+    for (const auto& platform : level.platforms) {
+        if (handleCollision(platform.getGlobalBounds())) {
+            isJumping = false;
+            velocity.y = 0.0f;
+            shape.setPosition(shape.getPosition().x, platform.y);
+        }
+    }
 }
 
 void Player::draw(sf::RenderWindow& window) {
