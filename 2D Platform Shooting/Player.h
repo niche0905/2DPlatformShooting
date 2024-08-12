@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <chrono>
+#include "Level.h"
 
 
 class Player {
@@ -15,9 +16,10 @@ private:
     bool isJumping;
     float jumpHeight;
     sf::RenderWindow window;
+    Level& level;
 
 public:
-    Player(float x, float y) : width(50.0f), height(50.0f), speed(500.0f), isJumping(false), jumpHeight(750.0f) {
+    Player(float x, float y, Level& level) : width(50.0f), height(50.0f), speed(500.0f), isJumping(false), jumpHeight(750.0f), level(level) {
         shape.setOrigin(width / 2, height);
         shape.setSize(sf::Vector2f(50.0f, height));
         shape.setPosition(x, y);
