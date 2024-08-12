@@ -7,13 +7,29 @@
 class Platform
 {
 public:
-	float x1;	//왼쪽			┌----------┐ (x2, y2)
-	float y1;	//아래			|		   |
-	float x2;	//오른쪽			|		   |
-	float y2;	//위		(x1, y1)└----------┘
+	float x;	//왼쪽
+	float y;	//위	
+	float sizeX;	//가로 길이
+	float sizeY;	//세로 길이
+	sf::RectangleShape shape;
 
 public:
-	Platform(float x1, float y1, float x2, float y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
+	Platform(float left, float top, float sizeX, float sizeY) : x(left), y(top), sizeX(sizeX), sizeY(sizeY) 
+	{
+		shape.setSize(sf::Vector2f(sizeX, sizeY));
+		shape.setPosition(x, y);
+		shape.setFillColor(sf::Color::Black);
+	}
+
+	void draw(sf::RenderWindow& window)
+	{
+		window.draw(shape);
+	}
+
+	sf::FloatRect getGlobalBounds() const
+	{
+		return shape.getGlobalBounds();
+	}
 };
 
 class Level
@@ -24,7 +40,8 @@ public:
 public:
 	Level()
 	{
-		platforms.push_back(Platform(0, 600.0f, 800.0f, 400.0f));
+		platforms.push_back(Platform(0.0f, 400.0f, 800.0f, 200.0f));
+		platforms.push_back(Platform(400.0f, 300.0f, 200.0f, 100.0f));
 	}
 
 	void draw(sf::RenderWindow& window);

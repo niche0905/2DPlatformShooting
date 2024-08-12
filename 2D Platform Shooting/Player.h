@@ -32,5 +32,5 @@ public:
 
     sf::FloatRect getGlobalBounds() const;
 
-    void handleCollision(sf::FloatRect other);
+    bool handleCollision(sf::FloatRect other);
 };

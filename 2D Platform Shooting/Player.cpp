@@ -20,11 +20,12 @@ void Player::update(long long dt)
 
     if (isJumping) {
         velocity.y += 0.9810f;
-        if (shape.getPosition().y >= 400.0f)
-        {
-            isJumping = false;
-            velocity.y = 0.0f;
-            shape.setPosition(shape.getPosition().x, 400.0f);
+        for (const auto& platform : level.platforms) {
+            if (handleCollision(platform.getGlobalBounds())) {
+                isJumping = false;
+                velocity.y = 0.0f;
+                shape.setPosition(shape.getPosition().x, platform.y);
+            }
         }
     }
 
@@ -44,9 +45,11 @@ sf::FloatRect Player::getGlobalBounds() const {
     return shape.getGlobalBounds();
 }
 
-void Player::handleCollision(sf::FloatRect other) {
+bool Player::handleCollision(sf::FloatRect other) {
     sf::FloatRect playerBounds = shape.getGlobalBounds();
     if (playerBounds.intersects(other)) {
-        isJumping = false;
+        return true;
     }
+
+    return false;
 }
