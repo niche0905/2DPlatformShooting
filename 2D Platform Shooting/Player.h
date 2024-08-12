@@ -2,7 +2,6 @@
 #define SFML_STATIC
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <chrono>
 #include "Level.h"
 
 

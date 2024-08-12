@@ -27,7 +27,7 @@ void Player::update(long long dt)
         isJumping = true;
     }
 
-    shape.move(velocity * (dt / 1000000000.0f));
+    shape.move(velocity * (dt / 1000000.0f));
 
     for (const auto& platform : level.platforms) {
         if (handleCollision(platform.getGlobalBounds())) {
