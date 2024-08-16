@@ -45,4 +45,6 @@ public:
 
     // 충돌체크를 한다
     bool checkCollision(sf::FloatRect other);
+
+    sf::Vector2f getPosition() const;
 };

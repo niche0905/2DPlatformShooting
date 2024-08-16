@@ -31,6 +31,9 @@ void Game::update(long long deltaTime)
 {
     // 모든 업데이트 해야할 항목을 업데이트
     player.update(deltaTime);
+
+    view.setCenter(player.getPosition());
+    window.setView(view);
 }
 
 void Game::draw()
@@ -38,6 +41,7 @@ void Game::draw()
     // 윈도우 하얀색으로 리셋
     window.clear(sf::Color::White);
 
+    window.setView(view);
     // 모든 객체 그리기
     player.draw(window);
     level.draw(window);

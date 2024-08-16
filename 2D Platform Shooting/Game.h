@@ -5,17 +5,27 @@
 #include "Player.h"
 #include "Level.h"
 
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+
 
 class Game {
 private:
     sf::RenderWindow window;
     sf::Clock clock;
-    Player player;
+
     Level level;
+
+    Player player;
+
+    sf::View view;
 
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
-    Game() : window(sf::VideoMode(800, 600), "2D CLIENT"), level(), player(100.0f, 400.0f, level) { }
+    Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), player(100.0f, 400.0f, level), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+    {
+        
+    }
 
     // 게임을 실행시키고 게임 로직을 굴린다
     void run(); 

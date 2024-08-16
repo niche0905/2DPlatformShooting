@@ -74,3 +74,8 @@ bool Player::checkCollision(sf::FloatRect other) {
 
     return false;
 }
+
+sf::Vector2f Player::getPosition() const
+{
+    return shape.getPosition();
+}
