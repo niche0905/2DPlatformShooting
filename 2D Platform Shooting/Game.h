@@ -36,6 +36,9 @@ public:
     // 게임의 객체들을 업데이트한다
     void update(long long deltaTime);
 
+    // 스크롤링을 위한 view 설정 함수
+    void Scrolling();
+
     // 게임의 모든 객체를 그린다
     void draw();
 };

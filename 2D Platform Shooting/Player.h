@@ -46,5 +46,6 @@ public:
     // 충돌체크를 한다
     bool checkCollision(sf::FloatRect other);
 
+    // 플레이어 위치(피봇 점)을 찾는 함수
     sf::Vector2f getPosition() const;
 };

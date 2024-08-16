@@ -32,7 +32,15 @@ void Game::update(long long deltaTime)
     // 모든 업데이트 해야할 항목을 업데이트
     player.update(deltaTime);
 
-    view.setCenter(player.getPosition());
+    // 플레이어 위치를 기반으로 view를 설정하는 함수
+    Scrolling();
+}
+
+void Game::Scrolling()
+{
+    sf::Vector2f position = player.getPosition();
+    position.y -= 60.0f;
+    view.setCenter(position);
     window.setView(view);
 }
 
@@ -41,7 +49,6 @@ void Game::draw()
     // 윈도우 하얀색으로 리셋
     window.clear(sf::Color::White);
 
-    window.setView(view);
     // 모든 객체 그리기
     player.draw(window);
     level.draw(window);
