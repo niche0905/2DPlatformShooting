@@ -44,5 +44,5 @@ public:
     sf::FloatRect getGlobalBounds() const;
 
     // 충돌체크를 한다
-    bool CheckCollision(sf::FloatRect other);
+    bool checkCollision(sf::FloatRect other);
 };

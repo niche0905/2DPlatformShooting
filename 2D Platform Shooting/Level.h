@@ -47,8 +47,8 @@ public:
 	// 생성자 -> 문자열을 받아서 파일을 로드할 예정
 	Level()
 	{
-		platforms.push_back(Platform(0.0f, 400.0f, 800.0f, 200.0f));
-		platforms.push_back(Platform(400.0f, 300.0f, 200.0f, 100.0f));
+		platforms.push_back(Platform(0.0f, 400.0f, 800.0f, 20.0f));
+		platforms.push_back(Platform(400.0f, 300.0f, 200.0f, 20.0f));
 	}
 
 	// 맵을 그려주는 함수
