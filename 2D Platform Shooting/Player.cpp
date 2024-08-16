@@ -1,7 +1,7 @@
 #include "Player.h"
 
 
-void Player::update(long long dt)
+void Player::update(long long deltaTime)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         velocity.x = -speed;
@@ -27,10 +27,10 @@ void Player::update(long long dt)
         isJumping = true;
     }
 
-    shape.move(velocity * (dt / 1000000.0f));
+    shape.move(velocity * (deltaTime / 1000000.0f));
 
     for (const auto& platform : level.platforms) {
-        if (handleCollision(platform.getGlobalBounds())) {
+        if (CheckCollision(platform.getGlobalBounds())) {
             isJumping = false;
             velocity.y = 0.0f;
             shape.setPosition(shape.getPosition().x, platform.y);
@@ -46,7 +46,7 @@ sf::FloatRect Player::getGlobalBounds() const {
     return shape.getGlobalBounds();
 }
 
-bool Player::handleCollision(sf::FloatRect other) {
+bool Player::CheckCollision(sf::FloatRect other) {
     sf::FloatRect playerBounds = shape.getGlobalBounds();
     if (playerBounds.intersects(other)) {
         return true;

@@ -1,7 +1,9 @@
 #include "Game.h"
 
-
-int main() {
+    //-----//
+int main()//
+  //-----// Game 실행하기 위한 Main
+{
     Game game;
     game.run();
 
