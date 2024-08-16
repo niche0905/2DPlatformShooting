@@ -1,37 +1,45 @@
 #include "Player.h"
 
 
-void Player::update(long long deltaTime)
+void Player::handleInput()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        velocity.x = -speed;
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        velocity.x = speed;
-    }
-    else {
-        velocity.x = 0.0f;
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-    {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
         window.close();
     }
 
-    if (isJumping) {
-        velocity.y += 0.9810f;
+    bool LeftKey;
+    bool RightKey;
+    // 키입력에 따른 좌우 velocity 값 조정
+    if (LeftKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        velocity.x = -speed;
+    }
+    if (RightKey =sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        velocity.x = speed;
+    }
+    if (not (LeftKey or RightKey)) {
+        velocity.x = 0.0f;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isJumping) {
+    // spacebar키를 눌렀을 때 점프
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && not OnAir) {
         velocity.y = -2.0f * 0.9810f * jumpHeight;
-        isJumping = true;
+        OnAir = true;
+    }
+}
+
+void Player::update(long long deltaTime)
+{
+    handleInput();
+
+    if (OnAir) {
+        velocity.y += 0.9810f;
     }
 
     shape.move(velocity * (deltaTime / 1000000.0f));
 
     for (const auto& platform : level.platforms) {
         if (CheckCollision(platform.getGlobalBounds())) {
-            isJumping = false;
+            OnAir = false;
             velocity.y = 0.0f;
             shape.setPosition(shape.getPosition().x, platform.y);
         }

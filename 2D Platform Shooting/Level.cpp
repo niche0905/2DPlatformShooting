@@ -3,9 +3,7 @@
 
 void Level::draw(sf::RenderWindow& window)
 {
-	sf::RectangleShape shape;
-	shape.setFillColor(sf::Color::Black);
-
+	// platforms에 있는 모든 platform을 그린다
 	for (auto& platform : platforms) {
 		platform.draw(window);
 	}

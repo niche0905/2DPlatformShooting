@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+
 class Platform
 {
 public:
@@ -35,6 +36,7 @@ public:
 		return shape.getGlobalBounds();
 	}
 };
+
 
 class Level
 {
