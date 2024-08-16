@@ -1,5 +1,15 @@
 #include "Game.h"
+#include "Utilities.h"
 
+
+void Game::InitView()
+{
+    sf::Vector2f newPosition = player.getPosition();
+    newPosition.y -= CameraOffset;
+
+    view.setCenter(newPosition);
+    window.setView(view);
+}
 
 void Game::run()
 {
@@ -38,9 +48,16 @@ void Game::update(long long deltaTime)
 
 void Game::Scrolling()
 {
-    sf::Vector2f position = player.getPosition();
-    position.y -= 60.0f;
-    view.setCenter(position);
+    // 타겟( == 플레이어) 위치를 알기위한
+    sf::Vector2f targetPosition = player.getPosition();
+    // 지금 view의 위치를 알기위한
+    sf::Vector2f currentPosition = view.getCenter();
+    // view의 center를 약간 올리기 위해
+    targetPosition.y -= CameraOffset;
+
+    sf::Vector2f newPosition = lerp(currentPosition, targetPosition, CameraLagging);
+
+    view.setCenter(newPosition);
     window.setView(view);
 }
 

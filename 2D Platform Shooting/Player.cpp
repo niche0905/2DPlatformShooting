@@ -22,7 +22,7 @@ void Player::handleInput()
 
     // spacebar키를 눌렀을 때 점프
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && not OnAir) {
-        velocity.y = -2.0f * 0.9810f * jumpHeight;
+        velocity.y = -2.0f * GravityAcc * jumpHeight;
         OnAir = true;
     }
 }
@@ -32,7 +32,7 @@ void Player::update(long long deltaTime)
     handleInput();
 
     if (OnAir) {
-        velocity.y += 0.9810f;
+        velocity.y += GravityAcc;
     }
 
     shape.move(velocity * (deltaTime / 1000000.0f));
@@ -67,7 +67,7 @@ bool Player::checkCollision(sf::FloatRect other) {
         float platformTop = other.top;
 
         // 플레이어가 플랫폼의 위쪽에서 충돌했을 때만 true 반환
-        if (playerBottom <= platformTop + 10) {
+        if (playerBottom <= platformTop + PlatformUp) {
             return true;
         }
     }

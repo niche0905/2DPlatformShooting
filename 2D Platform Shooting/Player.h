@@ -4,6 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include "Level.h"
 
+constexpr float GravityAcc = 0.9810f;
+constexpr float PlatformUp = 10.0f;
+
 
 class Player {
 private:
