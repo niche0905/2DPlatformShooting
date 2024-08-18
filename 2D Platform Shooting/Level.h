@@ -3,6 +3,7 @@
 #include <vector>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <fstream>
 
 
 class Platform
@@ -16,10 +17,9 @@ public:
 
 public:
 	// 왼쪽 위 (-x, -y) 값을 받고 width, height 값을 받는다
-	Platform(float left, float top, float sizeX, float sizeY) : x(left), y(top), sizeX(sizeX), sizeY(sizeY) 
+	Platform(float left, float top, float sizeX, float sizeY) : x(left), y(top), sizeX(sizeX), sizeY(sizeY), shape(sf::Vector2f(sizeX, sizeY))
 	{
 		// 피봇은 그대로 왼쪽 위
-		shape.setSize(sf::Vector2f(sizeX, sizeY));
 		shape.setPosition(x, y);
 		shape.setFillColor(sf::Color::Black);
 	}
@@ -35,7 +35,26 @@ public:
 	{
 		return shape.getGlobalBounds();
 	}
+
+	friend std::istream& operator>>(std::istream& is, Platform& platform);
+	friend std::ostream& operator<<(std::ostream& os, const Platform& platform);
 };
+
+std::istream& operator>>(std::istream& is, Platform& platform)
+{
+	is >> platform.x >> platform.y >> platform.sizeX >> platform.sizeY;
+	platform.shape.setSize(sf::Vector2f(platform.sizeX, platform.sizeY));
+	platform.shape.setPosition(platform.x, platform.y);
+
+	return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Platform& platform)
+{
+	os << platform.x << " " << platform.y << " " << platform.sizeX << " " << platform.sizeY;
+
+	return os;
+}
 
 
 class Level
@@ -50,6 +69,12 @@ public:
 		platforms.push_back(Platform(0.0f, 400.0f, 800.0f, 20.0f));
 		platforms.push_back(Platform(400.0f, 300.0f, 200.0f, 20.0f));
 	}
+
+	// Level의 정보를 저장하는 함수
+	bool save(const std::string& filename);
+
+	// Level의 정보를 불러오는 함수
+	bool load(const std::string& filename);
 
 	// 맵을 그려주는 함수
 	void draw(sf::RenderWindow& window);
