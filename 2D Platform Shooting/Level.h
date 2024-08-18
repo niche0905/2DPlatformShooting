@@ -32,16 +32,10 @@ public:
 	}
 
 	// 이 플랫폼을 그려준다
-	void draw(sf::RenderWindow& window)
-	{
-		window.draw(shape);
-	}
+	void draw(sf::RenderWindow& window);
 
 	// 해당 플랫폼의 월드 바운딩박스를 리턴한다
-	sf::FloatRect getGlobalBounds() const
-	{
-		return shape.getGlobalBounds();
-	}
+	sf::FloatRect getGlobalBounds() const;
 
 	friend std::istream& operator>>(std::istream& is, Platform& platform);
 	friend std::ostream& operator<<(std::ostream& os, const Platform& platform);

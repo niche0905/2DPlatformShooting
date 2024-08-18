@@ -1,6 +1,16 @@
 #include "Level.h"
 
 
+void Platform::draw(sf::RenderWindow& window)
+{
+	window.draw(shape);
+}
+
+sf::FloatRect Platform::getGlobalBounds() const
+{
+	return shape.getGlobalBounds();
+}
+
 std::istream& operator>>(std::istream& is, Platform& platform)
 {
 	is >> platform.x >> platform.y >> platform.sizeX >> platform.sizeY;
