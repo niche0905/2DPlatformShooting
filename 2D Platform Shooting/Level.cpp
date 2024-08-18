@@ -21,9 +21,30 @@ bool Level::save(const std::string& filename)
 	return true;
 }
 
-bool load(const std::string& filename)
+bool Level::load(const std::string& filename)
 {
-	return false;
+	std::ifstream inFile(filename);
+
+	// 파일이 열리지 않았다면 load 실패 반환
+	if (!inFile.is_open())
+		return false;
+
+	platforms.clear();
+
+	size_t platformCount;
+
+	inFile >> platformCount;
+	platforms.reserve(platformCount);
+
+	for (size_t i = 0; i < platformCount; ++i) {
+		Platform platform;
+		inFile >> platform;
+		platforms.push_back(platform);
+	}
+
+	inFile.close();
+
+	return true;
 }
 
 void Level::draw(sf::RenderWindow& window)
