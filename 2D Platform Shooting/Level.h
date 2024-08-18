@@ -55,6 +55,8 @@ public:
 		platforms.push_back(Platform(100.0f, 250.0f, 400.0f, 20.0f));
 		platforms.push_back(Platform(-100.0f, 100.0f, 300.0f, 20.0f));
 		platforms.push_back(Platform(400.0f, 100.0f, 300.0f, 20.0f));
+
+		save("Level1");
 	}
 
 	// Level의 정보를 저장하는 함수
