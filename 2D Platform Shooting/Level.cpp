@@ -1,6 +1,22 @@
 #include "Level.h"
 
 
+std::istream& operator>>(std::istream& is, Platform& platform)
+{
+	is >> platform.x >> platform.y >> platform.sizeX >> platform.sizeY;
+	platform.shape.setSize(sf::Vector2f(platform.sizeX, platform.sizeY));
+	platform.shape.setPosition(platform.x, platform.y);
+
+	return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Platform& platform)
+{
+	os << platform.x << " " << platform.y << " " << platform.sizeX << " " << platform.sizeY;
+
+	return os;
+}
+
 bool Level::save(const std::string& filename)
 {
 	std::ofstream outFile(filename);
