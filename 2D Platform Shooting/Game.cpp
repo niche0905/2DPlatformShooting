@@ -67,8 +67,8 @@ void Game::draw()
     window.clear(sf::Color::White);
 
     // 모든 객체 그리기
-    player.draw(window);
     level.draw(window);
+    player.draw(window);
 
     // 새로 그린 화면으로 바꾸기
     window.display();
