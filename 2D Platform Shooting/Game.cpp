@@ -30,8 +30,12 @@ void Game::handleInput()
 {
     // Window 오른쪽 위 Exit키를 눌렀을 때 종료
     sf::Event event;
+
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+        if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape) {
             window.close();
         }
     }
