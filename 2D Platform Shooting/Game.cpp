@@ -38,6 +38,8 @@ void Game::handleInput()
         if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape) {
             window.close();
         }
+
+        player.handleInput(event);
     }
 }
 

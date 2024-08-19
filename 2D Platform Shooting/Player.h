@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "Level.h"
 
-constexpr float GravityAcc = 0.9810f;
+constexpr float GravityAcc = 9.810f;
+constexpr float GravityMul = 120.0f;
 constexpr float PlatformUp = 10.0f;
 
 
@@ -18,14 +19,19 @@ private:
     float speed;
 
     float jumpHeight;
+    int jumpChance; // 점프 기회
+    int maxJumpChance; // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
+
+    bool leftKeyDown;
+    bool rightKeyDown;
 
     sf::RenderWindow window;
     Level& level;
 
 public:
     // 생성할 위치를받고 level 정보를 이용해 충돌체크를 하기위해 저장한다
-    Player(float x, float y, Level& level) : width(50.0f), height(50.0f), speed(500.0f), jumpHeight(750.0f), OnAir(false), level(level)
+    Player(float x, float y, Level& level) : width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
     {
         // 피봇은 가운대 아래
         shape.setOrigin(width / 2, height);
@@ -35,7 +41,7 @@ public:
     }
 
     // 플레이어의 Input을 처리한다
-    void handleInput();
+    void handleInput(const sf::Event& event);
 
     // 플레이어의 위치를 업데이트한다
     void update(long long deltaTime); 

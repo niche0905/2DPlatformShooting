@@ -1,38 +1,42 @@
 #include "Player.h"
+#include <iostream>
 
 
-void Player::handleInput()
+void Player::handleInput(const sf::Event& event)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-        window.close();
-    }
-
-    bool LeftKey;
-    bool RightKey;
-    // 키입력에 따른 좌우 velocity 값 조정
-    if (LeftKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        velocity.x = -speed;
-    }
-    if (RightKey =sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        velocity.x = speed;
-    }
-    if (not (LeftKey or RightKey)) {
-        velocity.x = 0.0f;
-    }
-
-    // spacebar키를 눌렀을 때 점프
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && not OnAir) {
-        velocity.y = -2.0f * GravityAcc * jumpHeight;
-        OnAir = true;
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Space) {
+            // Space 키가 눌렸을 때 한 번만 실행되는 코드
+            if (jumpChance > 0) {
+                //velocity.y -= jumpHeight; // 이 둘 중 선택해야 함
+                velocity.y = -jumpHeight;
+                OnAir = true;
+                --jumpChance;
+            }
+        }
     }
 }
 
 void Player::update(long long deltaTime)
 {
-    handleInput();
+    // 좌우 키가 눌리고 있는지
+    leftKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    rightKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+    if (not (leftKeyDown and rightKeyDown)) {
+        if (leftKeyDown) {
+            velocity.x = -speed;
+        }
+        else if (rightKeyDown) {
+            velocity.x = speed;
+        }
+        else {
+            velocity.x = 0.0f;
+        }
+    }
 
     if (OnAir) {
-        velocity.y += GravityAcc;
+        velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
 
     shape.move(velocity * (deltaTime / 1000000.0f));
@@ -41,6 +45,7 @@ void Player::update(long long deltaTime)
     for (const auto& platform : level.platforms) {
         if (checkCollision(platform.getGlobalBounds())) {
             OnAir = false;
+            jumpChance = maxJumpChance;
             velocity.y = 0.0f;
             shape.setPosition(shape.getPosition().x, platform.y);
 
