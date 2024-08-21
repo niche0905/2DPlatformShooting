@@ -1,5 +1,4 @@
 #include "Player.h"
-#include <iostream>
 
 
 void Player::handleInput(const sf::Event& event)
