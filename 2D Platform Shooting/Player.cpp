@@ -42,16 +42,21 @@ void Player::update(long long deltaTime)
     shape.move(velocity * (deltaTime / 1000000.0f));
 
     bool noOnePlatformCollide = true;
-    for (const auto& platform : level.platforms) {
-        if (checkCollision(platform.getGlobalBounds())) {
-            OnAir = false;
-            jumpChance = maxJumpChance;
-            velocity.y = 0.0f;
-            shape.setPosition(shape.getPosition().x, platform.y);
 
-            noOnePlatformCollide = false;
+    //bool downKeyDown = );
+    if (not sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        for (const auto& platform : level.platforms) {
+            if (checkCollision(platform.getGlobalBounds())) {
+                OnAir = false;
+                jumpChance = maxJumpChance;
+                velocity.y = 0.0f;
+                shape.setPosition(shape.getPosition().x, platform.y);
+
+                noOnePlatformCollide = false;
+            }
         }
     }
+
     if (noOnePlatformCollide) {
         OnAir = true;
     }
