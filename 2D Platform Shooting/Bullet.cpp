@@ -6,10 +6,10 @@ void Bullet::update(long long deltaTime)
     sf::Vector2f velocity(speed, 0.0f);
 
     if (direction) {
-        shape.move(-velocity * (deltaTime / 1000.0f));
+        shape.move(-velocity * (deltaTime / 1000000.0f));
     }
     else {
-        shape.move(-velocity * (deltaTime / 1000000.0f));
+        shape.move(velocity * (deltaTime / 1000000.0f));
     }
 }
 
