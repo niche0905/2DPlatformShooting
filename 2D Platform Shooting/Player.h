@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 #include "Level.h"
+#include "Bullet.h"
 
 constexpr float GravityAcc = 9.810f;
 constexpr float GravityMul = 120.0f;
@@ -15,14 +16,17 @@ private:
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
+    bool direction;     // true : Left(←),	false : Right(→)
     float width;
     float height;
     float speed;
 
     float jumpHeight;
-    int jumpChance; // 점프 기회
-    int maxJumpChance; // 최대 점프 기회 (초기화 할 때 사용)
+    int jumpChance;     // 점프 기회
+    int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
+
+    std::list<Bullet> bullets;
 
     bool leftKeyDown;
     bool rightKeyDown;
@@ -32,7 +36,7 @@ private:
 
 public:
     // 생성할 위치를받고 level 정보를 이용해 충돌체크를 하기위해 저장한다
-    Player(float x, float y, Level& level) : width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+    Player(float x, float y, Level& level) : direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
     {
         // 피봇은 가운대 아래
         shape.setOrigin(width / 2, height);
@@ -43,6 +47,9 @@ public:
 
     // 플레이어의 Input을 처리한다
     void handleInput(const sf::Event& event);
+
+    // 플레이어가 총을 발사한다.
+    void fireBullet();
 
     // 플레이어의 위치를 업데이트한다
     void update(long long deltaTime); 

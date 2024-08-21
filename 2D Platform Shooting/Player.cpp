@@ -13,6 +13,23 @@ void Player::handleInput(const sf::Event& event)
                 --jumpChance;
             }
         }
+        if (event.key.code == sf::Keyboard::A) {
+            fireBullet();
+        }
+    }
+}
+
+void Player::fireBullet()
+{
+    // 추후에 연사 속도나 남은 잔탄 수 같은 기능 넣어야 함
+
+    sf::Vector2f position = shape.getPosition();
+    position.y -= 25.0f;
+    if (direction) {
+        bullets.push_back(Bullet(true, position));
+    }
+    else {
+        bullets.push_back(Bullet(false, position));
     }
 }
 
@@ -24,9 +41,11 @@ void Player::update(long long deltaTime)
 
     if (not (leftKeyDown and rightKeyDown)) {
         if (leftKeyDown) {
+            direction = true;
             velocity.x = -speed;
         }
         else if (rightKeyDown) {
+            direction = false;
             velocity.x = speed;
         }
         else {
@@ -58,10 +77,18 @@ void Player::update(long long deltaTime)
     if (noOnePlatformCollide) {
         OnAir = true;
     }
+
+    for (auto bullet : bullets) {
+        bullet.update(deltaTime);
+    }
 }
 
 void Player::draw(sf::RenderWindow& window) {
     window.draw(shape);
+
+    for (auto bullet : bullets) {
+        bullet.draw(window);
+    }
 }
 
 sf::FloatRect Player::getGlobalBounds() const {

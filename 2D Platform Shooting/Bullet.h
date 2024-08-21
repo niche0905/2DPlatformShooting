@@ -5,8 +5,8 @@
 constexpr float BulletWidth = 10.0f;
 constexpr float BulletHeight = 2.0f;
 
-constexpr float BulletSpeed = 2.0f;
-constexpr float BulletDamage = 2.0f;
+constexpr float BulletSpeed = 600.0f;
+constexpr float BulletDamage = 10.0f;
 
 
 class Bullet
@@ -20,11 +20,11 @@ private:
 
 public:
 	// 생성할 때 방향과 발사한 위치를 받아야 한다
-	Bullet(bool direct, float x, float y) : direction(direct), speed(BulletSpeed), damage(BulletDamage)
+	Bullet(bool direct, sf::Vector2f pos) : direction(direct), speed(BulletSpeed), damage(BulletDamage)
 	{
 		shape.setSize(sf::Vector2f(BulletWidth, BulletHeight));
 		shape.setOrigin(BulletWidth / 2, BulletHeight / 2);
-		shape.setPosition(x, y);
+		shape.setPosition(pos);
 		shape.setFillColor(sf::Color::Red);
 	}
 
