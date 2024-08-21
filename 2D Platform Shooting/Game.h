@@ -8,7 +8,7 @@
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
 
-constexpr float CameraLagging = 0.01f;
+constexpr float CameraLagging = 10.0f;
 constexpr float CameraOffset = 60.0f;
 
 
@@ -46,7 +46,7 @@ public:
     void update(long long deltaTime);
 
     // 스크롤링을 위한 view 설정 함수
-    void Scrolling();
+    void Scrolling(long long deltaTime);
 
     // 게임의 모든 객체를 그린다
     void draw();

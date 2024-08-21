@@ -49,10 +49,10 @@ void Game::update(long long deltaTime)
     player.update(deltaTime);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
-    Scrolling();
+    Scrolling(deltaTime);
 }
 
-void Game::Scrolling()
+void Game::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한
     sf::Vector2f targetPosition = player.getPosition();
@@ -61,7 +61,7 @@ void Game::Scrolling()
     // view의 center를 약간 올리기 위해
     targetPosition.y -= CameraOffset;
 
-    sf::Vector2f newPosition = lerp(currentPosition, targetPosition, CameraLagging);
+    sf::Vector2f newPosition = lerp(currentPosition, targetPosition, CameraLagging * (deltaTime / 1000000.0f));
 
     view.setCenter(newPosition);
     window.setView(view);
