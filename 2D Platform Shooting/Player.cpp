@@ -43,7 +43,6 @@ void Player::update(long long deltaTime)
 
     bool noOnePlatformCollide = true;
 
-    //bool downKeyDown = );
     if (not sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         for (const auto& platform : level.platforms) {
             if (checkCollision(platform.getGlobalBounds())) {
