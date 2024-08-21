@@ -2,6 +2,7 @@
 #define SFML_STATIC
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <list>
 #include "Level.h"
 
 constexpr float GravityAcc = 9.810f;
