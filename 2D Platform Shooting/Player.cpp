@@ -5,7 +5,7 @@
 void Player::handleInput(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Space) {
+        if (event.key.code == sf::Keyboard::Up) {
             // Space 키가 눌렸을 때 한 번만 실행되는 코드
             if (jumpChance > 0) {
                 //velocity.y -= jumpHeight; // 이 둘 중 선택해야 함
