@@ -25,12 +25,8 @@ void Player::fireBullet()
 
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
-    if (direction) {
-        bullets.push_back(Bullet(true, position));
-    }
-    else {
-        bullets.push_back(Bullet(false, position));
-    }
+
+    bullets.push_back(Bullet(direction, position));
 }
 
 void Player::update(long long deltaTime)
