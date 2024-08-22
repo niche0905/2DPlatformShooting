@@ -28,6 +28,9 @@ public:
 		shape.setFillColor(sf::Color::Red);
 	}
 
+	// 총알의 위치가 영역 밖으로 넘었는지를 판단한다
+	bool isOutBounds(float left, float right);
+
 	// 총알의 위치를 업데이트 한다
 	void update(long long deltaTime);
 

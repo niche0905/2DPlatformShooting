@@ -46,10 +46,12 @@ class Level
 {
 public:
 	std::vector<Platform> platforms;
+	float leftBound;
+	float rightBound;
 
 public:
 	// 생성자 -> 문자열을 받아서 파일을 로드할 예정
-	Level()
+	Level() : leftBound(10000.0f), rightBound(-10000.0f)
 	{
 		load("level1");
 	}

@@ -74,8 +74,17 @@ void Player::update(long long deltaTime)
         OnAir = true;
     }
 
-    for (Bullet& bullet : bullets) {
-        bullet.update(deltaTime);
+    updateBullets(deltaTime);
+}
+
+void Player::updateBullets(long long deltaTime)
+{
+    for (auto it = bullets.begin(); it != bullets.end(); ) {
+        it->update(deltaTime);
+        if (it->isOutBounds(level.leftBound - 1000.0f, level.rightBound + 1000.0f))
+            it = bullets.erase(it);
+        else
+            ++it;
     }
 }
 

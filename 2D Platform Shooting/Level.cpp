@@ -66,6 +66,11 @@ bool Level::load(const std::string& filename)
 		Platform platform;
 		inFile >> platform;
 		platforms.push_back(platform);
+
+		if (platform.x < leftBound)
+			leftBound = platform.x;
+		if (rightBound < platform.x + platform.sizeX)
+			rightBound = platform.x + platform.sizeX;
 	}
 
 	inFile.close();

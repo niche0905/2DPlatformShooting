@@ -1,6 +1,13 @@
 #include "Bullet.h"
 
 
+bool Bullet::isOutBounds(float left, float right)
+{
+    float nowX = shape.getPosition().x;
+    
+    return nowX < left or right < nowX;
+}
+
 void Bullet::update(long long deltaTime)
 {
     sf::Vector2f velocity(speed, 0.0f);

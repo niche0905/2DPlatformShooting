@@ -54,6 +54,9 @@ public:
     // 플레이어의 위치를 업데이트한다
     void update(long long deltaTime); 
 
+    // 플레이어가 발사한 총알들을 업데이트 해준다
+    void updateBullets(long long deltaTime);
+
     // 플레이어를 그린다
     void draw(sf::RenderWindow& window);
 
