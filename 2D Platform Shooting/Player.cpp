@@ -38,11 +38,18 @@ void Player::update(long long deltaTime)
     if (not (leftKeyDown and rightKeyDown)) {
         if (leftKeyDown) {
             direction = true;
-            velocity.x = -speed;
+            if (-speed <= velocity.x and velocity.x <= speed)
+                velocity.x = -speed;
+            else if (velocity.x > speed)
+                velocity.x -= speed * (deltaTime / 1000000.0f);
+
         }
         else if (rightKeyDown) {
             direction = false;
-            velocity.x = speed;
+            if (-speed <= velocity.x and velocity.x <= speed)
+                velocity.x = speed;
+            else if (velocity.x < -speed)
+                velocity.x += speed * (deltaTime / 1000000.0f);
         }
         else {
             velocity.x = 0.0f;
