@@ -13,7 +13,7 @@ void Bullet::update(long long deltaTime)
     }
 }
 
-void Bullet::draw(sf::RenderWindow& window)
+void Bullet::draw(sf::RenderWindow& window) const
 {
     window.draw(shape);
 }

@@ -32,7 +32,7 @@ public:
 	void update(long long deltaTime);
 
 	// 총알을 그려준다
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 
 };
 

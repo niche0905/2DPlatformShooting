@@ -74,7 +74,7 @@ void Player::update(long long deltaTime)
         OnAir = true;
     }
 
-    for (auto bullet : bullets) {
+    for (Bullet& bullet : bullets) {
         bullet.update(deltaTime);
     }
 }
@@ -82,7 +82,7 @@ void Player::update(long long deltaTime)
 void Player::draw(sf::RenderWindow& window) {
     window.draw(shape);
 
-    for (auto bullet : bullets) {
+    for (const Bullet& bullet : bullets) {
         bullet.draw(window);
     }
 }
