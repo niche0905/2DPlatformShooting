@@ -69,8 +69,8 @@ void Game::Scrolling(long long deltaTime)
 
 void Game::draw()
 {
-    // 윈도우 하얀색으로 리셋
-    window.clear(sf::Color::White);
+    // 윈도우 하늘색으로 리셋
+    window.clear(BackgroundColor);
 
     // 모든 객체 그리기
     level.draw(window);

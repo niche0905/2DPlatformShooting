@@ -2,8 +2,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-constexpr float BulletWidth = 10.0f;
-constexpr float BulletHeight = 2.0f;
+constexpr float BulletWidth = 20.0f;
+constexpr float BulletHeight = 6.0f;
 
 constexpr float BulletSpeed = 600.0f;
 constexpr float BulletDamage = 10.0f;
@@ -25,7 +25,7 @@ public:
 		shape.setSize(sf::Vector2f(BulletWidth, BulletHeight));
 		shape.setOrigin(BulletWidth / 2, BulletHeight / 2);
 		shape.setPosition(pos);
-		shape.setFillColor(sf::Color::Red);
+		shape.setFillColor(sf::Color::Yellow);
 	}
 
 	// 총알의 위치가 영역 밖으로 넘었는지를 판단한다
