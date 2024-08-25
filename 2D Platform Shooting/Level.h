@@ -5,6 +5,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+const sf::Color PlatformColor = sf::Color(55, 55, 55, 255);
+
 
 class Platform
 {
@@ -20,7 +22,7 @@ public:
 	{
 		// 피봇은 그대로 왼쪽 위
 		shape.setPosition(x, y);
-		shape.setFillColor(sf::Color::Black);
+		shape.setFillColor(PlatformColor);
 	}
 
 	// 왼쪽 위 (-x, -y) 값을 받고 width, height 값을 받는다
@@ -28,7 +30,7 @@ public:
 	{
 		// 피봇은 그대로 왼쪽 위
 		shape.setPosition(x, y);
-		shape.setFillColor(sf::Color::Black);
+		shape.setFillColor(PlatformColor);
 	}
 
 	// 이 플랫폼을 그려준다
