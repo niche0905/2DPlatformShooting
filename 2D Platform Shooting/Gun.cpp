@@ -9,6 +9,8 @@ std::ostream& operator<<(std::ostream& os, const Gun& gun)
 	os << "Mag: " << gun.curMag << std::endl;
 	os << "RPM: " << gun.RPM << std::endl;
 	os << "Ratio: " << gun.proMag << std::endl;
+
+	return os;
 }
 
 std::istream& operator>>(std::istream& is, Gun& gun)
@@ -20,4 +22,6 @@ std::istream& operator>>(std::istream& is, Gun& gun)
 	is >> temp >> gun.curMag;
 	is >> temp >> gun.RPM;
 	is >> temp >> gun.proMag;
+
+	return is;
 }
