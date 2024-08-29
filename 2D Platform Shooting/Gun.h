@@ -16,6 +16,10 @@ private:
 	int proMag;			// 총이 나올 확률(클수록 높다) 0이면 아예 안나옴
 
 public:
+	Gun()
+	{
+
+	}
 	Gun(std::string name, float damage, float speed, int curMag, int RPM, int proMag) : name(name), damage(damage), speed(speed), curMag(curMag), RPM(RPM), proMag(proMag)
 	{
 
