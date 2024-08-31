@@ -1,8 +1,13 @@
 #pragma once
 #include <string>
+#include <iostream>
 #include <fstream>
+#include <vector>
 
 const std::string GunSavePath = "./Saved/Guns/GunAttribute.txt";
+
+bool loadGunFromFile(const std::string& filePath, std::vector<Gun>& guns);
+void saveGunFromFile(const std::string& filePath, const std::vector<Gun>& guns);
 
 
 class Gun
