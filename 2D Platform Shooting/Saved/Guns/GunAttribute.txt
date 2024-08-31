@@ -1,11 +1,11 @@
-[test]
+[ test ]
 Damage: 0.5
 Speed: 0.5
 Mag: 10
 RPM: 50
 Ratio: 1
 
-[myGun]
+[ myGun ]
 Damage: 1.1
 Speed: 2.5
 Mag: 20

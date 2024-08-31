@@ -3,7 +3,7 @@
 
 std::ostream& operator<<(std::ostream& os, const Gun& gun)
 {
-	os << "[" << gun.name << "]" << std::endl;
+	os << "[ " << gun.name << " ]" << std::endl;
 	os << "Damage: " << gun.damage << std::endl;
 	os << "Speed: " << gun.speed << std::endl;
 	os << "Mag: " << gun.curMag << std::endl;
