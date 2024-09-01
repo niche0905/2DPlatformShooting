@@ -6,8 +6,8 @@
 
 const std::string GunSavePath = "./Saved/Guns/GunAttribute.txt";
 
-bool loadGunFromFile(const std::string& filePath, std::vector<Gun>& guns);
-void saveGunFromFile(const std::string& filePath, const std::vector<Gun>& guns);
+bool loadGunFromFile(const std::string& filePath, std::vector<class Gun>& guns);
+void saveGunFromFile(const std::string& filePath, const std::vector<class Gun>& guns);
 
 
 class Gun
