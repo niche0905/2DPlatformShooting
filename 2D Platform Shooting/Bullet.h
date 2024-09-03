@@ -37,5 +37,14 @@ public:
 	// 총알을 그려준다
 	void draw(sf::RenderWindow& window) const;
 
+	// 총알의 바운딩박스를 얻는다
+	sf::FloatRect getGlobalBounds() const;
+
+	// 방향을 알려준다
+	bool getDirection() const;
+
+	// 데미지를 알려준다.
+	float getDamage() const;
+
 };
 

@@ -24,3 +24,18 @@ void Bullet::draw(sf::RenderWindow& window) const
 {
     window.draw(shape);
 }
+
+sf::FloatRect Bullet::getGlobalBounds() const
+{
+    return shape.getGlobalBounds();
+}
+
+bool Bullet::getDirection() const
+{
+    return direction;
+}
+
+float Bullet::getDamage() const
+{
+    return damage;
+}
