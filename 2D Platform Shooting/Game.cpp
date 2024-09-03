@@ -40,6 +40,7 @@ void Game::handleInput()
         }
 
         player.handleInput(event);
+        dummy.handleInput(event);
     }
 }
 
@@ -47,6 +48,7 @@ void Game::update(long long deltaTime)
 {
     // 모든 업데이트 해야할 항목을 업데이트
     player.update(deltaTime);
+    dummy.update(deltaTime);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
     Scrolling(deltaTime);
@@ -75,6 +77,7 @@ void Game::draw()
     // 모든 객체 그리기
     level.draw(window);
     player.draw(window);
+    dummy.draw(window);
 
     // 새로 그린 화면으로 바꾸기
     window.display();
