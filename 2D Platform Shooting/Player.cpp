@@ -16,6 +16,9 @@ void Player::handleInput(const sf::Event& event)
         if (event.key.code == sf::Keyboard::A) {
             fireBullet();
         }
+        if (event.key.code == sf::Keyboard::D) {
+            dash();
+        }
     }
 }
 
@@ -125,4 +128,9 @@ bool Player::checkCollision(sf::FloatRect other) {
 sf::Vector2f Player::getPosition() const
 {
     return shape.getPosition();
+}
+
+void Player::dash() {
+    if (!direction) shape.move(100, 0);
+    else shape.move(-100, 0);
 }

@@ -68,4 +68,7 @@ public:
 
     // 플레이어 위치(피봇 점)을 찾는 함수
     sf::Vector2f getPosition() const;
+
+    // 플레이어 대쉬(민경원 테스트)
+    void dash();
 };
