@@ -71,6 +71,9 @@ public:
 
     // 플레이어 대쉬(민경원 테스트)
     void dash();
+
+    // 총알들이 적을 맞췄는지 검사
+    void hitTheEnemy(class Dummy& dummy);
 };
 
 
@@ -123,4 +126,10 @@ public:
 
     // 더미의 위치(피봇 점)을 찾는 함수
     sf::Vector2f getPosition() const;
+
+    // 총알 충돌체크(기존의 충돌체크완 다르게 충돌 유무만 처리)
+    bool checkCollisionBullet(sf::FloatRect other);
+
+    // 더미에게 데미지를 준다
+    void takeDamage(bool direction, float damage);
 };

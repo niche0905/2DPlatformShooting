@@ -49,6 +49,7 @@ void Game::update(long long deltaTime)
     // 모든 업데이트 해야할 항목을 업데이트
     player.update(deltaTime);
     dummy.update(deltaTime);
+    player.hitTheEnemy(dummy);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
     Scrolling(deltaTime);

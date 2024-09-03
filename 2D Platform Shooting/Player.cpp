@@ -135,6 +135,22 @@ void Player::dash() {
     else shape.move(-100, 0);
 }
 
+void Player::hitTheEnemy(class Dummy& dummy)
+{
+    for (auto it = bullets.begin(); it != bullets.end(); ) {
+        if (dummy.checkCollisionBullet(it->getGlobalBounds())) {
+        // 맞았다면(충돌이라면)
+            // 데미지를 적용하고
+            dummy.takeDamage(it->getDirection(), it->getDamage());
+
+            // 총알 삭제
+            it = bullets.erase(it);
+        }
+        else
+            ++it;
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -243,4 +259,19 @@ bool Dummy::checkCollision(sf::FloatRect other)
 sf::Vector2f Dummy::getPosition() const
 {
     return shape.getPosition();
+}
+
+bool Dummy::checkCollisionBullet(sf::FloatRect other)
+{
+    sf::FloatRect playerBounds = shape.getGlobalBounds();
+    if (playerBounds.intersects(other)) {
+        return true;
+    }
+
+    return false;
+}
+
+void Dummy::takeDamage(bool direction, float damage)
+{
+
 }
