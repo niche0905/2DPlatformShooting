@@ -1,5 +1,5 @@
 #include "Gun.h"
-
+#include "Player.h"
 
 bool loadGunFromFile(const std::string& filePath, std::vector<Gun>& guns)
 {
@@ -89,5 +89,21 @@ void Gun::updateBullets(long long deltaTime)
 			++it;
 		*/
 		++it; // 위의 문제 해결하게 되면 이건 지우기
+	}
+}
+
+void Gun::hitTheEnemy(class Dummy& dummy)
+{
+	for (auto it = bullets.begin(); it != bullets.end(); ) {
+		if (dummy.checkCollisionBullet(it->getGlobalBounds())) {
+			// 맞았다면(충돌이라면)
+				// 데미지를 적용하고
+			dummy.takeDamage(it->getDirection(), it->getDamage());
+
+			// 총알 삭제
+			it = bullets.erase(it);
+		}
+		else
+			++it;
 	}
 }

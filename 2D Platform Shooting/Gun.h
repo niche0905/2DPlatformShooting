@@ -43,5 +43,6 @@ public:
 	void draw(sf::RenderWindow& window);
 	void firebullet(bool direction, sf::Vector2f position);
 	void updateBullets(long long deltaTime);
+	void hitTheEnemy(class Dummy& dummy);
 };
 

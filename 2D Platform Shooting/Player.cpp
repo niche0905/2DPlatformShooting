@@ -129,18 +129,7 @@ void Player::dash() {
 
 void Player::hitTheEnemy(class Dummy& dummy)
 {
-    for (auto it = bullets.begin(); it != bullets.end(); ) {
-        if (dummy.checkCollisionBullet(it->getGlobalBounds())) {
-        // 맞았다면(충돌이라면)
-            // 데미지를 적용하고
-            dummy.takeDamage(it->getDirection(), it->getDamage());
-
-            // 총알 삭제
-            it = bullets.erase(it);
-        }
-        else
-            ++it;
-    }
+    gun.hitTheEnemy(dummy);
 }
 
 
