@@ -61,3 +61,33 @@ std::istream& operator>>(std::istream& is, Gun& gun)
 
 	return is;
 }
+
+void Gun::draw(sf::RenderWindow& window)
+{
+	for (const Bullet& bullet : bullets) {
+		bullet.draw(window);
+	}
+}
+
+void Gun::firebullet(bool direction, sf::Vector2f position)
+{
+	bullets.push_back(Bullet(direction, position));
+}
+
+void Gun::updateBullets(long long deltaTime)
+{
+	for (auto it = bullets.begin(); it != bullets.end(); ) {
+		it->update(deltaTime);
+		// 총알이 레벨 밖으로 나갈 때 지우게 하는 코드
+		// 초기에는 Player가 level을 가지고 있었기 때문에 레벨의 크기에 접근이 가능했으나
+		// 총알을 Player가 아닌 Gun으로 빼는 과정에서 레벨 크기에 접근이 불가능 해졌으므로
+		// 임시로 지우지 않도록 주석 처리를 함(민경원 9/4)
+		/*
+		if (it->isOutBounds(level.leftBound - 1000.0f, level.rightBound + 1000.0f))
+			it = bullets.erase(it);
+		else
+			++it;
+		*/
+		++it; // 위의 문제 해결하게 되면 이건 지우기
+	}
+}
