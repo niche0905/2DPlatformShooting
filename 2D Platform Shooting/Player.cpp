@@ -172,13 +172,18 @@ void Dummy::handleInput(const sf::Event& event)
 
 void Dummy::damageControll(long long deltaTime)
 {
+    // 땅에 붙어있다면 마찰력이 작동하도록
+    float frictionScale(1.0f);
+    if (OnAir)
+        frictionScale = 2.0f;
+
     // 0에 가까워지도록
     if (damaged > 0.0f) {
-        damaged -= DamageScalingRatio * (deltaTime / 1000000.0f);
+        damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
         damaged = std::max(0.0f, damaged);
     }
     else {
-        damaged += DamageScalingRatio * (deltaTime / 1000000.0f);
+        damaged += DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
         damaged = std::min(0.0f, damaged);
     }
 }
