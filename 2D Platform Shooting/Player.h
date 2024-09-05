@@ -5,7 +5,6 @@
 #include <list>
 #include "Level.h"
 #include "Bullet.h"
-#include "Gun.h"
 
 constexpr float GravityAcc = 9.810f;
 constexpr float GravityMul = 120.0f;
@@ -27,7 +26,6 @@ private:
     int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
 
-    Gun gun;
     std::list<Bullet> bullets;
 
     bool leftKeyDown;

@@ -29,7 +29,7 @@ void Player::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    gun.firebullet(direction, position);
+    bullets.push_back(Bullet(direction, position));
 }
 
 void Player::update(long long deltaTime)
@@ -89,13 +89,21 @@ void Player::update(long long deltaTime)
 
 void Player::updateBullets(long long deltaTime)
 {
-    gun.updateBullets(deltaTime);
+    for (auto it = bullets.begin(); it != bullets.end(); ) {
+        it->update(deltaTime);
+        if (it->isOutBounds(level.leftBound - 1000.0f, level.rightBound + 1000.0f))
+            it = bullets.erase(it);
+        else
+            ++it;
+    }
 }
 
 void Player::draw(sf::RenderWindow& window) {
     window.draw(shape);
 
-    gun.draw(window);
+    for (const Bullet& bullet : bullets) {
+        bullet.draw(window);
+    }
 }
 
 sf::FloatRect Player::getGlobalBounds() const {
