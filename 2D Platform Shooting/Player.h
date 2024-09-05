@@ -28,6 +28,7 @@ private:
     bool OnAir;
 
     Gun gun;
+    std::list<Bullet> bullets;
 
     bool leftKeyDown;
     bool rightKeyDown;
