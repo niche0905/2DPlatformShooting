@@ -170,6 +170,19 @@ void Dummy::handleInput(const sf::Event& event)
     }
 }
 
+void Dummy::damageControll(long long deltaTime)
+{
+    // 0에 가까워지도록
+    if (damaged > 0.0f) {
+        damaged -= DamageScalingRatio * (deltaTime / 1000000.0f);
+        damaged = std::max(0.0f, damaged);
+    }
+    else {
+        damaged += DamageScalingRatio * (deltaTime / 1000000.0f);
+        damaged = std::min(0.0f, damaged);
+    }
+}
+
 void Dummy::update(long long deltaTime)
 {
     // 좌우 키가 눌리고 있는지
@@ -201,6 +214,8 @@ void Dummy::update(long long deltaTime)
     if (OnAir) {
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
+
+    damageControll(deltaTime);
 
     // 입은 피해량 만큼 넉백하게
     sf::Vector2f powerOfDamage(damaged, 0.0f);
