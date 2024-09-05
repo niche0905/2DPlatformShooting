@@ -202,8 +202,10 @@ void Dummy::update(long long deltaTime)
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
 
+    // 입은 피해량 만큼 넉백하게
+    sf::Vector2f powerOfDamage(damaged, 0.0f);
     // 속도만큼 움직임
-    shape.move(velocity * (deltaTime / 1000000.0f));
+    shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
 
     // 밟고있는 플랫폼이 없는지 플래그
     bool noOnePlatformCollide = true;
@@ -273,5 +275,8 @@ bool Dummy::checkCollisionBullet(sf::FloatRect other)
 
 void Dummy::takeDamage(bool direction, float damage)
 {
-
+    if (direction == true)  // Left 면
+        damaged -= damage;
+    else                    // Right 면
+        damaged += damage;
 }

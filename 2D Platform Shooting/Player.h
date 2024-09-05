@@ -82,6 +82,8 @@ class Dummy {
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
+    float damaged;      // 피해 입은 양 -(음수) 왼쪽으로 힘을 받음 +(양수) 오른쪽으로 힘을 받음
+
     bool direction;     // true : Left(←),	false : Right(→)
     float width;
     float height;
