@@ -6,9 +6,11 @@
 #include "Level.h"
 #include "Bullet.h"
 
-constexpr float GravityAcc = 9.810f;
-constexpr float GravityMul = 120.0f;
-constexpr float PlatformUp = 10.0f;
+constexpr float GravityAcc = 9.810f;            // 중력 가속도
+constexpr float GravityMul = 120.0f;            // 중력 가속도에 곱하는 수(게임성을 위해)
+constexpr float PlatformUp = 10.0f;             // 플랫폼 위에 있다는 기준(충돌 처리 시 사용)
+
+constexpr float DamageScalingRatio = 10.0f;     // 피해량 정상화 상수(공기저항 역할)
 
 
 class Player {
@@ -82,6 +84,8 @@ class Dummy {
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
+    float damaged;      // 피해 입은 양 -(음수) 왼쪽으로 힘을 받음 +(양수) 오른쪽으로 힘을 받음
+
     bool direction;     // true : Left(←),	false : Right(→)
     float width;
     float height;
@@ -111,6 +115,9 @@ public:
 
     // 더미의 Input을 처리한다
     void handleInput(const sf::Event& event);
+
+    // 피해량을 조절해준다(업데이트)
+    void damageControll(long long deltaTime);
 
     // 더미의 위치를 업데이트한다
     void update(long long deltaTime);
