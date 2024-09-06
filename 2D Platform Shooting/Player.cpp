@@ -170,6 +170,24 @@ void Dummy::handleInput(const sf::Event& event)
     }
 }
 
+void Dummy::damageControll(long long deltaTime)
+{
+    // 땅에 붙어있다면 마찰력이 작동하도록
+    float frictionScale(1.0f);
+    if (OnAir)
+        frictionScale = 2.0f;
+
+    // 0에 가까워지도록
+    if (damaged > 0.0f) {
+        damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged = std::max(0.0f, damaged);
+    }
+    else {
+        damaged += DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged = std::min(0.0f, damaged);
+    }
+}
+
 void Dummy::update(long long deltaTime)
 {
     // 좌우 키가 눌리고 있는지
@@ -202,8 +220,12 @@ void Dummy::update(long long deltaTime)
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
 
+    damageControll(deltaTime);
+
+    // 입은 피해량 만큼 넉백하게
+    sf::Vector2f powerOfDamage(damaged, 0.0f);
     // 속도만큼 움직임
-    shape.move(velocity * (deltaTime / 1000000.0f));
+    shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
 
     // 밟고있는 플랫폼이 없는지 플래그
     bool noOnePlatformCollide = true;
@@ -273,5 +295,8 @@ bool Dummy::checkCollisionBullet(sf::FloatRect other)
 
 void Dummy::takeDamage(bool direction, float damage)
 {
-
+    if (direction == true)  // Left 면
+        damaged -= damage;
+    else                    // Right 면
+        damaged += damage;
 }
