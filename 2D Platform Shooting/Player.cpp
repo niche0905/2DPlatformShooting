@@ -25,6 +25,9 @@ void Player::handleInput(const sf::Event& event)
         if (event.key.code == sf::Keyboard::W) {
             gun.getAK47();
         }
+        if (event.key.code == sf::Keyboard::R) {
+            revivePlayer();     // 임시로 키 바인딩으로 부활 호출
+        }
     }
 }
 
@@ -171,6 +174,17 @@ void Player::hitTheEnemy(class Dummy& dummy)
         else
             ++it;
     }
+}
+
+void Player::revivePlayer()
+{
+    if (isActive) return;   // 살아 있다면 revive 취소
+
+    // 부활 시 처리해 할 행동들 추가하기
+    isActive = true;    // 활성화 시키기
+
+    // 맵 중앙 공중에 스폰
+    shape.setPosition((level.leftBound+level.rightBound) / 2.0, -1000.0f);  // -1000.0f 는 수정해야 할수도
 }
 
 

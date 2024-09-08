@@ -80,6 +80,9 @@ public:
 
     // 총알들이 적을 맞췄는지 검사
     void hitTheEnemy(class Dummy& dummy);
+
+    // 부활하는 함수(활성화)
+    void revivePlayer();
 };
 
 
