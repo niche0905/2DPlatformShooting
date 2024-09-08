@@ -16,6 +16,8 @@ constexpr float DamageScalingRatio = 10.0f;     // 피해량 정상화 상수(공기저항 �
 
 class Player {
 private:
+    bool isActive;      // 플레이어 활성화 비활성화를 나타내는 변수
+
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
@@ -40,7 +42,7 @@ private:
 
 public:
     // 생성할 위치를받고 level 정보를 이용해 충돌체크를 하기위해 저장한다
-    Player(float x, float y, Level& level) : direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), gun("Pistol"), level(level), leftKeyDown(false), rightKeyDown(false)
+    Player(float x, float y, Level& level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), gun("Pistol"), level(level), leftKeyDown(false), rightKeyDown(false)
     {
         // 피봇은 가운대 아래
         shape.setOrigin(width / 2, height);
@@ -78,6 +80,9 @@ public:
 
     // 총알들이 적을 맞췄는지 검사
     void hitTheEnemy(class Dummy& dummy);
+
+    // 부활하는 함수(활성화)
+    void revivePlayer();
 };
 
 

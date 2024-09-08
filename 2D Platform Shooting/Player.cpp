@@ -25,6 +25,9 @@ void Player::handleInput(const sf::Event& event)
         if (event.key.code == sf::Keyboard::W) {
             gun.getAK47();
         }
+        if (event.key.code == sf::Keyboard::R) {
+            revivePlayer();     // 임시로 키 바인딩으로 부활 호출
+        }
     }
 }
 
@@ -47,6 +50,10 @@ void Player::fireBullet()
 
 void Player::update(long long deltaTime)
 {
+    updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
+
+    if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
+
     // 좌우 키가 눌리고 있는지
     leftKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
     rightKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
@@ -97,7 +104,10 @@ void Player::update(long long deltaTime)
         OnAir = true;
     }
 
-    updateBullets(deltaTime);
+    if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
+    {
+        isActive = false;
+    }
 }
 
 void Player::updateBullets(long long deltaTime)
@@ -112,6 +122,8 @@ void Player::updateBullets(long long deltaTime)
 }
 
 void Player::draw(sf::RenderWindow& window) {
+    if (not isActive) return;   // 활성화 상태가 아니라면 Draw 종료
+
     window.draw(shape);
 
     for (const Bullet& bullet : bullets) {
@@ -162,6 +174,17 @@ void Player::hitTheEnemy(class Dummy& dummy)
         else
             ++it;
     }
+}
+
+void Player::revivePlayer()
+{
+    if (isActive) return;   // 살아 있다면 revive 취소
+
+    // 부활 시 처리해 할 행동들 추가하기
+    isActive = true;    // 활성화 시키기
+
+    // 맵 중앙 공중에 스폰
+    shape.setPosition((level.leftBound+level.rightBound) / 2.0, -1000.0f);  // -1000.0f 는 수정해야 할수도
 }
 
 
