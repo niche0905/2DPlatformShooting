@@ -5,7 +5,8 @@
 constexpr float BulletWidth = 20.0f;
 constexpr float BulletHeight = 6.0f;
 
-constexpr float BulletSpeed = 600.0f;
+// 총 종류에 따라 속도가 다를것이므로 주석 처리
+// constexpr float BulletSpeed = 600.0f;
 constexpr float BulletDamage = 10.0f;
 
 
@@ -19,8 +20,8 @@ private:
 	sf::RectangleShape shape;
 
 public:
-	// 생성할 때 방향과 발사한 위치를 받아야 한다
-	Bullet(bool direct, sf::Vector2f pos) : direction(direct), speed(BulletSpeed), damage(BulletDamage)
+	// 생성할 때 방향과 발사한 위치를 받아야 한다(+ 속도 추가 09/08 민경원)
+	Bullet(bool direct, sf::Vector2f pos, float speed) : direction(direct), speed(speed), damage(BulletDamage)
 	{
 		shape.setSize(sf::Vector2f(BulletWidth, BulletHeight));
 		shape.setOrigin(BulletWidth / 2, BulletHeight / 2);

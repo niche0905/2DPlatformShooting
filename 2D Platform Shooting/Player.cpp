@@ -19,6 +19,12 @@ void Player::handleInput(const sf::Event& event)
         if (event.key.code == sf::Keyboard::D) {
             dash();
         }
+        if (event.key.code == sf::Keyboard::Q) {
+            gun.getPistol();
+        }
+        if (event.key.code == sf::Keyboard::W) {
+            gun.getAK47();
+        }
     }
 }
 
@@ -29,7 +35,14 @@ void Player::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    bullets.push_back(Bullet(direction, position));
+    // 민경원 코멘트
+    // 플레이어에 건 넣어두고 이름 비교하면서 다르게 푸쉬하기
+    // 이게 아마 용주가 원했던 방법은 아닌거같은데
+    // 나는 씬에다 객체를 만들어서 포인터로~~... 이게 코드짜긴 좀 애매해서
+    // 일단 이렇게 해뒀어
+    // 피스톨이랑 AK 일단 구분용으로 AK 속도를 10배로 해뒀어
+    if (gun.getName() == "Pistol") bullets.push_back(Bullet(direction, position, 600.0f));
+    if (gun.getName() == "AK-47") bullets.push_back(Bullet(direction, position, 6000.0f));
 }
 
 void Player::update(long long deltaTime)
