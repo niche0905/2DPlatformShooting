@@ -2,6 +2,7 @@
 #define SFML_STATIC
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "Player.h"
 #include "Level.h"
 
@@ -13,6 +14,7 @@ const sf::Color BackgroundColor = sf::Color(135, 206, 235, 255);
 constexpr float CameraLagging = 10.0f;
 constexpr float CameraOffset = 60.0f;
 
+const std::string GunSavePath = "./Saved/Guns/GunAttribute.txt";
 
 class Game {
 private:
@@ -24,6 +26,13 @@ private:
     Player player;
 
     Dummy dummy;
+
+    // 민경원 코멘트
+    // Game 클래스 안에 txt로 총들 받아서 guns에 넣었는데
+    // 어차피 총 먹고 바꾸고 하는건 player가 하는 일인데
+    // 그러면 굳이 guns를 Game에 넣지 말고 Player 클래스에 넣는 게 더 좋아보이는데
+    // 어떻게 할지 모루것당
+    std::vector<Gun> guns;
 
     sf::View view;
 
@@ -54,4 +63,9 @@ public:
 
     // 게임의 모든 객체를 그린다
     void draw();
+
+    void buildGun();
+
+    bool loadGunFromFile(const std::string& filePath);
+    void saveGunFromFile(const std::string& filePath);
 };

@@ -13,6 +13,7 @@ void Game::InitView()
 
 void Game::run()
 {
+    buildGun();
     // 윈도우가 열려있다면 게임 루프를 반복한다
     while (window.isOpen()) {
         handleInput();
@@ -84,4 +85,45 @@ void Game::draw()
 
     // 새로 그린 화면으로 바꾸기
     window.display();
+}
+
+void Game::buildGun()
+{
+    loadGunFromFile(GunSavePath);
+}
+
+bool Game::loadGunFromFile(const std::string& filePath)
+{
+    std::ifstream inFile(filePath);
+    if (not inFile.is_open()) {
+        std::cerr << "Failed to open file: " << filePath << std::endl;
+        return false;
+    }
+
+    Gun gun;
+    while (inFile >> gun)
+    {
+        guns.push_back(gun);
+    }
+
+    inFile.close();
+
+    return true;
+}
+
+void Game::saveGunFromFile(const std::string& filePath)
+{
+    std::ofstream outFile(filePath);
+    if (not outFile.is_open()) {
+        std::cerr << "Failed to open file: " << filePath << std::endl;
+        return;
+    }
+
+    for (const Gun& gun : guns) {
+        outFile << gun << std::endl;
+    }
+
+    outFile.close();
+
+    return;
 }
