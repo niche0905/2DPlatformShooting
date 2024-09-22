@@ -100,8 +100,9 @@ bool Game::loadGunFromFile(const std::string& filePath)
     }
 
     Gun gun;
-    uint8_t cnt{};
+
     // [cham] 9.22 
+    uint8_t cnt{};
     while (inFile >> gun)
     {
         g_guns[cnt++] = gun;

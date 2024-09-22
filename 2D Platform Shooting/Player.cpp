@@ -20,7 +20,7 @@ void Player::handleInput(const sf::Event& event)
             dash();
         }
         if (event.key.code == sf::Keyboard::Q) {
-            gunId = 0;
+            gunId = getRandomGun();
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
