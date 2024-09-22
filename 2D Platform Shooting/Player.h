@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <list>
+#include <chrono>
 #include "Level.h"
 #include "Bullet.h"
 #include "Gun.h"
@@ -33,6 +34,7 @@ private:
 
     Gun gun;
     std::list<Bullet> bullets;
+    std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간    
 
     bool leftKeyDown;
     bool rightKeyDown;
@@ -49,6 +51,9 @@ public:
         shape.setSize(sf::Vector2f(50.0f, height));
         shape.setPosition(x, y);
         shape.setFillColor(sf::Color::Green);
+
+        // 총의 발사속도 제한을 위한 변수 초기화
+        lastFireTime = std::chrono::system_clock::now();
     }
 
     // 플레이어의 Input을 처리한다

@@ -14,7 +14,11 @@ void Player::handleInput(const sf::Event& event)
             }
         }
         if (event.key.code == sf::Keyboard::A) {
-            fireBullet();
+            auto nowTime = std::chrono::system_clock::now();
+            // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함
+            std::chrono::milliseconds deltaTime(int((60.0 / 600) * 1000));
+            if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
+                fireBullet();
         }
         if (event.key.code == sf::Keyboard::D) {
             dash();
@@ -34,6 +38,7 @@ void Player::handleInput(const sf::Event& event)
 void Player::fireBullet()
 {
     // 추후에 연사 속도나 남은 잔탄 수 같은 기능 넣어야 함
+    lastFireTime = std::chrono::system_clock::now();
 
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
