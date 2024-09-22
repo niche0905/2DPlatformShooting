@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-
+#include <unordered_map>
 
 class Gun
 {
@@ -31,9 +31,15 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Gun& gun);
 	friend std::istream& operator>>(std::istream& os, Gun& gun);
+	
 
-	void getPistol() { name = "Pistol"; }
-	void getAK47() { name = "AK-47"; }
-	std::string getName() { return name; }
+	/*void getPistol() { name = "Pistol"; }
+	void getAK47() { name = "AK-47"; }*/
+
+	std::string	getName() { return name; }
+	float		getSpeed() { return speed; }
 };
 
+
+// [cham] 9.22: 
+extern std::unordered_map<uint8_t, Gun> g_guns;

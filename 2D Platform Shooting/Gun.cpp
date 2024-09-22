@@ -1,5 +1,8 @@
 #include "Gun.h"
 
+// [cham] 9.22: 
+std::unordered_map<uint8_t, Gun> g_guns;
+
 
 std::ostream& operator<<(std::ostream& os, const Gun& gun)
 {

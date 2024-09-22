@@ -31,7 +31,10 @@ private:
     int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
 
-    Gun gun;
+
+    // [cham] 9.22
+    uint8_t gunId;
+    
     std::list<Bullet> bullets;
 
     bool leftKeyDown;
