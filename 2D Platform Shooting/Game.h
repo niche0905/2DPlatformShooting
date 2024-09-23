@@ -66,6 +66,9 @@ public:
     // 게임의 객체들을 업데이트한다
     void update(long long deltaTime);
 
+    // 총알 충돌 처리 (본인을 제외한 Player)
+    void bulletHit();
+
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
 

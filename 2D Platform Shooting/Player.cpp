@@ -1,10 +1,58 @@
 #include "Player.h"
 
 
+Player::Player(float x, float y, Level& level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+{
+    // 피봇은 가운대 아래
+    shape.setOrigin(width / 2, height);
+    shape.setSize(sf::Vector2f(50.0f, height));
+    shape.setPosition(x, y);
+    shape.setFillColor(sf::Color::Green);
+
+    // 총의 발사속도 제한을 위한 변수 초기화
+    lastFireTime = std::chrono::system_clock::now();
+
+    // 키 입력을 받지 않았다면 기본값 설정
+    upKeyBind = sf::Keyboard::Up;
+    downKeyBind = sf::Keyboard::Down;
+    leftKeyBind = sf::Keyboard::Left;
+    rightKeyBind = sf::Keyboard::Right;
+    attackKeyBind = sf::Keyboard::A;
+
+    // 초기화 되지 않은 변수들 설정
+    damaged = 0;
+    gunId = 0;
+    jumpChance = maxJumpChance;
+}
+
+Player::Player(float x, float y, Level& level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+{
+    // 피봇은 가운대 아래
+    shape.setOrigin(width / 2, height);
+    shape.setSize(sf::Vector2f(50.0f, height));
+    shape.setPosition(x, y);
+    shape.setFillColor(sf::Color::Green);
+
+    // 총의 발사속도 제한을 위한 변수 초기화
+    lastFireTime = std::chrono::system_clock::now();
+
+    // 입력받은 키로 키 바인딩
+    upKeyBind = upKey;
+    downKeyBind = downKey;
+    leftKeyBind = leftKey;
+    rightKeyBind = rightKey;
+    attackKeyBind = attackKey;
+
+    // 초기화 되지 않은 변수들 설정
+    damaged = 0;
+    gunId = 0;
+    jumpChance = maxJumpChance;
+}
+
 void Player::handleInput(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Up) {
+        if (event.key.code == upKeyBind) {
             // Space 키가 눌렸을 때 한 번만 실행되는 코드
             if (jumpChance > 0) {
                 //velocity.y -= jumpHeight; // 이 둘 중 선택해야 함
@@ -13,7 +61,7 @@ void Player::handleInput(const sf::Event& event)
                 --jumpChance;
             }
         }
-        if (event.key.code == sf::Keyboard::A) {
+        if (event.key.code == attackKeyBind) {
             auto nowTime = std::chrono::system_clock::now();
             // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함
             std::chrono::milliseconds deltaTime(int((60.0 / 600) * 1000));
@@ -58,8 +106,8 @@ void Player::update(long long deltaTime)
     if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
 
     // 좌우 키가 눌리고 있는지
-    leftKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-    rightKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+    leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
+    rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
 
     if (not (leftKeyDown and rightKeyDown)) {
         if (leftKeyDown) {
@@ -96,7 +144,7 @@ void Player::update(long long deltaTime)
     bool noOnePlatformCollide = true;
 
     // 하나라도 밟고있는 플랫폼이 있는지 체크
-    if (not sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (not sf::Keyboard::isKeyPressed(downKeyBind)) {
         for (const auto& platform : level.platforms) {
             if (checkCollision(platform.getGlobalBounds())) {
                 OnAir = false;
@@ -177,6 +225,22 @@ void Player::hitTheEnemy(class Dummy& dummy)
         // 맞았다면(충돌이라면)
             // 데미지를 적용하고
             dummy.takeDamage(it->getDirection(), it->getDamage());
+
+            // 총알 삭제
+            it = bullets.erase(it);
+        }
+        else
+            ++it;
+    }
+}
+
+void Player::hitTheEnemy(class Player& otherPlayer)
+{
+    for (auto it = bullets.begin(); it != bullets.end(); ) {
+        // 맞았다면(충돌이라면)
+        if (otherPlayer.checkCollisionBullet(it->getGlobalBounds())) {
+            // 데미지를 적용하고
+            otherPlayer.takeDamage(it->getDirection(), it->getDamage());
 
             // 총알 삭제
             it = bullets.erase(it);

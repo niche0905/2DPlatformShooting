@@ -34,6 +34,12 @@ private:
     int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
 
+    // 키입력 분리
+    sf::Keyboard::Key upKeyBind;
+    sf::Keyboard::Key downKeyBind;
+    sf::Keyboard::Key leftKeyBind;
+    sf::Keyboard::Key rightKeyBind;
+    sf::Keyboard::Key attackKeyBind;
 
     // [cham] 9.22
     uint8_t gunId;
@@ -48,18 +54,13 @@ private:
     Level& level;
 
 public:
-    // 생성할 위치를받고 level 정보를 이용해 충돌체크를 하기위해 저장한다
-    Player(float x, float y, Level& level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
-    {
-        // 피봇은 가운대 아래
-        shape.setOrigin(width / 2, height);
-        shape.setSize(sf::Vector2f(50.0f, height));
-        shape.setPosition(x, y);
-        shape.setFillColor(sf::Color::Green);
+    Player() = default;
 
-        // 총의 발사속도 제한을 위한 변수 초기화
-        lastFireTime = std::chrono::system_clock::now();
-    }
+    // 생성할 위치를받고 level 정보를 이용해 충돌체크를 하기위해 저장한다
+    Player(float x, float y, Level& level);
+
+    // 생성할 위치와 level 정보를 받고 Key 바인딩을 위한 값들을 입력받는다
+    Player(float x, float y, Level& level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey);
 
     // 플레이어의 Input을 처리한다
     void handleInput(const sf::Event& event);
@@ -90,6 +91,9 @@ public:
 
     // 총알들이 적을 맞췄는지 검사
     void hitTheEnemy(class Dummy& dummy);
+
+    // 총알들지 적을 맞췄는지 검사
+    void hitTheEnemy(class Player& otherPlayer);
 
     // 부활하는 함수(활성화)
     void revivePlayer();
