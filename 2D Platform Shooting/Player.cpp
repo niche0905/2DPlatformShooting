@@ -86,10 +86,16 @@ void Player::update(long long deltaTime)
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
 
-    shape.move(velocity * (deltaTime / 1000000.0f));
+    damageControll(deltaTime);
+
+    // 입은 피해량 만큼 넉백하게
+    sf::Vector2f powerOfDamage(damaged, 0.0f);
+    // 속도만큼 움직임
+    shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
 
     bool noOnePlatformCollide = true;
 
+    // 하나라도 밟고있는 플랫폼이 있는지 체크
     if (not sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         for (const auto& platform : level.platforms) {
             if (checkCollision(platform.getGlobalBounds())) {
@@ -103,6 +109,7 @@ void Player::update(long long deltaTime)
         }
     }
 
+    // 플랫폼에 붙어있지 않다면 공중 판정
     if (noOnePlatformCollide) {
         OnAir = true;
     }
@@ -188,6 +195,42 @@ void Player::revivePlayer()
 
     // 맵 중앙 공중에 스폰
     shape.setPosition((level.leftBound+level.rightBound) / 2.0, -1000.0f);  // -1000.0f 는 수정해야 할수도
+}
+
+bool Player::checkCollisionBullet(sf::FloatRect other)
+{
+    sf::FloatRect playerBounds = shape.getGlobalBounds();
+    if (playerBounds.intersects(other)) {
+        return true;
+    }
+
+    return false;
+}
+
+void Player::takeDamage(bool direction, float damage)
+{
+    if (direction == true)  // Left 면
+        damaged -= damage;
+    else                    // Right 면
+        damaged += damage;
+}
+
+void Player::damageControll(long long deltaTime)
+{
+    // 땅에 붙어있다면 마찰력이 작동하도록
+    float frictionScale(1.0f);
+    if (OnAir)
+        frictionScale = 2.0f;
+
+    // 0에 가까워지도록
+    if (damaged > 0.0f) {
+        damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged = std::max(0.0f, damaged);
+    }
+    else {
+        damaged += DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged = std::min(0.0f, damaged);
+    }
 }
 
 
