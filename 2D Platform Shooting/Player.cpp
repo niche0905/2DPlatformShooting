@@ -24,10 +24,10 @@ void Player::handleInput(const sf::Event& event)
             dash();
         }
         if (event.key.code == sf::Keyboard::Q) {
-            gun.getPistol();
+            gunId = getRandomGun();
         }
         if (event.key.code == sf::Keyboard::W) {
-            gun.getAK47();
+            gunId = 1;
         }
         if (event.key.code == sf::Keyboard::R) {
             revivePlayer();     // 임시로 키 바인딩으로 부활 호출
@@ -43,9 +43,12 @@ void Player::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
+    // TODO: 이 구조를 바꾸어야 함.
+    // Bullet 객체를 생성할 때 총 포인터로만 생성할 수 있도록 제작
+    // 
+
     // 임시 총 발싸
-    if (gun.getName() == "Pistol") bullets.push_back(Bullet(direction, position, 600.0f));
-    if (gun.getName() == "AK-47") bullets.push_back(Bullet(direction, position, 6000.0f));
+    bullets.push_back(Bullet(direction, position, g_guns[gunId].getSpeed()));
 }
 
 void Player::update(long long deltaTime)

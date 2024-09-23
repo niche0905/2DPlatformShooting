@@ -32,7 +32,10 @@ private:
     int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
 
-    Gun gun;
+
+    // [cham] 9.22
+    uint8_t gunId;
+    
     std::list<Bullet> bullets;
     std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간    
 

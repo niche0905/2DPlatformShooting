@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "Utilities.h"
 
-
 void Game::InitView()
 {
     sf::Vector2f newPosition = player.getPosition();
@@ -101,9 +100,12 @@ bool Game::loadGunFromFile(const std::string& filePath)
     }
 
     Gun gun;
+
+    // [cham] 9.22 
+    uint8_t cnt{};
     while (inFile >> gun)
     {
-        guns.push_back(gun);
+        g_guns[cnt++] = gun;
     }
 
     inFile.close();
@@ -119,7 +121,8 @@ void Game::saveGunFromFile(const std::string& filePath)
         return;
     }
 
-    for (const Gun& gun : guns) {
+    // [cham] 9.22
+    for (const auto& gun : g_guns | std::views::values) {
         outFile << gun << std::endl;
     }
 

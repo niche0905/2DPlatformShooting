@@ -3,8 +3,12 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <unordered_map>
+#include <ranges>
+
 #include "Player.h"
 #include "Level.h"
+#include "Gun.h"
 
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
@@ -32,7 +36,11 @@ private:
     // 어차피 총 먹고 바꾸고 하는건 player가 하는 일인데
     // 그러면 굳이 guns를 Game에 넣지 말고 Player 클래스에 넣는 게 더 좋아보이는데
     // 어떻게 할지 모루것당
-    std::vector<Gun> guns;
+
+    // [cham] 9.22: 
+    // gun에 대한 정보는 unordered_map으로 전역으로 저장해서 사용하자.
+    // player는 gun의 id값만을 가지도록 한다.
+    // std::vector<Gun> guns;
 
     sf::View view;
 
