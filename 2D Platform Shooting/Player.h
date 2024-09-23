@@ -50,17 +50,16 @@ private:
     bool leftKeyDown;
     bool rightKeyDown;
 
-    sf::RenderWindow window;
-    Level& level;
+    Level* level;
 
 public:
     Player() = default;
 
     // 생성할 위치를받고 level 정보를 이용해 충돌체크를 하기위해 저장한다
-    Player(float x, float y, Level& level);
+    Player(float x, float y, Level* level);
 
     // 생성할 위치와 level 정보를 받고 Key 바인딩을 위한 값들을 입력받는다
-    Player(float x, float y, Level& level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey);
+    Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey);
 
     // 플레이어의 Input을 처리한다
     void handleInput(const sf::Event& event);

@@ -3,7 +3,7 @@
 
 void Game::InitView()
 {
-    sf::Vector2f newPosition = player.getPosition();
+    sf::Vector2f newPosition = players[0].getPosition();
     newPosition.y -= CameraOffset;
 
     view.setCenter(newPosition);
@@ -39,20 +39,22 @@ void Game::handleInput()
             window.close();
         }
 
-        player.handleInput(event);
-        dummy.handleInput(event);
+        for (Player& player : players)
+            player.handleInput(event);
+        //dummy.handleInput(event);
     }
 }
 
 void Game::update(long long deltaTime)
 {
     // 모든 업데이트 해야할 항목을 업데이트
-    player.update(deltaTime);
-    dummy.update(deltaTime);
+    for (Player& player : players)
+        player.update(deltaTime);
+    //dummy.update(deltaTime);
 
     // TODO: 아직 구현 안되었음
     bulletHit();
-    player.hitTheEnemy(dummy);
+    //players[0].hitTheEnemy(dummy);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
     Scrolling(deltaTime);
@@ -60,13 +62,20 @@ void Game::update(long long deltaTime)
 
 void Game::bulletHit()
 {
+    for (Player& shooter : players) {
+        for (Player& hitter : players) {
+            if (&shooter == &hitter)
+                continue;
 
+            shooter.hitTheEnemy(hitter);
+        }
+    }
 }
 
 void Game::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한
-    sf::Vector2f targetPosition = player.getPosition();
+    sf::Vector2f targetPosition = players[0].getPosition();
     // 지금 view의 위치를 알기위한
     sf::Vector2f currentPosition = view.getCenter();
     // view의 center를 약간 올리기 위해
@@ -85,8 +94,9 @@ void Game::draw()
 
     // 모든 객체 그리기
     level.draw(window);
-    player.draw(window);
-    dummy.draw(window);
+    for (Player& player : players)
+        player.draw(window);
+    //dummy.draw(window);
 
     // 새로 그린 화면으로 바꾸기
     window.display();

@@ -27,9 +27,9 @@ private:
 
     Level level;
 
-    Player player;
+    std::vector<Player> players;
 
-    Dummy dummy;
+    //Dummy dummy;
 
     // 민경원 코멘트
     // Game 클래스 안에 txt로 총들 받아서 guns에 넣었는데
@@ -51,9 +51,10 @@ private:
 
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
-    Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), player(100.0f, 400.0f, level), dummy(400.0f, 400.0f, level), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+    Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
     {
-
+        players.emplace_back(100.0f, 400.0f, &level);
+        players.emplace_back(500.0f, 400.0f, &level, sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L, sf::Keyboard::Enter);
 
         // 시작시 바로 플레어이 중앙으로 옮길지 말지
         //InitView();
