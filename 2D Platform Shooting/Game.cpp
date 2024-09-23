@@ -50,11 +50,17 @@ void Game::update(long long deltaTime)
     player.update(deltaTime);
     dummy.update(deltaTime);
 
-    // TODO: 함수로 처리해야 할 듯 싶다.
+    // TODO: 아직 구현 안되었음
+    bulletHit();
     player.hitTheEnemy(dummy);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
     Scrolling(deltaTime);
+}
+
+void Game::bulletHit()
+{
+
 }
 
 void Game::Scrolling(long long deltaTime)

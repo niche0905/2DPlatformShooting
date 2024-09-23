@@ -1,10 +1,58 @@
 #include "Player.h"
 
 
+Player::Player(float x, float y, Level& level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+{
+    // 피봇은 가운대 아래
+    shape.setOrigin(width / 2, height);
+    shape.setSize(sf::Vector2f(50.0f, height));
+    shape.setPosition(x, y);
+    shape.setFillColor(sf::Color::Green);
+
+    // 총의 발사속도 제한을 위한 변수 초기화
+    lastFireTime = std::chrono::system_clock::now();
+
+    // 키 입력을 받지 않았다면 기본값 설정
+    upKeyBind = sf::Keyboard::Up;
+    downKeyBind = sf::Keyboard::Down;
+    leftKeyBind = sf::Keyboard::Left;
+    rightKeyBind = sf::Keyboard::Right;
+    attackKeyBind = sf::Keyboard::A;
+
+    // 초기화 되지 않은 변수들 설정
+    damaged = 0;
+    gunId = 0;
+    jumpChance = maxJumpChance;
+}
+
+Player::Player(float x, float y, Level& level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+{
+    // 피봇은 가운대 아래
+    shape.setOrigin(width / 2, height);
+    shape.setSize(sf::Vector2f(50.0f, height));
+    shape.setPosition(x, y);
+    shape.setFillColor(sf::Color::Green);
+
+    // 총의 발사속도 제한을 위한 변수 초기화
+    lastFireTime = std::chrono::system_clock::now();
+
+    // 입력받은 키로 키 바인딩
+    upKeyBind = upKey;
+    downKeyBind = downKey;
+    leftKeyBind = leftKey;
+    rightKeyBind = rightKey;
+    attackKeyBind = attackKey;
+
+    // 초기화 되지 않은 변수들 설정
+    damaged = 0;
+    gunId = 0;
+    jumpChance = maxJumpChance;
+}
+
 void Player::handleInput(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Up) {
+        if (event.key.code == upKeyBind) {
             // Space 키가 눌렸을 때 한 번만 실행되는 코드
             if (jumpChance > 0) {
                 //velocity.y -= jumpHeight; // 이 둘 중 선택해야 함
@@ -13,10 +61,10 @@ void Player::handleInput(const sf::Event& event)
                 --jumpChance;
             }
         }
-        if (event.key.code == sf::Keyboard::A) {
+        if (event.key.code == attackKeyBind) {
             auto nowTime = std::chrono::system_clock::now();
-            // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함
-            std::chrono::milliseconds deltaTime(int((60.0 / 600) * 1000));
+            // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
+            std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].getRPM()) * 1000));
             if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
                 fireBullet();
         }
@@ -25,6 +73,9 @@ void Player::handleInput(const sf::Event& event)
         }
         if (event.key.code == sf::Keyboard::Q) {
             gunId = getRandomGun();
+            // 디버깅용 로깅
+            std::cout << gunId << std::endl;
+            std::cout << g_guns[gunId].getName() << std::endl;
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
@@ -48,7 +99,7 @@ void Player::fireBullet()
     // 
 
     // 임시 총 발싸
-    bullets.push_back(Bullet(direction, position, g_guns[gunId].getSpeed()));
+    bullets.push_back(Bullet(direction, position, g_guns[gunId].getSpeed(), g_guns[gunId].getDamage()));
 }
 
 void Player::update(long long deltaTime)
@@ -58,8 +109,8 @@ void Player::update(long long deltaTime)
     if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
 
     // 좌우 키가 눌리고 있는지
-    leftKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-    rightKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+    leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
+    rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
 
     if (not (leftKeyDown and rightKeyDown)) {
         if (leftKeyDown) {
@@ -86,11 +137,17 @@ void Player::update(long long deltaTime)
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
 
-    shape.move(velocity * (deltaTime / 1000000.0f));
+    damageControll(deltaTime);
+
+    // 입은 피해량 만큼 넉백하게
+    sf::Vector2f powerOfDamage(damaged, 0.0f);
+    // 속도만큼 움직임
+    shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
 
     bool noOnePlatformCollide = true;
 
-    if (not sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    // 하나라도 밟고있는 플랫폼이 있는지 체크
+    if (not sf::Keyboard::isKeyPressed(downKeyBind)) {
         for (const auto& platform : level.platforms) {
             if (checkCollision(platform.getGlobalBounds())) {
                 OnAir = false;
@@ -103,6 +160,7 @@ void Player::update(long long deltaTime)
         }
     }
 
+    // 플랫폼에 붙어있지 않다면 공중 판정
     if (noOnePlatformCollide) {
         OnAir = true;
     }
@@ -179,6 +237,22 @@ void Player::hitTheEnemy(class Dummy& dummy)
     }
 }
 
+void Player::hitTheEnemy(class Player& otherPlayer)
+{
+    for (auto it = bullets.begin(); it != bullets.end(); ) {
+        // 맞았다면(충돌이라면)
+        if (otherPlayer.checkCollisionBullet(it->getGlobalBounds())) {
+            // 데미지를 적용하고
+            otherPlayer.takeDamage(it->getDirection(), it->getDamage());
+
+            // 총알 삭제
+            it = bullets.erase(it);
+        }
+        else
+            ++it;
+    }
+}
+
 void Player::revivePlayer()
 {
     if (isActive) return;   // 살아 있다면 revive 취소
@@ -188,6 +262,42 @@ void Player::revivePlayer()
 
     // 맵 중앙 공중에 스폰
     shape.setPosition((level.leftBound+level.rightBound) / 2.0, -1000.0f);  // -1000.0f 는 수정해야 할수도
+}
+
+bool Player::checkCollisionBullet(sf::FloatRect other)
+{
+    sf::FloatRect playerBounds = shape.getGlobalBounds();
+    if (playerBounds.intersects(other)) {
+        return true;
+    }
+
+    return false;
+}
+
+void Player::takeDamage(bool direction, float damage)
+{
+    if (direction == true)  // Left 면
+        damaged -= damage;
+    else                    // Right 면
+        damaged += damage;
+}
+
+void Player::damageControll(long long deltaTime)
+{
+    // 땅에 붙어있다면 마찰력이 작동하도록
+    float frictionScale(1.0f);
+    if (OnAir)
+        frictionScale = 2.0f;
+
+    // 0에 가까워지도록
+    if (damaged > 0.0f) {
+        damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged = std::max(0.0f, damaged);
+    }
+    else {
+        damaged += DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged = std::min(0.0f, damaged);
+    }
 }
 
 

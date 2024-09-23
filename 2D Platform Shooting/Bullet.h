@@ -29,6 +29,15 @@ public:
 		shape.setFillColor(sf::Color::Yellow);
 	}
 
+	// (+ 데미지 추가 09/23 송승호)
+	Bullet(bool direct, sf::Vector2f pos, float speed, float damage) : direction(direct), speed(speed), damage(damage)
+	{
+		shape.setSize(sf::Vector2f(BulletWidth, BulletHeight));
+		shape.setOrigin(BulletWidth / 2, BulletHeight / 2);
+		shape.setPosition(pos);
+		shape.setFillColor(sf::Color::Yellow);
+	}
+
 	// 총알의 위치가 영역 밖으로 넘었는지를 판단한다
 	bool isOutBounds(float left, float right);
 

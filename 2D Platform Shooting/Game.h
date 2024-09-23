@@ -42,6 +42,11 @@ private:
     // player는 gun의 id값만을 가지도록 한다.
     // std::vector<Gun> guns;
 
+    // 송승호 코멘트
+    // Player가 단일 객체로 있는게 아니라 자료구조에 있어야함
+    // 그렇게 플레이어들이 있어서 플레이어들 끼리 총알 충돌 검사를 해야함
+    // ㄴ 한 PC에서 두명이서 하는게 목표이면
+
     sf::View view;
 
 public:
@@ -65,6 +70,9 @@ public:
 
     // 게임의 객체들을 업데이트한다
     void update(long long deltaTime);
+
+    // 총알 충돌 처리 (본인을 제외한 Player)
+    void bulletHit();
 
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
