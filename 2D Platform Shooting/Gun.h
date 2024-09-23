@@ -39,7 +39,10 @@ public:
 	friend std::istream& operator>>(std::istream& os, Gun& gun);
 
 	std::string	getName() const { return name; }
+	float		getDamage() const { return damage; }
 	float		getSpeed() const { return speed; }
+	float		getMagazine() const { return mag; }
+	float		getRPM() const { return RPM; }
 	int			getRatio() const { return ratio; }
 };
 

@@ -63,8 +63,8 @@ void Player::handleInput(const sf::Event& event)
         }
         if (event.key.code == attackKeyBind) {
             auto nowTime = std::chrono::system_clock::now();
-            // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함
-            std::chrono::milliseconds deltaTime(int((60.0 / 600) * 1000));
+            // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
+            std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].getRPM()) * 1000));
             if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
                 fireBullet();
         }
@@ -73,6 +73,9 @@ void Player::handleInput(const sf::Event& event)
         }
         if (event.key.code == sf::Keyboard::Q) {
             gunId = getRandomGun();
+            // 디버깅용 로깅
+            std::cout << gunId << std::endl;
+            std::cout << g_guns[gunId].getName() << std::endl;
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
@@ -96,7 +99,7 @@ void Player::fireBullet()
     // 
 
     // 임시 총 발싸
-    bullets.push_back(Bullet(direction, position, g_guns[gunId].getSpeed()));
+    bullets.push_back(Bullet(direction, position, g_guns[gunId].getSpeed(), g_guns[gunId].getDamage()));
 }
 
 void Player::update(long long deltaTime)
