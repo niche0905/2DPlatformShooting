@@ -103,6 +103,7 @@ public:
     // 피해량을 조절해준다(업데이트에서 호출)
     void damageControll(long long deltaTime);
 
+    void getItem();
 };
 
 

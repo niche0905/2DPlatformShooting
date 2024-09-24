@@ -31,7 +31,7 @@ std::istream& operator>>(std::istream& is, Gun& gun)
 std::random_device rd;
 std::default_random_engine gen(rd());
 
-const int getRandomGun()
+const int getRandomGunId()
 {
 	int total{};
 

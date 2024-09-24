@@ -84,6 +84,7 @@ void Game::eatItem()
             if (iter->checkCollisionBullet(player.getGlobalBounds())) {
                 iter = items.erase(iter);
                 makeItem();
+                player.getItem();
             }
             else { ++iter; }
         }

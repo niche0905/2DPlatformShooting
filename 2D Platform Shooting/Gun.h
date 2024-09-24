@@ -50,4 +50,4 @@ public:
 // [cham] 9.22: 
 extern std::unordered_map<uint8_t, Gun> g_guns;
 
-const int getRandomGun();
+const int getRandomGunId();

@@ -72,7 +72,7 @@ void Player::handleInput(const sf::Event& event)
             dash();
         }
         if (event.key.code == sf::Keyboard::Q) {
-            gunId = getRandomGun();
+            gunId = getRandomGunId();
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
@@ -296,6 +296,16 @@ void Player::damageControll(long long deltaTime)
         damaged += DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
         damaged = std::min(0.0f, damaged);
     }
+}
+
+void Player::getItem()
+{
+    gunId = getRandomGunId();
+    // TODO: player에다가 장탄수 세팅
+    // 그리고 다쓰면 0번으로 바뀌게
+    // [cham] 할거: 총 정보 저장할 때
+    // 총 이름으로 해당 ID 값 반환하는 함수 만들기.
+    // 니하는플레이보이예전에하더놈같은데이제얼굴까고하는갑지돈좀버냐?개노잼노라라
 }
 
 
