@@ -5,7 +5,7 @@ Player::Player(float x, float y, Level* level) : isActive(true), direction(true)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
-    shape.setSize(sf::Vector2f(50.0f, height));
+    shape.setSize(sf::Vector2f(width, height));
     shape.setPosition(x, y);
     shape.setFillColor(sf::Color::Green);
 
@@ -216,7 +216,8 @@ sf::Vector2f Player::getPosition() const
     return shape.getPosition();
 }
 
-void Player::dash() {
+void Player::dash()
+{
     if (!direction) shape.move(100, 0);
     else shape.move(-100, 0);
 }

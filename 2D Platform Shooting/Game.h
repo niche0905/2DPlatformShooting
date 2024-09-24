@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Level.h"
 #include "Gun.h"
+#include "Item.h"
 
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
@@ -28,6 +29,8 @@ private:
     Level level;
 
     std::vector<Player> players;
+
+    std::vector<Item> items;
 
     //Dummy dummy;
 
@@ -56,6 +59,7 @@ public:
         players.emplace_back(100.0f, 400.0f, &level);
         players.emplace_back(500.0f, 400.0f, &level, sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L, sf::Keyboard::Enter);
 
+        items.emplace_back(200.0f, 0.0f, &level);
         // 시작시 바로 플레어이 중앙으로 옮길지 말지
         //InitView();
     }

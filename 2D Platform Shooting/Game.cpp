@@ -50,6 +50,10 @@ void Game::update(long long deltaTime)
     // 모든 업데이트 해야할 항목을 업데이트
     for (Player& player : players)
         player.update(deltaTime);
+
+    for (Item& item : items)
+        item.update(deltaTime);
+
     //dummy.update(deltaTime);
 
     // TODO: 아직 구현 안되었음
@@ -94,8 +98,12 @@ void Game::draw()
 
     // 모든 객체 그리기
     level.draw(window);
+    for (Item& item : items)
+        item.draw(window);
+
     for (Player& player : players)
         player.draw(window);
+
     //dummy.draw(window);
 
     // 새로 그린 화면으로 바꾸기
