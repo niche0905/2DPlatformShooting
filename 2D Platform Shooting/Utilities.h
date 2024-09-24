@@ -5,6 +5,7 @@
 #define UTILITIES_H
 
 #include <SFML/System/Vector2.hpp>
+#include <random>
 
 constexpr float GravityAcc = 9.810f;            // 중력 가속도
 constexpr float GravityMul = 120.0f;            // 중력 가속도에 곱하는 수(게임성을 위해)

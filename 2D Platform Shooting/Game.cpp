@@ -58,7 +58,10 @@ void Game::update(long long deltaTime)
 
     // TODO: 아직 구현 안되었음
     bulletHit();
+
+    // 플레이어 : 아이템 충돌 함수
     eatItem();
+
     //players[0].hitTheEnemy(dummy);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
@@ -93,7 +96,7 @@ void Game::eatItem()
 
 void Game::makeItem()
 {
-    items.emplace_back(200.0f, -200.0f, &level);
+    items.emplace_back(200.0f, -500.0f, &level);
 }
 
 void Game::Scrolling(long long deltaTime)

@@ -60,7 +60,7 @@ public:
         players.emplace_back(100.0f, 400.0f, &level);
         players.emplace_back(500.0f, 400.0f, &level, sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L, sf::Keyboard::Enter);
 
-        items.emplace_back(200.0f, 0.0f, &level);
+        items.emplace_back(200.0f, -500.0f, &level);
         // 시작시 바로 플레어이 중앙으로 옮길지 말지
         //InitView();
     }
