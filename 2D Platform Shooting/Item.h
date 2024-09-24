@@ -27,4 +27,6 @@ public:
     bool checkCollision(sf::FloatRect other);
 
     sf::Vector2f getPosition() const;
+
+    bool checkCollisionBullet(sf::FloatRect other);
 };

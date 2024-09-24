@@ -69,3 +69,13 @@ sf::Vector2f Item::getPosition() const
 {
     return shape.getPosition();
 }
+
+bool Item::checkCollisionBullet(sf::FloatRect other)
+{
+    sf::FloatRect itemBounds = shape.getGlobalBounds();
+    if (itemBounds.intersects(other)) {
+        return true;
+    }
+
+    return false;
+}

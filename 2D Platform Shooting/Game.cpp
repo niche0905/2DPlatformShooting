@@ -58,6 +58,7 @@ void Game::update(long long deltaTime)
 
     // TODO: 아직 구현 안되었음
     bulletHit();
+    eatItem();
     //players[0].hitTheEnemy(dummy);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
@@ -74,6 +75,24 @@ void Game::bulletHit()
             shooter.hitTheEnemy(hitter);
         }
     }
+}
+
+void Game::eatItem()
+{
+    for (Player& player : players) {
+        for (auto iter{ items.begin() }; iter != items.end();) {
+            if (iter->checkCollisionBullet(player.getGlobalBounds())) {
+                iter = items.erase(iter);
+                makeItem();
+            }
+            else { ++iter; }
+        }
+    }
+}
+
+void Game::makeItem()
+{
+    items.emplace_back(200.0f, -200.0f, &level);
 }
 
 void Game::Scrolling(long long deltaTime)

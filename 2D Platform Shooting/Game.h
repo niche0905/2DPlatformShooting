@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <list>
 #include <unordered_map>
 #include <ranges>
 
@@ -30,7 +31,7 @@ private:
 
     std::vector<Player> players;
 
-    std::vector<Item> items;
+    std::list<Item> items;
 
     //Dummy dummy;
 
@@ -78,6 +79,12 @@ public:
 
     // 총알 충돌 처리 (본인을 제외한 Player)
     void bulletHit();
+
+    // 아이템 충돌 처리
+    void eatItem();
+
+    // 아이템 생성
+    void makeItem();
 
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
