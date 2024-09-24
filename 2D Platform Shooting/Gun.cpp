@@ -43,16 +43,14 @@ const int getRandomGun()
 	}
 
 	// 난수를 생성한다.
-	std::uniform_int_distribution dist(0, total);
+	std::uniform_int_distribution dist(1, total);
 	int random_value{ dist(gen) };
-
-	// 비율만큼 빼다가 0이하가 되면 해당 id를 반환한다.
 	int cnt{};
 	for (const auto ratio : g_guns
 		| std::views::values
 		| std::views::transform(&Gun::getRatio)) {
-		if (0 >= random_value) { break; }
 		random_value -= ratio > 0 ? ratio : 0;
+		if (random_value <= 0) { break; }
 		++cnt;
 	}
 

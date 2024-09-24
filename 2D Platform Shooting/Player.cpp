@@ -73,9 +73,6 @@ void Player::handleInput(const sf::Event& event)
         }
         if (event.key.code == sf::Keyboard::Q) {
             gunId = getRandomGun();
-            // µð¹ö±ë¿ë ·Î±ë
-            std::cout << gunId << std::endl;
-            std::cout << g_guns[gunId].getName() << std::endl;
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
