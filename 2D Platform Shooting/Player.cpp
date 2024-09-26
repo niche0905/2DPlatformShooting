@@ -260,6 +260,8 @@ void Player::revivePlayer()
 
     // 맵 중앙 공중에 스폰
     shape.setPosition((level->leftBound+level->rightBound) / 2.0, -1000.0f);  // -1000.0f 는 수정해야 할수도
+
+    damaged = 0;
 }
 
 bool Player::checkCollisionBullet(sf::FloatRect other)

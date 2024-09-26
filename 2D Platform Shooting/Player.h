@@ -42,7 +42,7 @@ private:
     uint8_t gunId;
     
     std::list<Bullet> bullets;
-    std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간    
+    std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간
 
     bool leftKeyDown;
     bool rightKeyDown;

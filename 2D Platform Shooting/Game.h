@@ -53,10 +53,13 @@ private:
 
     sf::View view;
 
+    std::chrono::system_clock::time_point eatTime;
+
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
     Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
     {
+        eatTime = std::chrono::system_clock::now();
         players.emplace_back(100.0f, 400.0f, &level);
         players.emplace_back(500.0f, 400.0f, &level, sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L, sf::Keyboard::Enter);
 

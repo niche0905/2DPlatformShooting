@@ -1,6 +1,9 @@
 #include "Game.h"
 #include "Utilities.h"
 
+std::default_random_engine dre;
+std::uniform_real_distribution<> uid{ 0.0, 800.0 };
+
 void Game::InitView()
 {
     sf::Vector2f newPosition = players[0].getPosition();
@@ -62,6 +65,14 @@ void Game::update(long long deltaTime)
     // 플레이어 : 아이템 충돌 함수
     eatItem();
 
+    std::chrono::system_clock::time_point nowTime = std::chrono::system_clock::now();
+
+    /*
+    if ((eatTime - nowTime) > 10) {
+        makeItem();
+    }
+    */
+
     //players[0].hitTheEnemy(dummy);
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
@@ -86,8 +97,8 @@ void Game::eatItem()
         for (auto iter{ items.begin() }; iter != items.end();) {
             if (iter->checkCollisionBullet(player.getGlobalBounds())) {
                 iter = items.erase(iter);
-                makeItem();
                 player.getItem();
+                makeItem();
             }
             else { ++iter; }
         }
@@ -96,7 +107,8 @@ void Game::eatItem()
 
 void Game::makeItem()
 {
-    items.emplace_back(200.0f, -500.0f, &level);
+    float num = uid(dre);
+    items.emplace_back(num, -500.0f, &level);
 }
 
 void Game::Scrolling(long long deltaTime)
