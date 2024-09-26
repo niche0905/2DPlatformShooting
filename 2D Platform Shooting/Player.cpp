@@ -289,17 +289,17 @@ bool Player::checkCollisionBullet(sf::FloatRect other)
 void Player::takeDamage(bool direction, float damage)
 {
     if (direction == true)  // Left 면
-        damaged -= damage;
+        damaged -= damage * DamagePower;
     else                    // Right 면
-        damaged += damage;
+        damaged += damage * DamagePower;
 }
 
 void Player::damageControll(long long deltaTime)
 {
     // 땅에 붙어있다면 마찰력이 작동하도록
-    float frictionScale(1.0f);
+    float frictionScale(FrictionScale);
     if (OnAir)
-        frictionScale = 2.0f;
+        frictionScale = AirFrictionScale;
 
     // 0에 가까워지도록
     if (damaged > 0.0f) {
@@ -468,7 +468,7 @@ bool Dummy::checkCollisionBullet(sf::FloatRect other)
 void Dummy::takeDamage(bool direction, float damage)
 {
     if (direction == true)  // Left 면
-        damaged -= damage;
+        damaged -= damage * DamagePower;
     else                    // Right 면
-        damaged += damage;
+        damaged += damage * DamagePower;
 }
