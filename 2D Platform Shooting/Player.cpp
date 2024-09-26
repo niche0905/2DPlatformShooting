@@ -20,6 +20,7 @@ Player::Player(float x, float y, Level* level) : isActive(true), direction(true)
     attackKeyBind = sf::Keyboard::A;
 
     // 초기화 되지 않은 변수들 설정
+    curMag = -1;
     damaged = 0;
     gunId = 0;
     jumpChance = maxJumpChance;
@@ -44,6 +45,7 @@ Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyb
     attackKeyBind = attackKey;
 
     // 초기화 되지 않은 변수들 설정
+    curMag = -1;
     damaged = 0;
     gunId = 0;
     jumpChance = maxJumpChance;
@@ -85,7 +87,17 @@ void Player::handleInput(const sf::Event& event)
 
 void Player::fireBullet()
 {
-    // 추후에 연사 속도나 남은 잔탄 수 같은 기능 넣어야 함
+    // 현재 총 이름과 탄창 상태를 알아보기 위한 로깅
+    //std::cout << g_guns[gunId].getName() << " - " << curMag << std::endl;
+
+    // 추후에 연사 속도나 남은 잔탄 수 같은 기능 넣어야 함 <- 넣었음 [송승호 09/26]
+    if (curMag > 0) {
+        if (--curMag == 0) {
+            gunId = 0;
+            curMag = -1;
+        }
+    }
+
     lastFireTime = std::chrono::system_clock::now();
 
     sf::Vector2f position = shape.getPosition();
@@ -277,17 +289,17 @@ bool Player::checkCollisionBullet(sf::FloatRect other)
 void Player::takeDamage(bool direction, float damage)
 {
     if (direction == true)  // Left 면
-        damaged -= damage;
+        damaged -= damage * DamagePower;
     else                    // Right 면
-        damaged += damage;
+        damaged += damage * DamagePower;
 }
 
 void Player::damageControll(long long deltaTime)
 {
     // 땅에 붙어있다면 마찰력이 작동하도록
-    float frictionScale(1.0f);
+    float frictionScale(FrictionScale);
     if (OnAir)
-        frictionScale = 2.0f;
+        frictionScale = AirFrictionScale;
 
     // 0에 가까워지도록
     if (damaged > 0.0f) {
@@ -303,6 +315,7 @@ void Player::damageControll(long long deltaTime)
 void Player::getItem()
 {
     gunId = getRandomGunId();
+    curMag = g_guns[gunId].getMagazine();
     // TODO: player에다가 장탄수 세팅
     // 그리고 다쓰면 0번으로 바뀌게
     // [cham] 할거: 총 정보 저장할 때
@@ -455,7 +468,7 @@ bool Dummy::checkCollisionBullet(sf::FloatRect other)
 void Dummy::takeDamage(bool direction, float damage)
 {
     if (direction == true)  // Left 면
-        damaged -= damage;
+        damaged -= damage * DamagePower;
     else                    // Right 면
-        damaged += damage;
+        damaged += damage * DamagePower;
 }

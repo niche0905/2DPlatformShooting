@@ -9,7 +9,13 @@
 #include "Gun.h"
 #include "Utilities.h"
 
-constexpr float DamageScalingRatio = 10.0f;     // 피해량 정상화 상수(공기저항 역할)
+constexpr float DamageScalingRatio = 50.0f;     // 피해량 정상화 상수(공기저항 역할)
+constexpr float DamagePower = 5.0f;             // 데미지 받을 때 수치 조정값
+constexpr float FrictionScale = 5.0f;           // 데미지를 감소 시킬 때 마찰력
+constexpr float AirFrictionScale = 3.0f;        // 데미지를 감소 시킬 때 공기 정항력
+// 송승호 코멘트 09/26
+// 아직 값이 만족스럽진 않음
+// 선형적으로 데미지를 조정하는게 아닌 다른 방식도 탐구해볼 필요 느낌
 
 
 class Player {
@@ -42,6 +48,7 @@ private:
     uint8_t gunId;
     
     std::list<Bullet> bullets;
+    int curMag;
     std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간
 
     bool leftKeyDown;
