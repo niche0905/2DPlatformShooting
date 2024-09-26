@@ -303,6 +303,7 @@ void Player::damageControll(long long deltaTime)
 void Player::getItem()
 {
     gunId = getRandomGunId();
+    std::cout << g_guns[gunId].getName() << std::endl;
     // TODO: player에다가 장탄수 세팅
     // 그리고 다쓰면 0번으로 바뀌게
     // [cham] 할거: 총 정보 저장할 때
