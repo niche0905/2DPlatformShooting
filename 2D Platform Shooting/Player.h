@@ -1,13 +1,6 @@
 #pragma once
-#define SFML_STATIC
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <list>
-#include <chrono>
-#include "Level.h"
 #include "Bullet.h"
-#include "Gun.h"
-#include "Utilities.h"
+#include "Level.h"
 
 constexpr float DamageScalingRatio = 50.0f;     // 피해량 정상화 상수(공기저항 역할)
 constexpr float DamagePower = 5.0f;             // 데미지 받을 때 수치 조정값

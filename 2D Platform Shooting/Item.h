@@ -1,7 +1,4 @@
 #pragma once
-#define SFML_STATIC
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 #include "Level.h"
 
 class Item {

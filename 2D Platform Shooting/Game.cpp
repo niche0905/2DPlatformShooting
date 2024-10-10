@@ -1,4 +1,9 @@
+#include "pch.h"
 #include "Game.h"
+#include "Player.h"
+#include "Level.h"
+#include "Gun.h"
+#include "Item.h"
 #include "Utilities.h"
 
 std::default_random_engine dre;

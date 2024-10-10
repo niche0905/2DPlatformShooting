@@ -1,15 +1,6 @@
 #pragma once
-#define SFML_STATIC
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <list>
-#include <unordered_map>
-#include <ranges>
-
-#include "Player.h"
 #include "Level.h"
-#include "Gun.h"
+#include "Player.h"
 #include "Item.h"
 
 constexpr int WINDOW_WIDTH = 800;

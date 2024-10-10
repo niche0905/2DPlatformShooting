@@ -72,5 +72,8 @@
     <ClInclude Include="Utilities.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Gun.h"
 
 // [cham] 9.22: 

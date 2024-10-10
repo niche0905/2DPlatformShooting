@@ -1,5 +1,9 @@
+#include "pch.h"
 #include "Player.h"
-
+#include "Level.h"
+#include "Gun.h"
+#include "Bullet.h"
+#include "Utilities.h"
 
 Player::Player(float x, float y, Level* level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
 {

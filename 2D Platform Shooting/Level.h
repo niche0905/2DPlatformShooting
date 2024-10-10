@@ -1,9 +1,5 @@
 #pragma once
-#define SFML_STATIC
-#include <vector>
-#include <fstream>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
+
 
 const sf::Color PlatformColor = sf::Color(55, 55, 55, 255);
 

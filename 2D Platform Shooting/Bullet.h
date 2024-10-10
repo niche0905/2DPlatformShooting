@@ -1,6 +1,4 @@
 #pragma once
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 
 constexpr float BulletWidth = 20.0f;
 constexpr float BulletHeight = 6.0f;
