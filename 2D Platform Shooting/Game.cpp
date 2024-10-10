@@ -7,7 +7,7 @@
 #include "Utilities.h"
 
 std::default_random_engine dre;
-std::uniform_real_distribution<> uid{ 0.0, 800.0 };
+std::uniform_real_distribution<float> uid{ 0.0, 800.0 };
 
 void Game::InitView()
 {
