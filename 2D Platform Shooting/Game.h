@@ -86,8 +86,9 @@ public:
     // 게임의 모든 객체를 그린다
     void draw();
 
-    void buildGun();
 
+    // cham TODO: gun manager에서 작업하도록 변경
+    void buildGun();
     bool loadGunFromFile(const std::string& filePath);
     void saveGunFromFile(const std::string& filePath);
 };

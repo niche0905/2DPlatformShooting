@@ -17,10 +17,15 @@
 #include <random>
 #include <chrono>
 #include <ranges>
+#include <algorithm>
 
 // ÀÔÃâ·Â
 #include <iostream>
 #include <fstream>
+#include <print>
+using std::cout;
+using std::endl;
+
 
 // type define
 using int8 = __int8;
@@ -31,3 +36,5 @@ using uint8 = unsigned __int8;
 using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
+
+extern std::default_random_engine RANDOM_ENGINE;

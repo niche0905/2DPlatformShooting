@@ -6,7 +6,6 @@
 #include "Item.h"
 #include "Utilities.h"
 
-std::default_random_engine dre;
 std::uniform_real_distribution<float> uid{ 0.0, 800.0 };
 
 void Game::InitView()
@@ -113,7 +112,7 @@ void Game::eatItem()
 
 void Game::makeItem()
 {
-    float num = uid(dre);
+    float num = uid(RANDOM_ENGINE);
     items.emplace_back(num, -500.0f, &level);
 }
 
@@ -167,9 +166,10 @@ bool Game::loadGunFromFile(const std::string& filePath)
     Gun gun;
 
     // [cham] 9.22 
-    uint8_t cnt{};
+    uint8 cnt{};
     while (inFile >> gun)
     {
+        gun.id = cnt;
         g_guns[cnt++] = gun;
     }
 

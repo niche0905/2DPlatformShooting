@@ -70,7 +70,7 @@ void Player::handleInput(const sf::Event& event)
         if (event.key.code == attackKeyBind) {
             auto nowTime = std::chrono::system_clock::now();
             // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
-            std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].getRPM()) * 1000));
+            std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
             if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
                 fireBullet();
         }
@@ -112,7 +112,7 @@ void Player::fireBullet()
     // 
 
     // 임시 총 발싸
-    bullets.push_back(Bullet(direction, position, g_guns[gunId].getSpeed(), g_guns[gunId].getDamage()));
+    bullets.push_back(Bullet(direction, position, g_guns[gunId].speed, g_guns[gunId].damage));
 }
 
 void Player::update(long long deltaTime)
@@ -319,7 +319,7 @@ void Player::damageControll(long long deltaTime)
 void Player::getItem()
 {
     gunId = getRandomGunId();
-    curMag = g_guns[gunId].getMagazine();
+    curMag = g_guns[gunId].mag;
     // TODO: player에다가 장탄수 세팅
     // 그리고 다쓰면 0번으로 바뀌게
     // [cham] 할거: 총 정보 저장할 때

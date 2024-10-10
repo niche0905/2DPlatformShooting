@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Gun.h"
-
 // [cham] 9.22: 
 std::unordered_map<uint8_t, Gun> g_guns;
 
@@ -29,32 +28,27 @@ std::istream& operator>>(std::istream& is, Gun& gun)
 	return is;
 }
 
-std::random_device rd;
-std::default_random_engine gen(rd());
-
 const int getRandomGunId()
 {
 	int total{};
 
 	// ratio를 모두 더한다.
-	for (const auto ratio : g_guns
-		| std::views::values
-		| std::views::transform(&Gun::getRatio)) {
-		total += ratio > 0 ? ratio : 0;
-	}
+	std::ranges::for_each(g_guns | std::views::values, [&total](const auto& gun) {
+		total += gun.ratio > 0 ? gun.ratio : 0;
+		});
 
 	// 난수를 생성한다.
 	std::uniform_int_distribution dist(1, total);
-	int random_value{ dist(gen) };
+	int random_value{ dist(RANDOM_ENGINE) };
+
+	// ratio에 따라 값을 반환한다.
 	int cnt{};
-	for (const auto ratio : g_guns
-		| std::views::values
-		| std::views::transform(&Gun::getRatio)) {
-		random_value -= ratio > 0 ? ratio : 0;
+	for (const auto& gun : g_guns | std::views::values) {
+		random_value -= gun.ratio > 0 ? gun.ratio : 0;
 		if (random_value <= 0) { break; }
 		++cnt;
 	}
 
-	std::cout << cnt << '\n';
+	std::println("{}", cnt);
 	return cnt;
 }

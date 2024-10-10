@@ -49,6 +49,9 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pch.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gun.h">
