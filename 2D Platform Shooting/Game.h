@@ -48,7 +48,7 @@ private:
     std::chrono::system_clock::time_point makeTime;
 
     // CHAM_TODO: 일단 Texture 관련 변수를 여기에
-    Image player_image;
+    Image player_image{"visual banana.png", 200.f, 200.f};
 
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다

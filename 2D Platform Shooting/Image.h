@@ -7,8 +7,11 @@ private:
 	sf::Sprite sprite;
 
 public:
-	Image();
+	Image() = delete;
+	Image(std::string_view filename);
+	Image(std::string_view fliename, const float width, const float height);
 
+	void scale(const float width, const float height);
 	void draw(sf::RenderWindow& window);
 };
 

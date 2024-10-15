@@ -24,9 +24,10 @@
 #include <fstream>
 #include <print>
 
+
 using std::cout;
 using std::endl;
-
+using namespace std::string_literals;
 
 // type define
 using int8 = __int8;
@@ -37,5 +38,9 @@ using uint8 = unsigned __int8;
 using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
+
+// define constant
+constexpr auto IMAGE_PATH{ "Resource\\Image\\"s };
+
 
 extern std::default_random_engine RANDOM_ENGINE;
