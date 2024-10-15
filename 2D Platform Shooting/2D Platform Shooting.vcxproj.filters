@@ -25,6 +25,9 @@
     <Filter Include="Objects\gun">
       <UniqueIdentifier>{90c0887f-0eeb-4910-b8fd-3b8c74f0714f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Image">
+      <UniqueIdentifier>{1621eac8-171d-490f-9e8e-7acadcc54a47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gun.cpp">
@@ -48,9 +51,12 @@
     <ClCompile Include="Utilities.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Image.cpp">
+      <Filter>Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Image</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

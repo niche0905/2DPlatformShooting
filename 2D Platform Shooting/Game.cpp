@@ -5,6 +5,7 @@
 #include "Gun.h"
 #include "Item.h"
 #include "Utilities.h"
+#include "Image.h"
 
 std::uniform_real_distribution<float> uid{ 0.0, 800.0 };
 
@@ -136,6 +137,9 @@ void Game::draw()
     // 윈도우 하늘색으로 리셋
     window.clear(BackgroundColor);
 
+    // TODO: 일단 여기에 그림을 그려보자
+    
+
     // 모든 객체 그리기
     level.draw(window);
     for (Item& item : items)
@@ -145,6 +149,7 @@ void Game::draw()
         player.draw(window);
 
     //dummy.draw(window);
+    player_image.draw(window);
 
     // 새로 그린 화면으로 바꾸기
     window.display();

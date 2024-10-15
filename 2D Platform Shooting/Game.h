@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "Player.h"
 #include "Item.h"
+#include "Image.h"
 
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
@@ -46,6 +47,9 @@ private:
 
     std::chrono::system_clock::time_point makeTime;
 
+    // CHAM_TODO: 일단 Texture 관련 변수를 여기에
+    Image player_image;
+
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
     Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -57,6 +61,8 @@ public:
         items.emplace_back(200.0f, -500.0f, &level);
         // 시작시 바로 플레어이 중앙으로 옮길지 말지
         //InitView();
+
+        // CHAM_TODO: 일단 여기에 초기화.
     }
 
     // 카메라 뷰를 Player어 중심으로
