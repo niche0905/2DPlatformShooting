@@ -1,7 +1,20 @@
 #include "Player.h"
 
 
-Player::Player(float x, float y, Level* level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+Player::Player(float x, float y, Level* level) 
+    : isActive(true)
+    , direction(true)
+    , width(50.0f)
+    , height(50.0f)
+    , speed(500.0f)
+    , jumpHeight(650.0f)
+    , maxJumpChance(2)
+    , jumpChance(maxJumpChance)
+    , OnAir(false)
+    , level(level)
+    , fireKeyDown(false)
+    , leftKeyDown(false)
+    , rightKeyDown(false)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -26,7 +39,20 @@ Player::Player(float x, float y, Level* level) : isActive(true), direction(true)
     jumpChance = maxJumpChance;
 }
 
-Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey) 
+    : isActive(true)
+    , direction(true)
+    , width(50.0f)
+    , height(50.0f)
+    , speed(500.0f)
+    , jumpHeight(650.0f)
+    , maxJumpChance(2)
+    , jumpChance(maxJumpChance)
+    , OnAir(false)
+    , level(level)
+    , fireKeyDown(false)
+    , leftKeyDown(false)
+    , rightKeyDown(false)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -63,13 +89,7 @@ void Player::handleInput(const sf::Event& event)
                 --jumpChance;
             }
         }
-        if (event.key.code == attackKeyBind) {
-            auto nowTime = std::chrono::system_clock::now();
-            // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
-            std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].getRPM()) * 1000));
-            if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
-                fireBullet();
-        }
+
         if (event.key.code == sf::Keyboard::D) {
             dash();
         }
@@ -117,9 +137,20 @@ void Player::update(long long deltaTime)
 
     if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
 
+    // 발사 키가 눌리고 있는지
+    fireKeyDown = sf::Keyboard::isKeyPressed(attackKeyBind);
     // 좌우 키가 눌리고 있는지
     leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
     rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
+
+    // 총알 발사 요구 조건 만족하는 지 검사 후 발사
+    if (fireKeyDown) {
+        auto nowTime = std::chrono::system_clock::now();
+        // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
+        std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].getRPM()) * 1000));
+        if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
+            fireBullet();
+    }
 
     if (not (leftKeyDown and rightKeyDown)) {
         if (leftKeyDown) {
