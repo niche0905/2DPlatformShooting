@@ -22,12 +22,14 @@
 // ¿‘√‚∑¬
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <print>
 
 
 using std::cout;
 using std::endl;
 using namespace std::string_literals;
+namespace fs = std::filesystem;
 
 // type define
 using int8 = __int8;
@@ -40,7 +42,7 @@ using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
 // define constant
-constexpr auto IMAGE_PATH{ "Resource\\Image\\"s };
+constexpr auto IMAGE_PATH{ "Resource\\Image" };
 
 
 extern std::default_random_engine RANDOM_ENGINE;

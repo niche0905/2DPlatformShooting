@@ -5,7 +5,19 @@
 #include "Bullet.h"
 #include "Utilities.h"
 
-Player::Player(float x, float y, Level* level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+Player::Player(float x, float y, Level* level)
+    : isActive(true)
+    , direction(true)
+    , width(50.0f)
+    , height(50.0f)
+    , speed(500.0f)
+    , jumpHeight(650.0f)
+    , maxJumpChance(2)
+    , jumpChance(maxJumpChance)
+    , OnAir(false)
+    , level(level)
+    , leftKeyDown(false)
+    , rightKeyDown(false)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -30,7 +42,19 @@ Player::Player(float x, float y, Level* level) : isActive(true), direction(true)
     jumpChance = maxJumpChance;
 }
 
-Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey)
+    : isActive(true)
+    , direction(true)
+    , width(50.0f)
+    , height(50.0f)
+    , speed(500.0f)
+    , jumpHeight(650.0f)
+    , maxJumpChance(2)
+    , jumpChance(maxJumpChance)
+    , OnAir(false)
+    , level(level)
+    , leftKeyDown(false)
+    , rightKeyDown(false)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -124,6 +148,13 @@ void Player::update(long long deltaTime)
     // 좌우 키가 눌리고 있는지
     leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
     rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
+
+    if (fireKeyDown) {
+        auto nowTime = std::chrono::system_clock::now();
+        std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
+        if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
+            fireBullet();
+    }
 
     if (not (leftKeyDown and rightKeyDown)) {
         if (leftKeyDown) {

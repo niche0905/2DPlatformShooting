@@ -44,6 +44,7 @@ private:
     int curMag;
     std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간
 
+    bool fireKeyDown;
     bool leftKeyDown;
     bool rightKeyDown;
 
@@ -123,7 +124,8 @@ class Dummy {
     int jumpChance;     // 점프 기회
     int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
-
+   
+    bool fireKeyDown;
     bool leftKeyDown;
     bool rightKeyDown;
 

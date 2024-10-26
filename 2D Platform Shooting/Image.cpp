@@ -3,7 +3,8 @@
 
 Image::Image(std::string_view filename)
 {
-	if (!texture.loadFromFile(IMAGE_PATH + filename.data())) {
+	fs::path path{ fs::path{IMAGE_PATH} / filename };
+	if (!texture.loadFromFile(path.string())) {
 		cout << "이미지 로드 실패\n";
 		exit(-1);
 	}
