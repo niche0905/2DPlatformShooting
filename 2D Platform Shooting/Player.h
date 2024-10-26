@@ -44,6 +44,7 @@ private:
     int curMag;
     std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간
 
+    bool fireKeyDown;
     bool leftKeyDown;
     bool rightKeyDown;
 

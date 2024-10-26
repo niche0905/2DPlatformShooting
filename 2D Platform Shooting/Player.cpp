@@ -5,50 +5,76 @@
 #include "Bullet.h"
 #include "Utilities.h"
 
-Player::Player(float x, float y, Level* level) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+Player::Player(float x, float y, Level* level) 
+    : isActive(true)
+    , direction(true)
+    , width(50.0f)
+    , height(50.0f)
+    , speed(500.0f)
+    , jumpHeight(650.0f)
+    , maxJumpChance(2)
+    , jumpChance(maxJumpChance)
+    , OnAir(false)
+    , level(level)
+    , fireKeyDown(false)
+    , leftKeyDown(false)
+    , rightKeyDown(false)
 {
-    // ÇÇº¿Àº °¡¿î´ë ¾Æ·¡
+    // ï¿½Çºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½
     shape.setOrigin(width / 2, height);
     shape.setSize(sf::Vector2f(width, height));
     shape.setPosition(x, y);
     shape.setFillColor(sf::Color::Green);
 
-    // ÃÑÀÇ ¹ß»ç¼Óµµ Á¦ÇÑÀ» À§ÇÑ º¯¼ö ÃÊ±âÈ­
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
     lastFireTime = std::chrono::system_clock::now();
 
-    // Å° ÀÔ·ÂÀ» ¹ÞÁö ¾Ê¾Ò´Ù¸é ±âº»°ª ¼³Á¤
+    // Å° ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´Ù¸ï¿½ ï¿½âº»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     upKeyBind = sf::Keyboard::Up;
     downKeyBind = sf::Keyboard::Down;
     leftKeyBind = sf::Keyboard::Left;
     rightKeyBind = sf::Keyboard::Right;
     attackKeyBind = sf::Keyboard::A;
 
-    // ÃÊ±âÈ­ µÇÁö ¾ÊÀº º¯¼öµé ¼³Á¤
+    // ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     curMag = -1;
     damaged = 0;
     gunId = 0;
     jumpChance = maxJumpChance;
 }
 
-Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey) : isActive(true), direction(true), width(50.0f), height(50.0f), speed(500.0f), jumpHeight(650.0f), maxJumpChance(2), jumpChance(maxJumpChance), OnAir(false), level(level), leftKeyDown(false), rightKeyDown(false)
+Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey) 
+    : isActive(true)
+    , direction(true)
+    , width(50.0f)
+    , height(50.0f)
+    , speed(500.0f)
+    , jumpHeight(650.0f)
+    , maxJumpChance(2)
+    , jumpChance(maxJumpChance)
+    , OnAir(false)
+    , level(level)
+    , fireKeyDown(false)
+    , leftKeyDown(false)
+    , rightKeyDown(false)
 {
-    // ÇÇº¿Àº °¡¿î´ë ¾Æ·¡
+    // ï¿½Çºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½
     shape.setOrigin(width / 2, height);
     shape.setSize(sf::Vector2f(50.0f, height));
     shape.setPosition(x, y);
     shape.setFillColor(sf::Color::Green);
 
-    // ÃÑÀÇ ¹ß»ç¼Óµµ Á¦ÇÑÀ» À§ÇÑ º¯¼ö ÃÊ±âÈ­
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
     lastFireTime = std::chrono::system_clock::now();
 
-    // ÀÔ·Â¹ÞÀº Å°·Î Å° ¹ÙÀÎµù
+    // ï¿½Ô·Â¹ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ Å° ï¿½ï¿½ï¿½Îµï¿½
     upKeyBind = upKey;
     downKeyBind = downKey;
     leftKeyBind = leftKey;
     rightKeyBind = rightKey;
     attackKeyBind = attackKey;
 
-    // ÃÊ±âÈ­ µÇÁö ¾ÊÀº º¯¼öµé ¼³Á¤
+    // ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     curMag = -1;
     damaged = 0;
     gunId = 0;
@@ -59,9 +85,9 @@ void Player::handleInput(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == upKeyBind) {
-            // Space Å°°¡ ´­·ÈÀ» ¶§ ÇÑ ¹ø¸¸ ½ÇÇàµÇ´Â ÄÚµå
+            // Space Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Úµï¿½
             if (jumpChance > 0) {
-                //velocity.y -= jumpHeight; // ÀÌ µÑ Áß ¼±ÅÃÇØ¾ß ÇÔ
+                //velocity.y -= jumpHeight; // ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ï¿½
                 velocity.y = -jumpHeight;
                 OnAir = true;
                 --jumpChance;
@@ -69,7 +95,7 @@ void Player::handleInput(const sf::Event& event)
         }
         if (event.key.code == attackKeyBind) {
             auto nowTime = std::chrono::system_clock::now();
-            // RPM¿¡ µû¶ó ¹ß»ç¼Óµµ Á¦ÇÑ 600ÀÌ GunÀÇ RPMÀÌ¾î¾ß ÇÔ <- (¼öÁ¤ÇÔ 09/23 ¼Û½ÂÈ£)
+            // RPMï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ 600ï¿½ï¿½ Gunï¿½ï¿½ RPMï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ <- (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 09/23 ï¿½Û½ï¿½È£)
             std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
             if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
                 fireBullet();
@@ -84,17 +110,17 @@ void Player::handleInput(const sf::Event& event)
             gunId = 1;
         }
         if (event.key.code == sf::Keyboard::R) {
-            revivePlayer();     // ÀÓ½Ã·Î Å° ¹ÙÀÎµùÀ¸·Î ºÎÈ° È£Ãâ
+            revivePlayer();     // ï¿½Ó½Ã·ï¿½ Å° ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È° È£ï¿½ï¿½
         }
     }
 }
 
 void Player::fireBullet()
 {
-    // ÇöÀç ÃÑ ÀÌ¸§°ú ÅºÃ¢ »óÅÂ¸¦ ¾Ë¾Æº¸±â À§ÇÑ ·Î±ë
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ÅºÃ¢ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ë¾Æºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½
     //std::cout << g_guns[gunId].getName() << " - " << curMag << std::endl;
 
-    // ÃßÈÄ¿¡ ¿¬»ç ¼Óµµ³ª ³²Àº ÀÜÅº ¼ö °°Àº ±â´É ³Ö¾î¾ß ÇÔ <- ³Ö¾úÀ½ [¼Û½ÂÈ£ 09/26]
+    // ï¿½ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Åº ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ ï¿½ï¿½ <- ï¿½Ö¾ï¿½ï¿½ï¿½ [ï¿½Û½ï¿½È£ 09/26]
     if (curMag > 0) {
         if (--curMag == 0) {
             gunId = 0;
@@ -107,23 +133,34 @@ void Player::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    // TODO: ÀÌ ±¸Á¶¸¦ ¹Ù²Ù¾î¾ß ÇÔ.
-    // Bullet °´Ã¼¸¦ »ý¼ºÇÒ ¶§ ÃÑ Æ÷ÀÎÅÍ·Î¸¸ »ý¼ºÇÒ ¼ö ÀÖµµ·Ï Á¦ÀÛ
+    // TODO: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù¾ï¿½ï¿½ ï¿½ï¿½.
+    // Bullet ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í·Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     // 
 
-    // ÀÓ½Ã ÃÑ ¹ß½Î
+    // ï¿½Ó½ï¿½ ï¿½ï¿½ ï¿½ß½ï¿½
     bullets.push_back(Bullet(direction, position, g_guns[gunId].speed, g_guns[gunId].damage));
 }
 
 void Player::update(long long deltaTime)
 {
-    updateBullets(deltaTime);   // ºñÈ°¼ºÈ­ ´õ¶óµµ ÃÑ¾ËÀº ¿òÁ÷¿©¾ß ÇÏ±â¿¡ À§Ä¡ Á¶Á¤
+    updateBullets(deltaTime);   // ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±â¿¡ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
 
-    if (not isActive) return;   // È°¼ºÈ­ »óÅÂ°¡ ¾Æ´Ï¶ó¸é Update Á¾·á
+    if (not isActive) return;   // È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½ Update ï¿½ï¿½ï¿½ï¿½
 
-    // ÁÂ¿ì Å°°¡ ´­¸®°í ÀÖ´ÂÁö
+    // ï¿½ß»ï¿½ Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½
+    fireKeyDown = sf::Keyboard::isKeyPressed(attackKeyBind);
+    // ï¿½Â¿ï¿½ Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½
     leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
     rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
+
+    // ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ ï¿½ä±¸ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½Ë»ï¿½ ï¿½ï¿½ ï¿½ß»ï¿½
+    if (fireKeyDown) {
+        auto nowTime = std::chrono::system_clock::now();
+        // RPMï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ 600ï¿½ï¿½ Gunï¿½ï¿½ RPMï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ <- (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 09/23 ï¿½Û½ï¿½È£)
+        std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].getRPM()) * 1000));
+        if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
+            fireBullet();
+    }
 
     if (not (leftKeyDown and rightKeyDown)) {
         if (leftKeyDown) {
@@ -152,14 +189,14 @@ void Player::update(long long deltaTime)
 
     damageControll(deltaTime);
 
-    // ÀÔÀº ÇÇÇØ·® ¸¸Å­ ³Ë¹éÇÏ°Ô
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø·ï¿½ ï¿½ï¿½Å­ ï¿½Ë¹ï¿½ï¿½Ï°ï¿½
     sf::Vector2f powerOfDamage(damaged, 0.0f);
-    // ¼Óµµ¸¸Å­ ¿òÁ÷ÀÓ
+    // ï¿½Óµï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
 
     bool noOnePlatformCollide = true;
 
-    // ÇÏ³ª¶óµµ ¹â°íÀÖ´Â ÇÃ·§ÆûÀÌ ÀÖ´ÂÁö Ã¼Å©
+    // ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ Ã¼Å©
     if (not sf::Keyboard::isKeyPressed(downKeyBind)) {
         for (const auto& platform : level->platforms) {
             if (checkCollision(platform.getGlobalBounds())) {
@@ -173,12 +210,12 @@ void Player::update(long long deltaTime)
         }
     }
 
-    // ÇÃ·§Æû¿¡ ºÙ¾îÀÖÁö ¾Ê´Ù¸é °øÁß ÆÇÁ¤
+    // ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     if (noOnePlatformCollide) {
         OnAir = true;
     }
 
-    if (shape.getPosition().y > 1000.0f)    // 1000.0f ¹ØÀÌ¶ó¸é Á×Àº ÆÇÁ¤(ÀÓ½ÃÀÓ!)
+    if (shape.getPosition().y > 1000.0f)    // 1000.0f ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ó½ï¿½ï¿½ï¿½!)
     {
         isActive = false;
     }
@@ -196,7 +233,7 @@ void Player::updateBullets(long long deltaTime)
 }
 
 void Player::draw(sf::RenderWindow& window) {
-    if (not isActive) return;   // È°¼ºÈ­ »óÅÂ°¡ ¾Æ´Ï¶ó¸é Draw Á¾·á
+    if (not isActive) return;   // È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½ Draw ï¿½ï¿½ï¿½ï¿½
 
     window.draw(shape);
 
@@ -215,7 +252,7 @@ bool Player::checkCollision(sf::FloatRect other) {
         float playerBottom = playerBounds.top + playerBounds.height;
         float platformTop = other.top;
 
-        // ÇÃ·¹ÀÌ¾î°¡ ÇÃ·§ÆûÀÇ À§ÂÊ¿¡¼­ Ãæµ¹ÇßÀ» ¶§¸¸ true ¹ÝÈ¯
+        // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ true ï¿½ï¿½È¯
         if (playerBottom <= platformTop + PlatformUp) {
             return true;
         }
@@ -239,11 +276,11 @@ void Player::hitTheEnemy(class Dummy& dummy)
 {
     for (auto it = bullets.begin(); it != bullets.end(); ) {
         if (dummy.checkCollisionBullet(it->getGlobalBounds())) {
-        // ¸Â¾Ò´Ù¸é(Ãæµ¹ÀÌ¶ó¸é)
-            // µ¥¹ÌÁö¸¦ Àû¿ëÇÏ°í
+        // ï¿½Â¾Ò´Ù¸ï¿½(ï¿½æµ¹ï¿½Ì¶ï¿½ï¿½)
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
             dummy.takeDamage(it->getDirection(), it->getDamage());
 
-            // ÃÑ¾Ë »èÁ¦
+            // ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½
             it = bullets.erase(it);
         }
         else
@@ -254,12 +291,12 @@ void Player::hitTheEnemy(class Dummy& dummy)
 void Player::hitTheEnemy(class Player& otherPlayer)
 {
     for (auto it = bullets.begin(); it != bullets.end(); ) {
-        // ¸Â¾Ò´Ù¸é(Ãæµ¹ÀÌ¶ó¸é)
+        // ï¿½Â¾Ò´Ù¸ï¿½(ï¿½æµ¹ï¿½Ì¶ï¿½ï¿½)
         if (otherPlayer.checkCollisionBullet(it->getGlobalBounds())) {
-            // µ¥¹ÌÁö¸¦ Àû¿ëÇÏ°í
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
             otherPlayer.takeDamage(it->getDirection(), it->getDamage());
 
-            // ÃÑ¾Ë »èÁ¦
+            // ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½
             it = bullets.erase(it);
         }
         else
@@ -269,13 +306,13 @@ void Player::hitTheEnemy(class Player& otherPlayer)
 
 void Player::revivePlayer()
 {
-    if (isActive) return;   // »ì¾Æ ÀÖ´Ù¸é revive Ãë¼Ò
+    if (isActive) return;   // ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ revive ï¿½ï¿½ï¿½
 
-    // ºÎÈ° ½Ã Ã³¸®ÇØ ÇÒ Çàµ¿µé Ãß°¡ÇÏ±â
-    isActive = true;    // È°¼ºÈ­ ½ÃÅ°±â
+    // ï¿½ï¿½È° ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½àµ¿ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï±ï¿½
+    isActive = true;    // È°ï¿½ï¿½È­ ï¿½ï¿½Å°ï¿½ï¿½
 
-    // ¸Ê Áß¾Ó °øÁß¿¡ ½ºÆù
-    shape.setPosition((level->leftBound+level->rightBound) / 2.0f, -1000.0f);  // -1000.0f ´Â ¼öÁ¤ÇØ¾ß ÇÒ¼öµµ
+    // ï¿½ï¿½ ï¿½ß¾ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½
+    shape.setPosition((level->leftBound+level->rightBound) / 2.0f, -1000.0f);  // -1000.0f ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Ò¼ï¿½ï¿½ï¿½
 
     damaged = 0;
 }
@@ -292,20 +329,20 @@ bool Player::checkCollisionBullet(sf::FloatRect other)
 
 void Player::takeDamage(bool direction, float damage)
 {
-    if (direction == true)  // Left ¸é
+    if (direction == true)  // Left ï¿½ï¿½
         damaged -= damage * DamagePower;
-    else                    // Right ¸é
+    else                    // Right ï¿½ï¿½
         damaged += damage * DamagePower;
 }
 
 void Player::damageControll(long long deltaTime)
 {
-    // ¶¥¿¡ ºÙ¾îÀÖ´Ù¸é ¸¶Âû·ÂÀÌ ÀÛµ¿ÇÏµµ·Ï
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½ï¿½Ïµï¿½ï¿½ï¿½
     float frictionScale(FrictionScale);
     if (OnAir)
         frictionScale = AirFrictionScale;
 
-    // 0¿¡ °¡±î¿öÁöµµ·Ï
+    // 0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if (damaged > 0.0f) {
         damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
         damaged = std::max(0.0f, damaged);
@@ -320,11 +357,11 @@ void Player::getItem()
 {
     gunId = getRandomGunId();
     curMag = g_guns[gunId].mag;
-    // TODO: player¿¡´Ù°¡ ÀåÅº¼ö ¼¼ÆÃ
-    // ±×¸®°í ´Ù¾²¸é 0¹øÀ¸·Î ¹Ù²î°Ô
-    // [cham] ÇÒ°Å: ÃÑ Á¤º¸ ÀúÀåÇÒ ¶§
-    // ÃÑ ÀÌ¸§À¸·Î ÇØ´ç ID °ª ¹ÝÈ¯ÇÏ´Â ÇÔ¼ö ¸¸µé±â.
-    // ´ÏÇÏ´ÂÇÃ·¹ÀÌº¸ÀÌ¿¹Àü¿¡ÇÏ´õ³ð°°Àºµ¥ÀÌÁ¦¾ó±¼±î°íÇÏ´Â°©Áöµ·Á»¹ö³Ä?°³³ëÀë³ë¶ó¶ó
+    // TODO: playerï¿½ï¿½ï¿½Ù°ï¿½ ï¿½ï¿½Åºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½×¸ï¿½ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½
+    // [cham] ï¿½Ò°ï¿½: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    // ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ID ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
+    // ï¿½ï¿½ï¿½Ï´ï¿½ï¿½Ã·ï¿½ï¿½Ìºï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó±¼±ï¿½ï¿½ï¿½Ï´Â°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
 
@@ -335,9 +372,9 @@ void Dummy::handleInput(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::I) {
-            // Space Å°°¡ ´­·ÈÀ» ¶§ ÇÑ ¹ø¸¸ ½ÇÇàµÇ´Â ÄÚµå
+            // Space Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Úµï¿½
             if (jumpChance > 0) {
-                //velocity.y -= jumpHeight; // ÀÌ µÑ Áß ¼±ÅÃÇØ¾ß ÇÔ
+                //velocity.y -= jumpHeight; // ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ï¿½
                 velocity.y = -jumpHeight;
                 OnAir = true;
                 --jumpChance;
@@ -348,12 +385,12 @@ void Dummy::handleInput(const sf::Event& event)
 
 void Dummy::damageControll(long long deltaTime)
 {
-    // ¶¥¿¡ ºÙ¾îÀÖ´Ù¸é ¸¶Âû·ÂÀÌ ÀÛµ¿ÇÏµµ·Ï
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½ï¿½Ïµï¿½ï¿½ï¿½
     float frictionScale(1.0f);
     if (OnAir)
         frictionScale = 2.0f;
 
-    // 0¿¡ °¡±î¿öÁöµµ·Ï
+    // 0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if (damaged > 0.0f) {
         damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
         damaged = std::max(0.0f, damaged);
@@ -366,7 +403,7 @@ void Dummy::damageControll(long long deltaTime)
 
 void Dummy::update(long long deltaTime)
 {
-    // ÁÂ¿ì Å°°¡ ´­¸®°í ÀÖ´ÂÁö
+    // ï¿½Â¿ï¿½ Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½
     leftKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::J);
     rightKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::L);
 
@@ -391,27 +428,27 @@ void Dummy::update(long long deltaTime)
         }
     }
 
-    // °øÁß¿¡ ¶°ÀÖ´ÂÁö (Á¡ÇÁ ¶Ç´Â ÇÃ·§Æû°ú Ãæµ¹ Ã³¸® ÈÄ Á¤ÇØÁü)
+    // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ Ã³ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
     if (OnAir) {
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
 
     damageControll(deltaTime);
 
-    // ÀÔÀº ÇÇÇØ·® ¸¸Å­ ³Ë¹éÇÏ°Ô
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø·ï¿½ ï¿½ï¿½Å­ ï¿½Ë¹ï¿½ï¿½Ï°ï¿½
     sf::Vector2f powerOfDamage(damaged, 0.0f);
-    // ¼Óµµ¸¸Å­ ¿òÁ÷ÀÓ
+    // ï¿½Óµï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
 
-    // ¹â°íÀÖ´Â ÇÃ·§ÆûÀÌ ¾ø´ÂÁö ÇÃ·¡±×
+    // ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½
     bool noOnePlatformCollide = true;
 
     if (not sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
-    // ¾Æ·¡Å°°¡ ´­¸®°í ÀÖÁö ¾Ê´Ù¸é
+    // ï¿½Æ·ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Ù¸ï¿½
         for (const auto& platform : level.platforms) {
-        // ÇÃ·§Æû ·çÇÁ·Î Ãæµ¹Ã³¸®
+        // ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹Ã³ï¿½ï¿½
             if (checkCollision(platform.getGlobalBounds())) {
-            // ÇÑ ÇÃ·§ÆûÀÌ¶óµµ À§¿¡¼­ ¹â°íÀÖ´Â Ãæµ¹ÀÌ¶ó¸é
+            // ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½æµ¹ï¿½Ì¶ï¿½ï¿½
                 OnAir = false;
                 jumpChance = maxJumpChance;
                 velocity.y = 0.0f;
@@ -422,7 +459,7 @@ void Dummy::update(long long deltaTime)
         }
     }
 
-    // °øÁß¿¡ ¶°ÀÖ´Â °ÍÀÌ´Ù°í ÆÇÁ¤
+    // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Ì´Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½
     if (noOnePlatformCollide) {
         OnAir = true;
     }
@@ -445,7 +482,7 @@ bool Dummy::checkCollision(sf::FloatRect other)
         float playerBottom = playerBounds.top + playerBounds.height;
         float platformTop = other.top;
 
-        // ´õ¹Ì°¡ ÇÃ·§ÆûÀÇ À§ÂÊ¿¡¼­ Ãæµ¹ÇßÀ» ¶§¸¸ true ¹ÝÈ¯
+        // ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ true ï¿½ï¿½È¯
         if (playerBottom <= platformTop + PlatformUp) {
             return true;
         }
@@ -471,8 +508,8 @@ bool Dummy::checkCollisionBullet(sf::FloatRect other)
 
 void Dummy::takeDamage(bool direction, float damage)
 {
-    if (direction == true)  // Left ¸é
+    if (direction == true)  // Left ï¿½ï¿½
         damaged -= damage * DamagePower;
-    else                    // Right ¸é
+    else                    // Right ï¿½ï¿½
         damaged += damage * DamagePower;
 }
