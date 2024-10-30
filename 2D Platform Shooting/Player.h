@@ -50,7 +50,7 @@ private:
     bool rightKeyDown;
 
     Level* level;
-    Image image{ TextureID::BANANA, 200, 100 };
+    Image image{ TextureID::BANANA };
 
 public:
     Player() = default;

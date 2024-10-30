@@ -8,8 +8,8 @@
 Player::Player(float x, float y, Level* level)
     : isActive(true)
     , direction(true)
-    , width(50.0f)
-    , height(50.0f)
+    , width(100.0f)
+    , height(100.0f)
     , speed(500.0f)
     , jumpHeight(650.0f)
     , maxJumpChance(2)
@@ -46,8 +46,8 @@ Player::Player(float x, float y, Level* level)
 Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey)
     : isActive(true)
     , direction(true)
-    , width(50.0f)
-    , height(50.0f)
+    , width(100.0f)
+    , height(100.0f)
     , speed(500.0f)
     , jumpHeight(650.0f)
     , maxJumpChance(2)
@@ -214,6 +214,9 @@ void Player::update(long long deltaTime)
     {
         isActive = false;
     }
+
+    image.SetPosition(shape.getPosition());
+    image.scale(width, height);
 }
 
 void Player::updateBullets(long long deltaTime)
@@ -230,7 +233,7 @@ void Player::updateBullets(long long deltaTime)
 void Player::draw(sf::RenderWindow& window) {
     if (not isActive) return;   // 활성화 상태가 아니라면 Draw 종료
 
-    window.draw(shape);
+    // window.draw(shape);
 
     for (const Bullet& bullet : bullets) {
         bullet.draw(window);

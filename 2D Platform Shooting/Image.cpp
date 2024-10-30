@@ -18,9 +18,21 @@ Image::Image(int id, const float width, const float height)
 
 void Image::scale(const float width, const float height)
 {
+	sf::FloatRect bounds = sprite.getLocalBounds();
+	sprite.setOrigin(bounds.width / 2.f, bounds.height);
 	sf::Vector2u textureSize = texture.getSize();
 	sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
 	sprite.setScale( width / textureSize.x, height / textureSize.y );
+}
+
+void Image::SetPosition(const float x, const float y)
+{
+	sprite.setPosition(x, y);
+}
+
+void Image::SetPosition(const sf::Vector2f& vec)
+{
+	sprite.setPosition(vec);
 }
 
 void Image::draw(sf::RenderWindow& window)

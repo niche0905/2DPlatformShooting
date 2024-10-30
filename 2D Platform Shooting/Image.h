@@ -28,6 +28,8 @@ public:
 	Image(int id, const float width, const float height);
 
 	void scale(const float width, const float height);
+	void SetPosition(const float x, const float y);
+	void SetPosition(const sf::Vector2f& vec);
 	void draw(sf::RenderWindow& window);
 };
 
