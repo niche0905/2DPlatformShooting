@@ -1,6 +1,7 @@
 #pragma once
 #include "Bullet.h"
 #include "Level.h"
+#include "Image.h"
 
 constexpr float DamageScalingRatio = 50.0f;     // 피해량 정상화 상수(공기저항 역할)
 constexpr float DamagePower = 5.0f;             // 데미지 받을 때 수치 조정값
@@ -49,6 +50,7 @@ private:
     bool rightKeyDown;
 
     Level* level;
+    Image image{ TextureID::BANANA, 200, 100 };
 
 public:
     Player() = default;

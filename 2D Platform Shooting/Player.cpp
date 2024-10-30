@@ -18,6 +18,7 @@ Player::Player(float x, float y, Level* level)
     , level(level)
     , leftKeyDown(false)
     , rightKeyDown(false)
+    
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -234,6 +235,8 @@ void Player::draw(sf::RenderWindow& window) {
     for (const Bullet& bullet : bullets) {
         bullet.draw(window);
     }
+
+    image.draw(window);
 }
 
 sf::FloatRect Player::getGlobalBounds() const {

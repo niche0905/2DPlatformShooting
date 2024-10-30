@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Item.h"
 #include "Image.h"
+// #include "TextureManager.h"
 
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
@@ -46,10 +47,6 @@ private:
     sf::View view;
 
     std::chrono::system_clock::time_point makeTime;
-
-    // CHAM_TODO: 일단 Texture 관련 변수를 여기에
-    Image player_image{"visual banana.png", 200.f, 200.f};
-
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
     Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))

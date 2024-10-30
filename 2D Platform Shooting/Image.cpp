@@ -1,18 +1,17 @@
 #include "pch.h"
 #include "Image.h"
 
-Image::Image(std::string_view filename)
+Image::Image(int id)
 {
-	fs::path path{ fs::path{IMAGE_PATH} / filename };
+	fs::path path{ fs::path{IMAGE_PATH} / IMAGE_FILENAME[id]};
 	if (!texture.loadFromFile(path.string())) {
 		cout << "이미지 로드 실패\n";
 		exit(-1);
 	}
-	sprite.setTexture(texture);
 }
 
-Image::Image(std::string_view filename, const float width, const float height)
-	: Image(filename)
+Image::Image(int id, const float width, const float height)
+	: Image(id)
 {
 	scale(width, height);
 }
@@ -26,5 +25,6 @@ void Image::scale(const float width, const float height)
 
 void Image::draw(sf::RenderWindow& window)
 {
+	sprite.setTexture(texture);
 	window.draw(sprite);
 }

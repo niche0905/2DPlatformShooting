@@ -148,9 +148,6 @@ void Game::draw()
     for (Player& player : players)
         player.draw(window);
 
-    //dummy.draw(window);
-    player_image.draw(window);
-
     // 새로 그린 화면으로 바꾸기
     window.display();
 }

@@ -11,6 +11,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <array>
 #include <unordered_map>
 
 // 알고리즘
@@ -40,9 +41,5 @@ using uint8 = unsigned __int8;
 using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
-
-// define constant
-constexpr auto IMAGE_PATH{ "Resource\\Image" };
-
 
 extern std::default_random_engine RANDOM_ENGINE;

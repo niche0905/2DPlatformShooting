@@ -1,5 +1,21 @@
 #pragma once
 
+// define constant
+constexpr auto IMAGE_PATH{ "Resource\\Image" };
+
+
+// define Enum
+enum TextureID
+{
+	BANANA,
+	END
+};
+
+constexpr const char* IMAGE_FILENAME[]
+{
+	"visual banana.png"
+};
+
 class Image
 {
 private:
@@ -8,8 +24,8 @@ private:
 
 public:
 	Image() = delete;
-	Image(std::string_view filename);
-	Image(std::string_view fliename, const float width, const float height);
+	Image(int id);
+	Image(int id, const float width, const float height);
 
 	void scale(const float width, const float height);
 	void draw(sf::RenderWindow& window);
