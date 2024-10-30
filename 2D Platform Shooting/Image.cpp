@@ -35,8 +35,23 @@ void Image::SetPosition(const sf::Vector2f& vec)
 	sprite.setPosition(vec);
 }
 
+void Image::SetReversed(const bool value)
+{
+	reversed = value;
+}
+
 void Image::draw(sf::RenderWindow& window)
 {
 	sprite.setTexture(texture);
-	window.draw(sprite);
+	if (reversed) {
+		sf::FloatRect bounds = sprite.getLocalBounds();
+		std::cout << bounds.width << bounds.width << endl;
+		sprite.setOrigin(bounds.width / 2.f, bounds.height);
+		sprite.setScale(-0.1f, 0.1f);
+		window.draw(sprite);
+		sprite.setScale(-0.1f, 0.1f);
+	}
+	else {
+		window.draw(sprite);
+	}
 }

@@ -5,7 +5,7 @@
 #include "Bullet.h"
 #include "Utilities.h"
 
-Player::Player(float x, float y, Level* level)
+Player::Player(float x, float y, Level* level, int texture_id)
     : isActive(true)
     , direction(true)
     , width(100.0f)
@@ -18,7 +18,7 @@ Player::Player(float x, float y, Level* level)
     , level(level)
     , leftKeyDown(false)
     , rightKeyDown(false)
-    
+    , image(texture_id)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -43,7 +43,7 @@ Player::Player(float x, float y, Level* level)
     jumpChance = maxJumpChance;
 }
 
-Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey)
+Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey, int texture_id)
     : isActive(true)
     , direction(true)
     , width(100.0f)
@@ -56,6 +56,7 @@ Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyb
     , level(level)
     , leftKeyDown(false)
     , rightKeyDown(false)
+    , image(texture_id)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -215,8 +216,10 @@ void Player::update(long long deltaTime)
         isActive = false;
     }
 
-    image.SetPosition(shape.getPosition());
-    image.scale(width, height);
+    auto& pos = shape.getPosition();
+    image.SetPosition(pos.x, pos.y + 25.f);
+    image.scale(width * 2, height * 2);
+    image.SetReversed(direction);
 }
 
 void Player::updateBullets(long long deltaTime)

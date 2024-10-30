@@ -52,8 +52,8 @@ public:
     Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
     {
         makeTime = std::chrono::system_clock::now();
-        players.emplace_back(100.0f, 400.0f, &level);
-        players.emplace_back(500.0f, 400.0f, &level, sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L, sf::Keyboard::Enter);
+        players.emplace_back(100.0f, 400.0f, &level, TextureID::PLAYER1);
+        players.emplace_back(500.0f, 400.0f, &level, sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L, sf::Keyboard::Enter, TextureID::PLAYER2);
 
         items.emplace_back(200.0f, -500.0f, &level);
         // 시작시 바로 플레어이 중앙으로 옮길지 말지
