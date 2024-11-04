@@ -30,6 +30,7 @@ private:
     int jumpChance;     // 점프 기회
     int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
     bool OnAir;
+    int life;
 
     // 키입력 분리
     sf::Keyboard::Key upKeyBind;
@@ -39,7 +40,7 @@ private:
     sf::Keyboard::Key attackKeyBind;
 
     // [cham] 9.22
-    uint8_t gunId;
+    uint8 gunId;
     
     std::list<Bullet> bullets;
     int curMag;
@@ -106,7 +107,10 @@ public:
     // 피해량을 조절해준다(업데이트에서 호출)
     void damageControll(long long deltaTime);
 
+    int getCurMag() const { return curMag; }
     void getItem();
+    int getGunID() const { return gunId; }
+    int getLife() const { return life; }
 };
 
 

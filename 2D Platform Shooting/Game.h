@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Item.h"
 #include "Image.h"
+
+
 // #include "TextureManager.h"
 
 constexpr int WINDOW_WIDTH = 800;
@@ -47,20 +49,15 @@ private:
     sf::View view;
 
     std::chrono::system_clock::time_point makeTime;
+
+    Image Background;
+    Image UI[2];
+    sf::Font font;
+    sf::Text texts[6];
+
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
-    Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"), level(), view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
-    {
-        makeTime = std::chrono::system_clock::now();
-        players.emplace_back(100.0f, 400.0f, &level, TextureID::PLAYER1);
-        players.emplace_back(500.0f, 400.0f, &level, sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L, sf::Keyboard::Enter, TextureID::PLAYER2);
-
-        items.emplace_back(200.0f, -500.0f, &level);
-        // 시작시 바로 플레어이 중앙으로 옮길지 말지
-        //InitView();
-
-        // CHAM_TODO: 일단 여기에 초기화.
-    }
+    Game();
 
     // 카메라 뷰를 Player어 중심으로
     void InitView();
@@ -88,6 +85,11 @@ public:
 
     // 게임의 모든 객체를 그린다
     void draw();
+
+    // 문자 객체 초기화
+    void InitText();
+    void updateTexts();
+    void drawTexts();
 
 
     // cham TODO: gun manager에서 작업하도록 변경

@@ -19,6 +19,7 @@ Player::Player(float x, float y, Level* level, int texture_id)
     , leftKeyDown(false)
     , rightKeyDown(false)
     , image(texture_id)
+    , life(3)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -57,6 +58,7 @@ Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyb
     , leftKeyDown(false)
     , rightKeyDown(false)
     , image(texture_id)
+    , life(3)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -94,11 +96,11 @@ void Player::handleInput(const sf::Event& event)
             }
         }
         if (event.key.code == attackKeyBind) {
-            auto nowTime = std::chrono::system_clock::now();
-            // RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
-            std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
-            if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
-                fireBullet();
+            //auto nowTime = std::chrono::system_clock::now();
+            //// RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
+            //std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
+            //if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
+            //    fireBullet();
         }
         if (event.key.code == sf::Keyboard::D) {
             dash();
@@ -110,7 +112,7 @@ void Player::handleInput(const sf::Event& event)
             gunId = 1;
         }
         if (event.key.code == sf::Keyboard::R) {
-            revivePlayer();     // 임시로 키 바인딩으로 부활 호출
+            // revivePlayer();     // 임시로 키 바인딩으로 부활 호출
         }
     }
 }
@@ -150,6 +152,7 @@ void Player::update(long long deltaTime)
     // 좌우 키가 눌리고 있는지
     leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
     rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
+    fireKeyDown = sf::Keyboard::isKeyPressed(attackKeyBind);
 
     if (fireKeyDown) {
         auto nowTime = std::chrono::system_clock::now();
@@ -214,6 +217,7 @@ void Player::update(long long deltaTime)
     if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
     {
         isActive = false;
+        revivePlayer();
     }
 
     auto& pos = shape.getPosition();
@@ -318,6 +322,8 @@ void Player::revivePlayer()
     shape.setPosition((level->leftBound+level->rightBound) / 2.0f, -1000.0f);  // -1000.0f 는 수정해야 할수도
 
     damaged = 0;
+
+    --life;
 }
 
 bool Player::checkCollisionBullet(sf::FloatRect other)

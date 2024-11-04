@@ -32,6 +32,7 @@ using std::endl;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
+
 // type define
 using int8 = __int8;
 using int16 = __int16;
@@ -41,5 +42,9 @@ using uint8 = unsigned __int8;
 using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
+
+// constant
+constexpr auto FONT_PATH{ "Resource\\Font\\malgun.ttf" };
+
 
 extern std::default_random_engine RANDOM_ENGINE;

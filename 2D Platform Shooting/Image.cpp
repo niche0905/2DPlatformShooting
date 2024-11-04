@@ -45,7 +45,6 @@ void Image::draw(sf::RenderWindow& window)
 	sprite.setTexture(texture);
 	if (reversed) {
 		sf::FloatRect bounds = sprite.getLocalBounds();
-		std::cout << bounds.width << bounds.width << endl;
 		sprite.setOrigin(bounds.width / 2.f, bounds.height);
 		sprite.setScale(-0.1f, 0.1f);
 		window.draw(sprite);
@@ -54,4 +53,13 @@ void Image::draw(sf::RenderWindow& window)
 	else {
 		window.draw(sprite);
 	}
+}
+
+void Image::drawFixed(sf::RenderWindow& window)
+{
+	sprite.setTexture(texture);
+	sf::View fixed = window.getView();
+	window.setView(window.getDefaultView());
+	window.draw(sprite);
+	window.setView(fixed); 
 }
