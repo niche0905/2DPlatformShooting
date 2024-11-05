@@ -20,6 +20,8 @@ enum PacketID
 	// 필요 시 보고서에 반영하고 추가하기
 };
 
+constexpr int MaxPacketSize{ 32 };		// 패킷 최대 사이즈 (버퍼 사이즈를 정하는)
+
 constexpr int SyncTime{ 30 };			// 동기화 시간 1초에 30번 (1/30 초)
 
 constexpr float BulletWidth{ 20.0f };	// 총알 넓이
