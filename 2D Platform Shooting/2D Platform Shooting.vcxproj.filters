@@ -34,6 +34,12 @@
     <Filter Include="Res\Text">
       <UniqueIdentifier>{2871b454-cd73-4bd0-9488-faaabfc6974b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{057b3d75-f112-40b9-95ca-ffb3dadc272b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ClientNetworkManager">
+      <UniqueIdentifier>{7927147c-ba92-4cc8-9d0c-e5e59d05ba89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gun.cpp">
@@ -64,6 +70,9 @@
     <ClCompile Include="Image.cpp">
       <Filter>Res\Image</Filter>
     </ClCompile>
+    <ClCompile Include="ClientNetworkManager.cpp">
+      <Filter>Manager\ClientNetworkManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gun.h">
@@ -92,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="Image.h">
       <Filter>Res\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientNetworkManager.h">
+      <Filter>Manager\ClientNetworkManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
