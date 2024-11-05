@@ -17,7 +17,7 @@ enum PacketID
 	SC_ITEM_CREATE,
 	SC_ITEM_REMOVE,
 	SC_GUN_UPDATE,
-	SC_LIVE_UPDATE,
+	SC_LIFE_UPDATE,
 	SC_GAMEOVER
 	// 필요 시 보고서에 반영하고 추가하기
 };
@@ -46,12 +46,14 @@ struct BASE_PACKET
 {
 	uint8_t size;
 	uint8_t id;
+
+	BASE_PACKET(uint8_t packet_size, uint8_t packet_id) : size(packet_size), id(packet_id) {}
 };
 
 // client to server 매치메이킹 잡는다
 struct CS_MATCHMAKING_PACKET : public BASE_PACKET
 {
-
+	CS_MATCHMAKING_PACKET() : BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), CS_MATCHMAKING) {}
 };
 
 // client to server 플레이어가 해당 위치로 이동했다
@@ -60,6 +62,13 @@ struct CS_MOVE_PACKET : public BASE_PACKET
 	uint32_t p_id;
 	float posX, posY;
 	bool dir;
+	
+	CS_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction) 
+		: BASE_PACKET(sizeof(CS_MOVE_PACKET), CS_MOVE)
+		, p_id(player_id)
+		, posX(x)
+		, posY(y)
+		, dir(direction) {}
 };
 
 // client to server 플레이어가 해당 위치에서 총알을 발사 하였다
@@ -70,12 +79,26 @@ struct CS_FIRE_PACKET : public BASE_PACKET
 	bool dir;
 	uint32_t type;
 	std::chrono::milliseconds fire_t;
+
+	CS_FIRE_PACKET(uint32_t bullet_id, float x, float y, bool direction, 
+		uint32_t bullet_type, std::chrono::milliseconds fire_time)
+		: BASE_PACKET(sizeof(CS_FIRE_PACKET), CS_FIRE)
+		, b_id(bullet_id)
+		, posX(x)
+		, posY(y)
+		, dir(direction)
+		, type(bullet_type)
+		, fire_t(fire_time) {}
 };
 
 // server to client 매치메이킹 잡혔다
-struct SC_MATCHMAKING : public BASE_PACKET
+struct SC_MATCHMAKING_PAKCET : public BASE_PACKET
 {
 	bool succ;
+
+	SC_MATCHMAKING_PAKCET(bool success = true)
+		: BASE_PACKET(sizeof(SC_MATCHMAKING_PAKCET), SC_MATCHMAKING)
+		, succ(success) {}
 };
 
 // server to client 플레이어가 이쪽으로 이동했다
@@ -84,12 +107,23 @@ struct SC_MOVE_PAKCET : public BASE_PACKET
 	uint32_t p_id;
 	float posX, posY;
 	bool dir;
+
+	SC_MOVE_PAKCET(uint32_t player_id, float x, float y, bool direction)
+		: BASE_PACKET(sizeof(SC_MOVE_PAKCET), SC_MOVE)
+		, p_id(player_id)
+		, posX(x)
+		, posY(y)
+		, dir(direction) {}
 };
 
 // server to client 플레이어가 데미지를 입었다
 struct SC_PLAYER_DAMAGE_PACKET : public BASE_PACKET
 {
 	float damage;
+
+	SC_PLAYER_DAMAGE_PACKET(float damaged)
+		: BASE_PACKET(sizeof(SC_PLAYER_DAMAGE_PACKET), SC_PLAYER_DAMAGE)
+		, damage(damaged) {}
 };
 
 // server to client 플레이어가 총을 쏜 사실을 알림
@@ -100,6 +134,16 @@ struct SC_FIRE_PACKET : public BASE_PACKET
 	bool dir;
 	uint32_t type;
 	std::chrono::milliseconds fire_t;
+
+	SC_FIRE_PACKET(uint32_t bullet_id, float x, float y, bool direction,
+		uint32_t bullet_type, std::chrono::milliseconds fire_time)
+		: BASE_PACKET(sizeof(SC_FIRE_PACKET), SC_FIRE)
+		, b_id(bullet_id)
+		, posX(x)
+		, posY(y)
+		, dir(direction)
+		, type(bullet_type)
+		, fire_t(fire_time) {}
 };
 
 // server to client 해당 총알이 사라졌음을 알리는 패킷
@@ -107,6 +151,11 @@ struct SC_BULLET_REMOVE_PACKET : public BASE_PACKET
 {
 	uint32_t p_id;
 	uint32_t b_id;
+
+	SC_BULLET_REMOVE_PACKET(uint32_t player_id, uint32_t bullet_id)
+		: BASE_PACKET(sizeof(SC_BULLET_REMOVE_PACKET), SC_BULLET_REMOVE)
+		, p_id(player_id)
+		, b_id(bullet_id) {}
 };
 
 // server to client 아이템 해당 위치에 생성 되었다
@@ -114,12 +163,22 @@ struct SC_ITEM_CREATE_PACKET : public BASE_PACKET
 {
 	uint32_t i_id;
 	float posX, posY;
+
+	SC_ITEM_CREATE_PACKET(uint32_t item_id, float x, float y)
+		: BASE_PACKET(sizeof(SC_ITEM_CREATE_PACKET), SC_ITEM_CREATE)
+		, i_id(item_id)
+		, posX(x)
+		, posY(y) {}
 };
 
 // server to client 해당 아이템이 삭제되었다
 struct SC_ITEM_REMOVE_PACKET : public BASE_PACKET
 {
 	uint32_t i_id;
+
+	SC_ITEM_REMOVE_PACKET(uint32_t item_id)
+		: BASE_PACKET(sizeof(SC_ITEM_REMOVE_PACKET), SC_ITEM_REMOVE)
+		, i_id(item_id) {}
 };
 
 // server to client 해당 플레이어가 해당 총으로 변경되었다
@@ -127,16 +186,26 @@ struct SC_GUN_UPDATE_PACKET : public BASE_PACKET
 {
 	uint32_t p_id;
 	uint32_t g_id;
+
+	SC_GUN_UPDATE_PACKET(uint32_t player_id, uint32_t gun_id)
+		: BASE_PACKET(sizeof(SC_GUN_UPDATE_PACKET), SC_GUN_UPDATE)
+		, p_id(player_id)
+		, g_id(gun_id) {}
 };
 
 // server to client 해당 플레이어의 목숨이 감소했다
 struct SC_LIFE_UPDATE_PACKET : public BASE_PACKET
 {
 	uint32_t p_id;
+
+	SC_LIFE_UPDATE_PACKET(uint32_t player_id)
+		: BASE_PACKET(sizeof(SC_LIFE_UPDATE_PACKET), SC_LIFE_UPDATE)
+		, p_id(player_id) {}
 };
 
 // server to client 게임이 종료되었음을 알림
 struct SC_GAMEOVER_PACKET : public BASE_PACKET
 {
-	
+	SC_GAMEOVER_PACKET()
+		: BASE_PACKET(sizeof(SC_GAMEOVER_PACKET), SC_GAMEOVER) {}
 };
