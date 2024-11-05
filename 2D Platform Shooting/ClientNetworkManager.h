@@ -4,9 +4,9 @@
 class ClientNetworkManager {
 private:
 	// 소켓
-	HANDLE socket;
+	SOCKET clientSocket;
 	// 스레드
-	HANDLE thread;
+	HANDLE clientThread;
 	// 스레드 전달 큐
 	std::queue<std::array<char, MAX_SIZE>> process_queue;
 	// 클라이언트 ID
