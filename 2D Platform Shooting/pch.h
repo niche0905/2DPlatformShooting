@@ -6,12 +6,14 @@
 #include <SFML/Graphics.hpp>
 
 // 표준 라이브러리
+#include <Windows.h>
  
 // 자료구조
 #include <list>
 #include <vector>
 #include <string>
 #include <array>
+#include <queue>
 #include <unordered_map>
 
 // 알고리즘
