@@ -7,3 +7,5 @@ constexpr float PlatformUp = 10.0f;             // 플랫폼 위에 있다는 기준(충돌 
 sf::Vector2f lerp(const sf::Vector2f& start, const sf::Vector2f& end, float t);
 
 #define MAX_SIZE 64
+
+#define SERVER_PORT 9000

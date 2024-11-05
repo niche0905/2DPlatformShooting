@@ -1,3 +1,4 @@
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "pch.h"
 #include "ClientNetworkManager.h"
 
@@ -49,7 +50,31 @@ void ClientNetworkManager::Init()
 
 void ClientNetworkManager::Connect()
 {
+    // 서버 주소 설정
+    SOCKADDR_IN serverAddr;
+    ZeroMemory(&serverAddr, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(SERVER_PORT);
+    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
+    // 연결 시도
+    int result = connect(clientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
+    if (result == SOCKET_ERROR) {
+        closesocket(clientSocket);
+        WSACleanup();
+        return;
+    }
+
+    // WSAEventSelect 설정 - 비동기 이벤트 처리를 위해
+    result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
+    if (result == SOCKET_ERROR) {
+        closesocket(clientSocket);
+        WSACleanup();
+        return;
+    }
+
+    // 연결 성공 후 수신 스레드 생성
+    CreateRecvThread();
 }
 
 void ClientNetworkManager::CreateRecvThread()
