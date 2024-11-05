@@ -18,20 +18,20 @@ void ClientNetworkManager::Init()
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) return;
 
     // 소켓 생성
-    client_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (client_socket == INVALID_SOCKET) //err_quit("socket()");
+    clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (clientSocket == INVALID_SOCKET) //err_quit("socket()");
 
     // 이벤트 핸들 생성
     recvEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     if (recvEvent == NULL) {
-        closesocket(client_socket);
+        closesocket(clientSocket);
         //err_quit("Failed to create receive event");
     }
 
     processEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     if (processEvent == NULL) {
         CloseHandle(recvEvent);
-        closesocket(client_socket);
+        closesocket(clientSocket);
         //err_quit("Failed to create process event");
     }
 
@@ -44,7 +44,7 @@ void ClientNetworkManager::Init()
     ClientID = -1;
 
     // 스레드 핸들 초기화
-    client_thread = NULL;
+    clientThread = NULL;
 }
 
 void ClientNetworkManager::Connect()

@@ -5,8 +5,13 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-// 표준 라이브러리
-#include <Windows.h>
+// 윈속2 메인 헤더
+#include <winsock2.h>
+// 윈속2 확장 헤더
+#include <ws2tcpip.h>
+
+ // ws2_32.lib 링크
+#pragma comment(lib, "ws2_32")
  
 // 자료구조
 #include <list>
