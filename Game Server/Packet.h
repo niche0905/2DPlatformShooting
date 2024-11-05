@@ -41,6 +41,8 @@ constexpr float PlatformUp = 10.0f;     // 플랫폼 위에 있다는 기준(충돌 처리 시 
 // 패킷들
 //---------------------------------------------------------
 
+#pragma pack(push, 1)
+
 // 패킷 헤더
 struct BASE_PACKET
 {
@@ -209,3 +211,5 @@ struct SC_GAMEOVER_PACKET : public BASE_PACKET
 	SC_GAMEOVER_PACKET()
 		: BASE_PACKET(sizeof(SC_GAMEOVER_PACKET), SC_GAMEOVER) {}
 };
+
+#pragma pack(pop)
