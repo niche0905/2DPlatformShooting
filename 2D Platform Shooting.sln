@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2D Platform Shooting", "2D 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game Server", "Game Server\Game Server.vcxproj", "{6030D6FE-2FCA-4E10-B194-91794EB1D547}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Network Protocol", "Network Protocol\Network Protocol.vcxproj", "{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{6030D6FE-2FCA-4E10-B194-91794EB1D547}.Release|x64.Build.0 = Release|x64
 		{6030D6FE-2FCA-4E10-B194-91794EB1D547}.Release|x86.ActiveCfg = Release|Win32
 		{6030D6FE-2FCA-4E10-B194-91794EB1D547}.Release|x86.Build.0 = Release|Win32
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Debug|x64.ActiveCfg = Debug|x64
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Debug|x64.Build.0 = Debug|x64
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Debug|x86.ActiveCfg = Debug|Win32
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Debug|x86.Build.0 = Debug|Win32
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Release|x64.ActiveCfg = Release|x64
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Release|x64.Build.0 = Release|x64
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Release|x86.ActiveCfg = Release|Win32
+		{D658ECF8-D2EF-4611-8BE2-EEDE23A98133}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
