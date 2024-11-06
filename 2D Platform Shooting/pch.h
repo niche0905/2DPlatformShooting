@@ -33,6 +33,16 @@
 #include <filesystem>
 #include <print>
 
+// 우리 라이브러리
+#define WIN32_LEAN_AND_MEAN
+
+#ifdef _DEBUG
+#pragma comment(lib, "Debug\\Network Protocol.lib")
+#else
+#pragma comment(lib, "Release\\Network Protocol.lib")
+#endif
+
+#include "CorePch.h"
 
 using std::cout;
 using std::endl;
