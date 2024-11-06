@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CorePch.h" />
+    <ClInclude Include="Packet.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

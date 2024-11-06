@@ -15,6 +15,9 @@
     <ClInclude Include="CorePch.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
