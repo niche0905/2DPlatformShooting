@@ -12,9 +12,15 @@
     <ClInclude Include="pch.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="CorePch.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CorePch.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
