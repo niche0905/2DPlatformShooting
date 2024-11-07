@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream>
+#include <cstdint>
 #include <chrono>
 
 // 라이브러리화 로 사용할 예정
@@ -107,14 +107,14 @@ struct SC_MATCHMAKING_PACKET : public BASE_PACKET
 };
 
 // server to client 플레이어가 이쪽으로 이동했다
-struct SC_MOVE_PAKCET : public BASE_PACKET
+struct SC_MOVE_PACKET : public BASE_PACKET
 {
 	uint32_t p_id;
 	float posX, posY;
 	bool dir;
 
-	SC_MOVE_PAKCET(uint32_t player_id, float x, float y, bool direction)
-		: BASE_PACKET(sizeof(SC_MOVE_PAKCET), PacketID::SC_MOVE)
+	SC_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction)
+		: BASE_PACKET(sizeof(SC_MOVE_PACKET), PacketID::SC_MOVE)
 		, p_id(player_id)
 		, posX(x)
 		, posY(y)
