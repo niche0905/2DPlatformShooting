@@ -50,6 +50,7 @@ struct BASE_PACKET
 	PacketID id;
 
 	BASE_PACKET(uint8_t packet_size, PacketID packet_id) : size(packet_size), id(packet_id) {}
+	BASE_PACKET() : size(2), id(static_cast<PacketID>(0)) {}
 };
 
 // client to server 매치메이킹 잡는다
