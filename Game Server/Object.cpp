@@ -52,12 +52,16 @@ BoundingBox Object::GetBB() const
 	BoundingBox bb;
 	bb.left = posX - pivotX * width;
 	bb.right = posX + (1.0f - pivotX) * width;
-	bb.top = posY + pivotY * height;
+	bb.top = posY - pivotY * height;
 	bb.bottom = posY + (1.0f - pivotY) * height;
 	return bb;
 }
 
 bool Object::Collision(const Object& other)
 {
-	return false;
+	BoundingBox a_bb = GetBB();
+	BoundingBox b_bb = other.GetBB();
+
+	return a_bb.left < b_bb.right && a_bb.right > b_bb.left
+		&& a_bb.top < b_bb.bottom && a_bb.bottom > b_bb.top;
 }
