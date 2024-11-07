@@ -14,7 +14,7 @@ namespace myNP {
 		CS_MOVE,
 		CS_FIRE,
 		SC_MATCHMAKING,
-		SC_MOVE,
+		SC_MY_MOVE,
 		SC_PLAYER_DAMAGE,
 		SC_FIRE,
 		SC_BULLET_REMOVE,
@@ -116,7 +116,7 @@ namespace myNP {
 		bool dir;
 
 		SC_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction)
-			: BASE_PACKET(sizeof(SC_MOVE_PACKET), PacketID::SC_MOVE)
+			: BASE_PACKET(sizeof(SC_MOVE_PACKET), PacketID::SC_MY_MOVE)
 			, p_id(player_id)
 			, posX(x)
 			, posY(y)

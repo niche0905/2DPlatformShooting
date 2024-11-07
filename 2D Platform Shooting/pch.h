@@ -42,7 +42,7 @@
 #pragma comment(lib, "Release\\Network Protocol.lib")
 #endif
 
-//#include "CorePch.h"
+#include "CorePch.h"
 
 using std::cout;
 using std::endl;
