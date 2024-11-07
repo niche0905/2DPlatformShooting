@@ -8,6 +8,12 @@ Object::Object()
 }
 
 Object::Object(float pos_x, float pos_y, float width, float height, float pivot_x, float pivot_y)
+	: posX(pos_x)
+	, posY(pos_y)
+	, width(width)
+	, height(height)
+	, pivotX(pivot_x)
+	, pivotY(pivot_y)
 {
 
 }
