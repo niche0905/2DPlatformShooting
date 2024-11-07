@@ -4,7 +4,10 @@
 #include "CorePch.h"
 
 
-class Object;
+class Object
+{
+	int temp;
+};
 
 class World
 {

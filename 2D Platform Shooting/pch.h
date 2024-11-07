@@ -5,6 +5,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 // 윈속2 메인 헤더
 #include <winsock2.h>
 // 윈속2 확장 헤더
@@ -48,7 +49,6 @@ using std::cout;
 using std::endl;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
-
 
 // type define
 using int8 = __int8;
