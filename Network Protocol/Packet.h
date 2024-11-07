@@ -94,12 +94,12 @@ struct CS_FIRE_PACKET : public BASE_PACKET
 };
 
 // server to client 매치메이킹 잡혔다
-struct SC_MATCHMAKING_PAKCET : public BASE_PACKET
+struct SC_MATCHMAKING_PACKET : public BASE_PACKET
 {
 	bool succ;
 
-	SC_MATCHMAKING_PAKCET(bool success = true)
-		: BASE_PACKET(sizeof(SC_MATCHMAKING_PAKCET), PacketID::SC_MATCHMAKING)
+	SC_MATCHMAKING_PACKET(bool success = true)
+		: BASE_PACKET(sizeof(SC_MATCHMAKING_PACKET), PacketID::SC_MATCHMAKING)
 		, succ(success) {}
 };
 
