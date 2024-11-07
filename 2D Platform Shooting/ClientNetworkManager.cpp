@@ -36,9 +36,7 @@ void ClientNetworkManager::Init()
     }
 
     // 큐 초기화
-    while (!process_queue.empty()) {
-        process_queue.pop();
-    }
+    process_queue = std::queue<std::array<char, MAX_SIZE>>();
 
     // 클라이언트 ID 초기화
     ClientID = -1;
@@ -50,14 +48,20 @@ void ClientNetworkManager::Init()
 void ClientNetworkManager::Connect()
 {
     // 서버 주소 설정
-    SOCKADDR_IN serverAddr;
-    ZeroMemory(&serverAddr, sizeof(serverAddr));
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(SERVER_PORT);
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    struct sockaddr_in serveraddr;
+    memset(&serveraddr, 0, sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    serveraddr.sin_port = htons(SERVER_PORT);
+
+    // inet_pton 사용하여 IP 주소 변환
+    if (inet_pton(AF_INET, "127.0.0.1", &serveraddr.sin_addr) != 1) {
+        closesocket(clientSocket);
+        WSACleanup();
+        return;
+    }
 
     // 연결 시도
-    int result = connect(clientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
+    int result = connect(clientSocket, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
     if (result == SOCKET_ERROR) {
         closesocket(clientSocket);
         WSACleanup();
@@ -83,7 +87,17 @@ void ClientNetworkManager::CreateRecvThread()
 
 void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 {
+    // 새로운 버퍼 배열 생성
+    std::array<char, MAX_SIZE> newBuffer;
 
+    // 받은 버퍼의 데이터를 새 배열에 복사
+    memcpy(newBuffer.data(), buf, MAX_SIZE);
+
+    // 큐에 버퍼 추가
+    process_queue.push(newBuffer);
+
+    // 처리 이벤트 설정
+    SetEvent(processEvent);
 }
 
 void ClientNetworkManager::SendPacket(char buf[MAX_SIZE])
@@ -91,17 +105,7 @@ void ClientNetworkManager::SendPacket(char buf[MAX_SIZE])
 
 }
 
-void ClientNetworkManager::PushBuffer()
-{
-
-}
-
 void ClientNetworkManager::Update()
-{
-
-}
-
-void ClientNetworkManager::Draw()
 {
 
 }
