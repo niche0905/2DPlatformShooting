@@ -1,7 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include <chrono>
 
-// .h 파일을 복사하는 것이 아닌 다른 패킷 (프로토콜) 공유 방법 찾아볼 예정
+// 라이브러리화 로 사용할 예정
 
 enum PacketID : uint8_t
 {
