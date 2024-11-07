@@ -3,7 +3,7 @@
 
 // .h 파일을 복사하는 것이 아닌 다른 패킷 (프로토콜) 공유 방법 찾아볼 예정
 
-enum PacketID
+enum PacketID : uint8_t
 {
 	// 0은 문제가 생기는 것을 확인하기 위해 비워둠
 	CS_MATCHMAKING = 1,
@@ -47,15 +47,15 @@ constexpr float PlatformUp = 10.0f;     // 플랫폼 위에 있다는 기준(충돌 처리 시 
 struct BASE_PACKET
 {
 	uint8_t size;
-	uint8_t id;
+	PacketID id;
 
-	BASE_PACKET(uint8_t packet_size, uint8_t packet_id) : size(packet_size), id(packet_id) {}
+	BASE_PACKET(uint8_t packet_size, PacketID packet_id) : size(packet_size), id(packet_id) {}
 };
 
 // client to server 매치메이킹 잡는다
 struct CS_MATCHMAKING_PACKET : public BASE_PACKET
 {
-	CS_MATCHMAKING_PACKET() : BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), CS_MATCHMAKING) {}
+	CS_MATCHMAKING_PACKET() : BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), PacketID::CS_MATCHMAKING) {}
 };
 
 // client to server 플레이어가 해당 위치로 이동했다
@@ -66,7 +66,7 @@ struct CS_MOVE_PACKET : public BASE_PACKET
 	bool dir;
 	
 	CS_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction) 
-		: BASE_PACKET(sizeof(CS_MOVE_PACKET), CS_MOVE)
+		: BASE_PACKET(sizeof(CS_MOVE_PACKET), PacketID::CS_MOVE)
 		, p_id(player_id)
 		, posX(x)
 		, posY(y)
@@ -84,7 +84,7 @@ struct CS_FIRE_PACKET : public BASE_PACKET
 
 	CS_FIRE_PACKET(uint32_t bullet_id, float x, float y, bool direction, 
 		uint32_t bullet_type, std::chrono::milliseconds fire_time)
-		: BASE_PACKET(sizeof(CS_FIRE_PACKET), CS_FIRE)
+		: BASE_PACKET(sizeof(CS_FIRE_PACKET), PacketID::CS_FIRE)
 		, b_id(bullet_id)
 		, posX(x)
 		, posY(y)
@@ -99,7 +99,7 @@ struct SC_MATCHMAKING_PAKCET : public BASE_PACKET
 	bool succ;
 
 	SC_MATCHMAKING_PAKCET(bool success = true)
-		: BASE_PACKET(sizeof(SC_MATCHMAKING_PAKCET), SC_MATCHMAKING)
+		: BASE_PACKET(sizeof(SC_MATCHMAKING_PAKCET), PacketID::SC_MATCHMAKING)
 		, succ(success) {}
 };
 
@@ -111,7 +111,7 @@ struct SC_MOVE_PAKCET : public BASE_PACKET
 	bool dir;
 
 	SC_MOVE_PAKCET(uint32_t player_id, float x, float y, bool direction)
-		: BASE_PACKET(sizeof(SC_MOVE_PAKCET), SC_MOVE)
+		: BASE_PACKET(sizeof(SC_MOVE_PAKCET), PacketID::SC_MOVE)
 		, p_id(player_id)
 		, posX(x)
 		, posY(y)
@@ -124,7 +124,7 @@ struct SC_PLAYER_DAMAGE_PACKET : public BASE_PACKET
 	float damage;
 
 	SC_PLAYER_DAMAGE_PACKET(float damaged)
-		: BASE_PACKET(sizeof(SC_PLAYER_DAMAGE_PACKET), SC_PLAYER_DAMAGE)
+		: BASE_PACKET(sizeof(SC_PLAYER_DAMAGE_PACKET), PacketID::SC_PLAYER_DAMAGE)
 		, damage(damaged) {}
 };
 
@@ -139,7 +139,7 @@ struct SC_FIRE_PACKET : public BASE_PACKET
 
 	SC_FIRE_PACKET(uint32_t bullet_id, float x, float y, bool direction,
 		uint32_t bullet_type, std::chrono::milliseconds fire_time)
-		: BASE_PACKET(sizeof(SC_FIRE_PACKET), SC_FIRE)
+		: BASE_PACKET(sizeof(SC_FIRE_PACKET), PacketID::SC_FIRE)
 		, b_id(bullet_id)
 		, posX(x)
 		, posY(y)
@@ -155,7 +155,7 @@ struct SC_BULLET_REMOVE_PACKET : public BASE_PACKET
 	uint32_t b_id;
 
 	SC_BULLET_REMOVE_PACKET(uint32_t player_id, uint32_t bullet_id)
-		: BASE_PACKET(sizeof(SC_BULLET_REMOVE_PACKET), SC_BULLET_REMOVE)
+		: BASE_PACKET(sizeof(SC_BULLET_REMOVE_PACKET), PacketID::SC_BULLET_REMOVE)
 		, p_id(player_id)
 		, b_id(bullet_id) {}
 };
@@ -167,7 +167,7 @@ struct SC_ITEM_CREATE_PACKET : public BASE_PACKET
 	float posX, posY;
 
 	SC_ITEM_CREATE_PACKET(uint32_t item_id, float x, float y)
-		: BASE_PACKET(sizeof(SC_ITEM_CREATE_PACKET), SC_ITEM_CREATE)
+		: BASE_PACKET(sizeof(SC_ITEM_CREATE_PACKET), PacketID::SC_ITEM_CREATE)
 		, i_id(item_id)
 		, posX(x)
 		, posY(y) {}
@@ -179,7 +179,7 @@ struct SC_ITEM_REMOVE_PACKET : public BASE_PACKET
 	uint32_t i_id;
 
 	SC_ITEM_REMOVE_PACKET(uint32_t item_id)
-		: BASE_PACKET(sizeof(SC_ITEM_REMOVE_PACKET), SC_ITEM_REMOVE)
+		: BASE_PACKET(sizeof(SC_ITEM_REMOVE_PACKET), PacketID::SC_ITEM_REMOVE)
 		, i_id(item_id) {}
 };
 
@@ -190,7 +190,7 @@ struct SC_GUN_UPDATE_PACKET : public BASE_PACKET
 	uint32_t g_id;
 
 	SC_GUN_UPDATE_PACKET(uint32_t player_id, uint32_t gun_id)
-		: BASE_PACKET(sizeof(SC_GUN_UPDATE_PACKET), SC_GUN_UPDATE)
+		: BASE_PACKET(sizeof(SC_GUN_UPDATE_PACKET), PacketID::SC_GUN_UPDATE)
 		, p_id(player_id)
 		, g_id(gun_id) {}
 };
@@ -201,7 +201,7 @@ struct SC_LIFE_UPDATE_PACKET : public BASE_PACKET
 	uint32_t p_id;
 
 	SC_LIFE_UPDATE_PACKET(uint32_t player_id)
-		: BASE_PACKET(sizeof(SC_LIFE_UPDATE_PACKET), SC_LIFE_UPDATE)
+		: BASE_PACKET(sizeof(SC_LIFE_UPDATE_PACKET), PacketID::SC_LIFE_UPDATE)
 		, p_id(player_id) {}
 };
 
@@ -209,7 +209,7 @@ struct SC_LIFE_UPDATE_PACKET : public BASE_PACKET
 struct SC_GAMEOVER_PACKET : public BASE_PACKET
 {
 	SC_GAMEOVER_PACKET()
-		: BASE_PACKET(sizeof(SC_GAMEOVER_PACKET), SC_GAMEOVER) {}
+		: BASE_PACKET(sizeof(SC_GAMEOVER_PACKET), PacketID::SC_GAMEOVER) {}
 };
 
 #pragma pack(pop)
