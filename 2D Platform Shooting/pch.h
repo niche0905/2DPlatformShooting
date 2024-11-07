@@ -50,7 +50,6 @@ using std::endl;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
-
 // type define
 using int8 = __int8;
 using int16 = __int16;
