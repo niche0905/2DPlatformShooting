@@ -15,7 +15,7 @@ class Object
 private:
 	float posX, posY;		// 오브젝트 위치값
 	float width, height;	// 오브젝트 넓이, 높이
-	float pivotX, pivotY;	// 오브젝트 피봇값
+	float pivotX, pivotY;	// 오브젝트 피봇값 0.0 ~ 1.0
 
 public:
 	Object();
@@ -25,8 +25,8 @@ public:
 	void SetPos(float pos_x, float pos_y);
 	void SetPivot(float pivot_x, float pivot_y);
 
-	Position GetPos();
-	BoundingBox GetBB();
+	Position GetPos() const;
+	BoundingBox GetBB() const;
 
 	bool Collision(const Object& other);
 
