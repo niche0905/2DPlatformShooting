@@ -43,12 +43,18 @@ void Object::SetPivot(float pivot_x, float pivot_y)
 
 Position Object::GetPos() const
 {
-	return Position();
+	Position pos{ posX, posY };
+	return pos;
 }
 
 BoundingBox Object::GetBB() const
 {
-	return BoundingBox();
+	BoundingBox bb;
+	bb.left = posX - pivotX * width;
+	bb.right = posX + (1.0f - pivotX) * width;
+	bb.top = posY + pivotY * height;
+	bb.bottom = posY + (1.0f - pivotY) * height;
+	return bb;
 }
 
 bool Object::Collision(const Object& other)
