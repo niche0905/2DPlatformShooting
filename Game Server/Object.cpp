@@ -44,6 +44,7 @@ void Object::SetPivot(float pivot_x, float pivot_y)
 Position Object::GetPos() const
 {
 	Position pos{ posX, posY };
+	// TODO: position 을 피봇값으로 바꾸어야 한다
 	return pos;
 }
 
