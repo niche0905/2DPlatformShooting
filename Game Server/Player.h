@@ -20,6 +20,9 @@ public:
 	Player(float pos_x, float pos_y, bool dir);
 
 	void GunInit();
+	void GunUpdate(uint8_t gun_id);
+
+
 
 };
 
