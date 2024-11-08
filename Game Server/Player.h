@@ -22,7 +22,7 @@ public:
 	void GunInit();
 	void GunUpdate(uint8_t gun_id);
 
-
+	Position GunFire();
 
 };
 
