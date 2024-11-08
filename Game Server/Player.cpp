@@ -6,7 +6,7 @@ Player::Player(bool dir)
 	: directon(dir)
 	, life(BaseLife)
 {
-
+	GunInit();
 }
 
 Player::Player(float pos_x, float pos_y, bool dir)
@@ -14,5 +14,11 @@ Player::Player(float pos_x, float pos_y, bool dir)
 	, directon(dir)
 	, life(BaseLife)
 {
+	GunInit();
+}
 
+void Player::GunInit()
+{
+	gunId = BaseGunID;
+	curMag = -1;
 }

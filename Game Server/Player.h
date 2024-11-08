@@ -19,6 +19,7 @@ public:
 	Player(bool dir);
 	Player(float pos_x, float pos_y, bool dir);
 
+	void GunInit();
 
 };
 
