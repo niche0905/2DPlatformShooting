@@ -5,8 +5,14 @@
 Player::Player(bool dir) 
 	: directon(dir)
 	, life(BaseLife)
-	, gunId(BaseGunID)
-	, curMag(-1)
+{
+
+}
+
+Player::Player(float pos_x, float pos_y, bool dir)
+	: Object(pos_x, pos_y, myNP::PlayerWidth, myNP::PlayerHeight, 0.5f, 1.0f)
+	, directon(dir)
+	, life(BaseLife)
 {
 
 }
