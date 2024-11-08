@@ -11,6 +11,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>Objects\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -22,6 +25,9 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{7c9e2978-d89c-4c36-ab65-cea0fe6cdd4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Player">
+      <UniqueIdentifier>{b64aceca-41ba-4458-8389-94e2f448615b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -32,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Objects\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
