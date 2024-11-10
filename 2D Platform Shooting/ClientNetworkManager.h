@@ -30,6 +30,9 @@ public:
 	// 패킷 전송
 	void SendPacket(char buf[MAX_SIZE]);
 
+	HANDLE GetRecvEvent() { return recvEvent; }
+	HANDLE GetProcessEvent() { return processEvent; }
+
 	void Update();
 };
 

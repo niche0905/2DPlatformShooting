@@ -2,6 +2,41 @@
 #include "pch.h"
 #include "ClientNetworkManager.h"
 
+DWORD WINAPI WorkerRecv(LPVOID arg)
+{
+    ClientNetworkManager* network = (ClientNetworkManager*)arg;
+    WSAEVENT events[1] = { network->GetRecvEvent()};
+    char buf[MAX_SIZE];
+
+    while (true) {
+        // 이벤트 대기
+        DWORD result = WSAWaitForMultipleEvents(1, events, FALSE, WSA_INFINITE, FALSE);
+        if (result == WSA_WAIT_FAILED) break;
+
+        // 이벤트 확인
+        WSANETWORKEVENTS networkEvents;
+        if (WSAEnumNetworkEvents(network->clientSocket, network->recvEvent, &networkEvents) == SOCKET_ERROR)
+            break;
+
+        // 연결 종료 확인
+        if (networkEvents.lNetworkEvents & FD_CLOSE) {
+            break;
+        }
+
+        // 데이터 수신
+        if (networkEvents.lNetworkEvents & FD_READ) {
+            int recvLen = recv(network->clientSocket, buf, MAX_SIZE, 0);
+            if (recvLen > 0) {
+                network->PushBuffer(buf);
+            }
+            else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
+                break;
+            }
+        }
+    }
+    return 0;
+}
+
 ClientNetworkManager::ClientNetworkManager()
 {
 
