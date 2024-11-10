@@ -14,7 +14,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         // 이벤트 확인
         WSANETWORKEVENTS networkEvents;
-        if (WSAEnumNetworkEvents(network->clientSocket, network->recvEvent, &networkEvents) == SOCKET_ERROR)
+        if (WSAEnumNetworkEvents(network->GetSocket(), network->GetRecvEvent(), &networkEvents) == SOCKET_ERROR)
             break;
 
         // 연결 종료 확인
@@ -24,7 +24,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         // 데이터 수신
         if (networkEvents.lNetworkEvents & FD_READ) {
-            int recvLen = recv(network->clientSocket, buf, MAX_SIZE, 0);
+            int recvLen = recv(network->GetSocket(), buf, MAX_SIZE, 0);
             if (recvLen > 0) {
                 network->PushBuffer(buf);
             }

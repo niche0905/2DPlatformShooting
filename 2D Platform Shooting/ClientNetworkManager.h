@@ -32,6 +32,7 @@ public:
 
 	HANDLE GetRecvEvent() { return recvEvent; }
 	HANDLE GetProcessEvent() { return processEvent; }
+	SOCKET GetSocket() { return clientSocket;  }
 
 	void Update();
 };
