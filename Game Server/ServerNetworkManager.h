@@ -8,14 +8,19 @@ using QueueType = std::queue<BufferType>;
 class ServerNetworkManager
 {
 public:
-	SOCKET socket{}; // 소켓
+	// SOCKET socket{NULL}; // 소켓
 	HANDLE thread{}; // 스레드
 	std::vector<QueueType> processQueue; // 스레드 전달 큐 벡터
-	std::array<HANDLE, 2> recvEvent{NULL};
-	std::array<HANDLE, 2> processEvent{NULL}; // 스레드 동기화를 위한 이벤트
+	std::array<HANDLE, 2> recvEvent{};
+	std::array<HANDLE, 2> processEvent{}; // 스레드 동기화를 위한 이벤트
+
+	// 추가된 변수
+	SOCKET listen_socket{ NULL }; // 소켓
+
 
 public:
 	ServerNetworkManager();
+	~ServerNetworkManager();
 
 	void Init();
 	void CreateLobbyThread(); // 로비 스레드 생성
@@ -25,3 +30,14 @@ public:
 	QueueType& GetQueue();
 	void SendPacket(PacketType packet);
 };
+
+// worker
+
+// 지난 시간 만큼 객체의 상태를 update(인자: 이벤트 핸들 update)
+DWORD WINAPI workerUpdate(LPVOID arg);
+
+// 패킷을 받아 queue에 등록 후 정보 전송(인자: 이벤트 핸들 recv)
+DWORD WINAPI workerRecv(LPVOID arg);
+
+// 매치메이킹 검사(인자: 없음)
+DWORD WINAPI workerLobby(LPVOID arg);
