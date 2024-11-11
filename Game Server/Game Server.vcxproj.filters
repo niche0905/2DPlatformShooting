@@ -14,6 +14,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Objects\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Objects\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -28,6 +31,9 @@
     <Filter Include="Objects\Player">
       <UniqueIdentifier>{b64aceca-41ba-4458-8389-94e2f448615b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Bullet">
+      <UniqueIdentifier>{7a1888b8-c4dc-4561-8085-61a2804f848a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -41,6 +47,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Objects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Objects\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
