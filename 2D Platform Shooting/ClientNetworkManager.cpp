@@ -88,7 +88,6 @@ void ClientNetworkManager::Connect()
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(SERVER_PORT);
 
-    // inet_pton 사용하여 IP 주소 변환
     if (inet_pton(AF_INET, "127.0.0.1", &serveraddr.sin_addr) != 1) {
         closesocket(clientSocket);
         WSACleanup();
@@ -103,7 +102,6 @@ void ClientNetworkManager::Connect()
         return;
     }
 
-    // WSAEventSelect 설정 - 비동기 이벤트 처리를 위해
     result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
     if (result == SOCKET_ERROR) {
         closesocket(clientSocket);
@@ -111,13 +109,55 @@ void ClientNetworkManager::Connect()
         return;
     }
 
-    // 연결 성공 후 수신 스레드 생성
     CreateRecvThread();
 }
 
 void ClientNetworkManager::CreateRecvThread()
 {
+    // 이미 스레드가 존재하는 경우 처리
+    if (clientThread != NULL)
+    {
+        CloseHandle(clientThread);
+        clientThread = NULL;
+    }
 
+    // WorkerRecv 스레드 생성
+    clientThread = CreateThread(NULL, 0, WorkerRecv, (LPVOID)this, 0, NULL);
+
+    // 스레드 생성 실패 시 처리
+    if (clientThread == NULL)
+    {
+        // 소켓 닫기
+        if (clientSocket != INVALID_SOCKET)
+        {
+            closesocket(clientSocket);
+            clientSocket = INVALID_SOCKET;
+        }
+
+        // 이벤트 핸들 닫기
+        if (recvEvent != NULL)
+        {
+            CloseHandle(recvEvent);
+            recvEvent = NULL;
+        }
+
+        if (processEvent != NULL)
+        {
+            CloseHandle(processEvent);
+            processEvent = NULL;
+        }
+
+        // 큐 비우기
+        while (!process_queue.empty())
+        {
+            process_queue.pop();
+        }
+
+        // 클라이언트 ID 초기화
+        ClientID = -1;
+
+        WSACleanup();
+    }
 }
 
 void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
