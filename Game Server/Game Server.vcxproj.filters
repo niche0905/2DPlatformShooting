@@ -17,6 +17,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Objects\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="ServerNetworkManager.cpp">
+      <Filter>Manager\ServerNetworkManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -34,6 +37,12 @@
     <Filter Include="Objects\Bullet">
       <UniqueIdentifier>{7a1888b8-c4dc-4561-8085-61a2804f848a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{0b499d42-f1b3-4c5f-a57b-72128b342889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ServerNetworkManager">
+      <UniqueIdentifier>{67be619c-e3df-45c7-82ae-9415f1b15b95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -50,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Objects\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerNetworkManager.h">
+      <Filter>Manager\ServerNetworkManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
