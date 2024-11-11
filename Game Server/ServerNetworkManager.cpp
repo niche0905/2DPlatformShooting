@@ -14,8 +14,16 @@ ServerNetworkManager::~ServerNetworkManager()
 	WSACleanup();
 }
 
+
 void ServerNetworkManager::Init()
 {
+	NetworkInit();
+	CreateLobbyThread();
+}
+
+void ServerNetworkManager::NetworkInit()
+{
+	
 	// 윈속 초기화
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -47,15 +55,41 @@ void ServerNetworkManager::Init()
 		// TODO: err_quit("listen()");
 		exit(-1);
 	}
-	
 }
+
+void ServerNetworkManager::AcceptAndRecv()
+{
+	while (true) {
+
+		// accept()
+		sockaddr_in clientaddr{};
+		int addrlen{ sizeof(clientaddr) };
+		
+		// 여기서 blocking.
+		auto client_sock{ accept(listenSocket, (struct sockaddr*)&clientaddr, &addrlen) };
+		if (client_sock == INVALID_SOCKET) {
+			// err_display("accept()");
+			continue;
+		}
+
+		// recv 스레드 생성
+		auto th{ CreateThread(NULL, 0, workerRecv,
+			reinterpret_cast<LPVOID>(&client_sock), 0, NULL) };
+		if (NULL == th) { closesocket(client_sock); }
+		else { CloseHandle(th); }
+	}
+}
+
+
 
 void ServerNetworkManager::CreateLobbyThread()
 {
+	lobbyThread = { CreateThread(NULL, 0, workerLobby, NULL, 0, NULL) };
 }
 
 void ServerNetworkManager::CreateUpdateThread()
 {
+	updateThread = { CreateThread(NULL, 0, workerUpdate, NULL, 0, NULL) };
 }
 
 void ServerNetworkManager::CreateRecvThread(HANDLE socket)
@@ -77,15 +111,31 @@ void ServerNetworkManager::SendPacket(PacketType packet)
 
 DWORD WINAPI workerUpdate(LPVOID arg)
 {
+	auto client_sock = *reinterpret_cast<SOCKET*>(arg);
+
+	for (int i = 0; i < 5; ++i) {
+		std::cout << "HI From Update Thread\n";
+		Sleep(5000);
+	}
+
+	closesocket(client_sock);
 	return 0;
 }
 
 DWORD WINAPI workerRecv(LPVOID arg)
 {
+	for (int i = 0; i < 5; ++i) {
+		std::cout << "HI From Recv Thread\n";
+		Sleep(5000);
+	}
 	return 0;
 }
 
 DWORD WINAPI workerLobby(LPVOID arg)
 {
+	for (int i = 0; i < 5; ++i) {
+		std::cout << "HI From Lobby Thread\n";
+		Sleep(5000);
+	}
 	return 0;
 }
