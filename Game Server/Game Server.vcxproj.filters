@@ -20,6 +20,9 @@
     <ClCompile Include="ServerNetworkManager.cpp">
       <Filter>Manager\ServerNetworkManager</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Objects\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -43,6 +46,9 @@
     <Filter Include="Manager\ServerNetworkManager">
       <UniqueIdentifier>{67be619c-e3df-45c7-82ae-9415f1b15b95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Item">
+      <UniqueIdentifier>{128a5c5b-9e0d-4da0-a7c3-d2bb218aba4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -62,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="ServerNetworkManager.h">
       <Filter>Manager\ServerNetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Objects\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
