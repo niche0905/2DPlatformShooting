@@ -1,13 +1,14 @@
 #pragma once
 
 
-using BufferType = std::array<int, myNP::MaxPacketSize>;
+using BufferType = std::array<char, myNP::MaxPacketSize>;
 using PacketType = BufferType;
-using QueueType = std::queue<BufferType>;
+using QueueType  = std::queue<BufferType>;
+using PacketSize = uint8;
 
 class ServerNetworkManager
 {
-public:
+private:
 
 	// SOCKET socket{NULL}; // 소켓
 	// HANDLE thread{}; // 스레드
@@ -27,15 +28,24 @@ public:
 	void Init();
 	void CreateLobbyThread(); // 로비 스레드 생성
 	void CreateUpdateThread(); // update 스레드 생성
-	void CreateRecvThread(SOCKET socket); // recv 스레드 생성
-	void PushBuffer(BufferType buffer); // 버퍼 Push
-	QueueType& GetQueue();
+	void CreateRecvThread(SOCKET sock) const; // recv 스레드 생성
 	void SendPacket(PacketType packet);
 
 	// 추가된 함수
+	// Brief: 네트워크를 초기화 해준다.
 	void NetworkInit();
-	void AcceptAndRecv();
+	
+	// Brief: listen 소켓에 accept를 호출하고 받은 소켓으로 recv 쓰레드를 만든다.
+	void Accept();
 
+	// Brief:	Recv thread에서 호출하는 고정, 가변 길이 recv
+	// Param:	Recv 후 받은 buffer를 저장
+	// Return:	정상 종료 여부 (true: 정상, false: 오류)
+	static bool doRecv(SOCKET sock, BufferType& buffer);
+
+	// 삭제된 함수
+	// void PushBuffer(BufferType buffer);
+	// QueueType& GetQueue();
 };
 
 // worker

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ServerNetworkManager.h"
 
+using _SNM = ServerNetworkManager;
+
 ServerNetworkManager::ServerNetworkManager()
 {
 }
@@ -13,7 +15,6 @@ ServerNetworkManager::~ServerNetworkManager()
 
 	WSACleanup();
 }
-
 
 void ServerNetworkManager::Init()
 {
@@ -57,7 +58,7 @@ void ServerNetworkManager::NetworkInit()
 	}
 }
 
-void ServerNetworkManager::AcceptAndRecv()
+void ServerNetworkManager::Accept()
 {
 	while (true) {
 
@@ -75,7 +76,39 @@ void ServerNetworkManager::AcceptAndRecv()
 	}
 }
 
+bool ServerNetworkManager::doRecv(SOCKET sock, BufferType& buffer)
+{
+	int			len{};
+	BufferType	buf{};
 
+	// 고정 길이 recv
+	auto retval{ ::recv(
+		sock,
+		reinterpret_cast<char*>(&len),
+		sizeof(PacketSize),
+		MSG_WAITALL
+	) };
+
+	if (SOCKET_ERROR == retval) {
+		// err_display("recv()");
+		return false;
+	}
+
+	// 가변 길이 recv
+	retval = { ::recv(
+		sock,
+		buffer.data(),
+		len,
+		MSG_WAITALL
+	) };
+
+	if (SOCKET_ERROR == retval) {
+		// err_display("recv()");
+		return false;
+	}
+
+	return true;
+}
 
 void ServerNetworkManager::CreateLobbyThread()
 {
@@ -87,7 +120,7 @@ void ServerNetworkManager::CreateUpdateThread()
 	updateThread = { CreateThread(NULL, 0, workerUpdate, NULL, 0, NULL) };
 }
 
-void ServerNetworkManager::CreateRecvThread(SOCKET socket)
+void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 {
 	auto th{ CreateThread(NULL, 0, workerRecv,
 			reinterpret_cast<LPVOID>(&socket), 0, NULL) };
@@ -110,23 +143,32 @@ void ServerNetworkManager::SendPacket(PacketType packet)
 
 DWORD WINAPI workerUpdate(LPVOID arg)
 {
-	auto client_sock = *reinterpret_cast<SOCKET*>(arg);
-
 	for (int i = 0; i < 5; ++i) {
 		std::cout << "HI From Update Thread\n";
 		Sleep(5000);
 	}
-
-	closesocket(client_sock);
 	return 0;
 }
 
 DWORD WINAPI workerRecv(LPVOID arg)
 {
-	for (int i = 0; i < 5; ++i) {
-		std::cout << "HI From Recv Thread\n";
-		Sleep(5000);
+	auto client_socket{ *reinterpret_cast<SOCKET*>(arg) };
+
+	// recv
+	QueueType local_queue{};
+
+	BufferType buffer{};
+	if (not _SNM::doRecv(client_socket, buffer)) {
+		cout << "workerRecv() ERROR: Recv Failed.\n";
+		closesocket(client_socket);
+		return 0;
 	}
+
+	// 큐에 정보 집어넣기
+	local_queue.push(buffer);
+
+
+	// TODO: 양쪽에서 무브 패킷이 들어오게 되면 큐를 
 	return 0;
 }
 
