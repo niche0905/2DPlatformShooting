@@ -36,6 +36,9 @@ namespace myNP {
 	constexpr float PlayerWidth{ 50.0f };	// 플레이어 넓이
 	constexpr float PlayerHeight{ 50.0f };	// 플레이어 넓이
 
+	constexpr float ItemWidth{ 35.0f };
+	constexpr float ItemHeight{ 50.0f };
+
 	constexpr float GravityAcc = 9.810f;    // 중력 가속도
 	constexpr float GravityMul = 120.0f;    // 중력 가속도에 곱하는 수(게임성을 위해)
 	constexpr float PlatformUp = 10.0f;     // 플랫폼 위에 있다는 기준(충돌 처리 시 사용)
