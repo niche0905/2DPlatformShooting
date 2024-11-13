@@ -10,8 +10,6 @@ class ServerNetworkManager
 {
 private:
 
-	// SOCKET socket{NULL}; // 소켓
-	// HANDLE thread{}; // 스레드
 	std::vector<QueueType> processQueue; // 스레드 전달 큐 벡터
 	std::array<HANDLE, 2> recvEvent{};
 	std::array<HANDLE, 2> processEvent{}; // 스레드 동기화를 위한 이벤트
@@ -20,6 +18,10 @@ private:
 	SOCKET listenSocket{ NULL }; // 소켓
 	HANDLE updateThread{};
 	HANDLE lobbyThread{};
+
+	// 삭제된 변수
+	// SOCKET socket{NULL}; // 소켓
+	// HANDLE thread{}; // 스레드
 
 public:
 	ServerNetworkManager();

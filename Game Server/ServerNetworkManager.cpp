@@ -128,15 +128,6 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 	else { CloseHandle(th); }
 }
 
-void ServerNetworkManager::PushBuffer(BufferType buffer)
-{
-}
-
-QueueType& ServerNetworkManager::GetQueue()
-{
-	return processQueue[0];
-}
-
 void ServerNetworkManager::SendPacket(PacketType packet)
 {
 }
