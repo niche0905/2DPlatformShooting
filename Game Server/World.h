@@ -2,12 +2,14 @@
 #include "pch.h"
 #include <vector>
 #include "CorePch.h"
+#include "Object.h"
+#include "Player.h"
+#include "Bullet.h"
+#include "Item.h"
+#include "list"
 
 
-class Object
-{
-	int temp;
-};
+class Object;
 
 class World
 {
@@ -19,6 +21,17 @@ private:
 	// Player 1, 2
 	// Bullets
 	// Items
+	// 송승호 코멘트 : 이러면 어차피 Bullec 삽입삭제 Item 삽입삭제 하려면 검색이 필요한데
+	//				 객체별로 나누어진 컨테이너가 필요한거 아닌가?
+	//				 objects 의 존재 이유를 모르겠다
+
+	Player p1;
+	Player p2;
+
+	std::list<Bullet> b1;	// p1이 쏜 총알
+	std::list<Bullet> b2;	// p2이 쏜 총알
+
+	std::list<Item> items;	// item들 정보를 담고 있는 자료구조
 
 public:
 	World();
