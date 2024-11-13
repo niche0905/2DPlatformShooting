@@ -21,6 +21,8 @@ void World::Update()
 
 	// 충돌처리 구현
 
+	// TODO : 충돌 처리 후 데미지 패킷 전송 부분을 구현해야 한다
+
 	for (Bullet& b : b2) {
 		if (p1.Collision(b)) {
 			// 데미지 패킷 전송
@@ -31,6 +33,9 @@ void World::Update()
 			// 데미지 패킷 전송
 		}
 	}
+
+	// TODO : 아이템을 먹고 랜덤으로 총기를 주어주는 로직을 가져오고
+	//		  Gun Update 전송 패킷을 구현하고 전송해야 함
 
 	// 아이템 충돌처리의 순서 편파 판정 아님?
 	for (Item& item : items) {
