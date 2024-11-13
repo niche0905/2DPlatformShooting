@@ -4,7 +4,7 @@
 DWORD WINAPI WorkerRecv(LPVOID arg)
 {
     ClientNetworkManager* network = (ClientNetworkManager*)arg;
-    WSAEVENT events[1] = { network->GetRecvEvent()};
+    WSAEVENT events[1] = { network->GetRecvEvent() };
     char buf[MAX_SIZE];
 
     while (true) {
@@ -36,15 +36,9 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
     return 0;
 }
 
-ClientNetworkManager::ClientNetworkManager()
-{
+ClientNetworkManager::ClientNetworkManager() { }
 
-}
-
-ClientNetworkManager::~ClientNetworkManager()
-{
-
-}
+ClientNetworkManager::~ClientNetworkManager() { }
 
 void ClientNetworkManager::Init()
 {
@@ -54,20 +48,20 @@ void ClientNetworkManager::Init()
 
     // 소켓 생성
     clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (clientSocket == INVALID_SOCKET) //err_quit("socket()");
+    if (clientSocket == INVALID_SOCKET) return;
 
     // 이벤트 핸들 생성
     recvEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     if (recvEvent == NULL) {
         closesocket(clientSocket);
-        //err_quit("Failed to create receive event");
+        return;
     }
 
     processEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     if (processEvent == NULL) {
         CloseHandle(recvEvent);
         closesocket(clientSocket);
-        //err_quit("Failed to create process event");
+        return;
     }
 
     // 큐 초기화
@@ -82,7 +76,6 @@ void ClientNetworkManager::Init()
 
 void ClientNetworkManager::Connect()
 {
-    // 서버 주소 설정
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
@@ -94,7 +87,6 @@ void ClientNetworkManager::Connect()
         return;
     }
 
-    // 연결 시도
     int result = connect(clientSocket, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
     if (result == SOCKET_ERROR) {
         closesocket(clientSocket);
@@ -114,27 +106,21 @@ void ClientNetworkManager::Connect()
 
 void ClientNetworkManager::CreateRecvThread()
 {
-    // 이미 스레드가 존재하는 경우 처리
     if (clientThread != NULL)
     {
         CloseHandle(clientThread);
         clientThread = NULL;
     }
 
-    // WorkerRecv 스레드 생성
     clientThread = CreateThread(NULL, 0, WorkerRecv, (LPVOID)this, 0, NULL);
-
-    // 스레드 생성 실패 시 처리
     if (clientThread == NULL)
     {
-        // 소켓 닫기
         if (clientSocket != INVALID_SOCKET)
         {
             closesocket(clientSocket);
             clientSocket = INVALID_SOCKET;
         }
 
-        // 이벤트 핸들 닫기
         if (recvEvent != NULL)
         {
             CloseHandle(recvEvent);
@@ -147,40 +133,44 @@ void ClientNetworkManager::CreateRecvThread()
             processEvent = NULL;
         }
 
-        // 큐 비우기
         while (!process_queue.empty())
         {
             process_queue.pop();
         }
 
-        // 클라이언트 ID 초기화
         ClientID = -1;
-
         WSACleanup();
     }
 }
 
 void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 {
-    // 새로운 버퍼 배열 생성
     std::array<char, MAX_SIZE> newBuffer;
-
-    // 받은 버퍼의 데이터를 새 배열에 복사
     memcpy(newBuffer.data(), buf, MAX_SIZE);
-
-    // 큐에 버퍼 추가
     process_queue.push(newBuffer);
-
-    // 처리 이벤트 설정
     SetEvent(processEvent);
 }
 
 void ClientNetworkManager::SendPacket(char buf[MAX_SIZE])
 {
-
+    int sendLen = send(clientSocket, buf, MAX_SIZE, 0);
+    if (sendLen == SOCKET_ERROR) {
+        // 에러 처리
+        closesocket(clientSocket);
+        clientSocket = INVALID_SOCKET;
+        WSACleanup();
+    }
 }
 
 void ClientNetworkManager::Update()
 {
+    while (!process_queue.empty()) {
+        std::array<char, MAX_SIZE> packet = process_queue.front();
+        process_queue.pop();
 
+        // 뭘 업뎃해야하지?
+    }
+
+    // 이벤트 재설정
+    ResetEvent(processEvent);
 }
