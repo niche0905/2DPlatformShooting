@@ -4,7 +4,7 @@
 
 
 
-class Bullet : Object
+class Bullet : public Object
 {
 private:
 	uint8_t b_type;

@@ -2,7 +2,7 @@
 #include "Object.h"
 
 
-class Item : Object
+class Item : public Object
 {
 private:
 	float dropSpeed;

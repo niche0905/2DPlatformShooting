@@ -5,7 +5,7 @@ constexpr int BaseLife = 3;
 constexpr uint8_t BaseGunID = 0;
 
 
-class Player : Object
+class Player : public Object
 {
 private:
 	bool directon;
