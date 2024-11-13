@@ -64,19 +64,14 @@ void ServerNetworkManager::AcceptAndRecv()
 		// accept()
 		sockaddr_in clientaddr{};
 		int addrlen{ sizeof(clientaddr) };
-		
-		// 여기서 blocking.
-		auto client_sock{ accept(listenSocket, (struct sockaddr*)&clientaddr, &addrlen) };
-		if (client_sock == INVALID_SOCKET) {
+		auto client_socket{ accept(listenSocket, (struct sockaddr*)&clientaddr, &addrlen) };
+		if (client_socket == INVALID_SOCKET) {
 			// err_display("accept()");
 			continue;
 		}
 
 		// recv 스레드 생성
-		auto th{ CreateThread(NULL, 0, workerRecv,
-			reinterpret_cast<LPVOID>(&client_sock), 0, NULL) };
-		if (NULL == th) { closesocket(client_sock); }
-		else { CloseHandle(th); }
+		CreateRecvThread(client_socket);
 	}
 }
 
@@ -92,8 +87,12 @@ void ServerNetworkManager::CreateUpdateThread()
 	updateThread = { CreateThread(NULL, 0, workerUpdate, NULL, 0, NULL) };
 }
 
-void ServerNetworkManager::CreateRecvThread(HANDLE socket)
+void ServerNetworkManager::CreateRecvThread(SOCKET socket)
 {
+	auto th{ CreateThread(NULL, 0, workerRecv,
+			reinterpret_cast<LPVOID>(&socket), 0, NULL) };
+	if (NULL == th) { closesocket(socket); }
+	else { CloseHandle(th); }
 }
 
 void ServerNetworkManager::PushBuffer(BufferType buffer)

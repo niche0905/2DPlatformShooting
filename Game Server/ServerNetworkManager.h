@@ -27,7 +27,7 @@ public:
 	void Init();
 	void CreateLobbyThread(); // 로비 스레드 생성
 	void CreateUpdateThread(); // update 스레드 생성
-	void CreateRecvThread(HANDLE socket); // recv 스레드 생성
+	void CreateRecvThread(SOCKET socket); // recv 스레드 생성
 	void PushBuffer(BufferType buffer); // 버퍼 Push
 	QueueType& GetQueue();
 	void SendPacket(PacketType packet);
