@@ -36,10 +36,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
     return 0;
 }
 
-ClientNetworkManager::ClientNetworkManager()
-{
-    // Init();
-}
+ClientNetworkManager::ClientNetworkManager() {}
 
 ClientNetworkManager::~ClientNetworkManager() { }
 
@@ -75,6 +72,8 @@ void ClientNetworkManager::Init()
 
     // 스레드 핸들 초기화
     clientThread = NULL;
+    
+    Connect();
 }
 
 void ClientNetworkManager::Connect()
@@ -154,14 +153,32 @@ void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
     SetEvent(processEvent);
 }
 
-void ClientNetworkManager::SendPacket(char buf[MAX_SIZE])
+void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 {
-    int sendLen = send(clientSocket, buf, MAX_SIZE, 0);
-    if (sendLen == SOCKET_ERROR) {
-        // 에러 처리
-        closesocket(clientSocket);
-        clientSocket = INVALID_SOCKET;
-        WSACleanup();
+    switch (packet_id)
+    {
+        case myNP::CS_MOVE:
+            int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MOVE_PACKET), 0);
+            if (sendLen == SOCKET_ERROR) {
+                closesocket(clientSocket);
+                clientSocket = INVALID_SOCKET;
+                WSACleanup();
+            }
+        case myNP::CS_MATCHMAKING:
+            int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MATCHMAKING_PACKET), 0);
+            if (sendLen == SOCKET_ERROR) {
+                closesocket(clientSocket);
+                clientSocket = INVALID_SOCKET;
+                WSACleanup();
+            }
+        case myNP::CS_FIRE:
+            int sendLen = send(clientSocket, buf, sizeof(myNP::CS_FIRE_PACKET), 0);
+            if (sendLen == SOCKET_ERROR) {
+                closesocket(clientSocket);
+                clientSocket = INVALID_SOCKET;
+                WSACleanup();
+            }
+
     }
 }
 

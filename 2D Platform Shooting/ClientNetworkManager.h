@@ -28,11 +28,13 @@ public:
 	// 서버에서 데이터가 넘어오면 Event 처리 스레드에게 할 일을 넘기는 함수
 	void PushBuffer(char buf[MAX_SIZE]);
 	// 패킷 전송
-	void SendPacket(char buf[MAX_SIZE]);
+	void SendPacket(char* buf, uint8_t packet_id);
 
 	HANDLE GetRecvEvent() { return recvEvent; }
 	HANDLE GetProcessEvent() { return processEvent; }
 	SOCKET GetSocket() { return clientSocket;  }
+
+
 
 	void Update();
 };
