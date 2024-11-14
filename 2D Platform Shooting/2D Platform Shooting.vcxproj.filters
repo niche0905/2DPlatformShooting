@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Game">
-      <UniqueIdentifier>{85134b14-4cc2-41a9-9c23-4bdecfef8ba1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{3be9e9c8-37be-4532-8f2a-4002cb7d0bb1}</UniqueIdentifier>
     </Filter>
@@ -40,13 +37,16 @@
     <Filter Include="Manager\ClientNetworkManager">
       <UniqueIdentifier>{7927147c-ba92-4cc8-9d0c-e5e59d05ba89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{85134b14-4cc2-41a9-9c23-4bdecfef8ba1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gun.cpp">
       <Filter>Objects\gun</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Game</Filter>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Objects\Player</Filter>
@@ -73,13 +73,16 @@
     <ClCompile Include="ClientNetworkManager.cpp">
       <Filter>Manager\ClientNetworkManager</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gun.h">
       <Filter>Objects\gun</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Game</Filter>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Objects\Player</Filter>
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="ClientNetworkManager.h">
       <Filter>Manager\ClientNetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

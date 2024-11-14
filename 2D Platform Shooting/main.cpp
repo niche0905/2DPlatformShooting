@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Game.h"
+#include "Scene.h"
 #include "ClientNetworkManager.h"
 
-Game game;
+Scene game;
 ClientNetworkManager network_mgr;
 
       //-----//
