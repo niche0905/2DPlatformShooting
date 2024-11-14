@@ -2,6 +2,7 @@
 #include "ServerNetworkManager.h"
 
 using _SNM = ServerNetworkManager;
+using namespace myNP;
 
 ServerNetworkManager::ServerNetworkManager()
 {
@@ -78,7 +79,7 @@ void ServerNetworkManager::Accept()
 
 bool ServerNetworkManager::doRecv(SOCKET sock, BufferType& buffer)
 {
-	int			len{};
+	PacketSize	len{};
 	BufferType	buf{};
 
 	// 고정 길이 recv
@@ -128,8 +129,35 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 	else { CloseHandle(th); }
 }
 
-void ServerNetworkManager::SendPacket(PacketType packet)
+bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer)
 {
+	// 고정 길이 send
+	auto retval{ ::send(
+		sock,
+		&buffer[0],
+		sizeof(PacketSize),
+		0
+	)};
+
+	if (SOCKET_ERROR == retval) {
+		// err_display("send()");
+		return false;
+	}
+
+	// 가변 길이 send
+	retval = { ::send(
+		sock,
+		buffer.data(),
+		buffer[0],
+		0
+	) };
+
+	if (SOCKET_ERROR == retval) {
+		// err_display("send()");
+		return false;
+	}
+
+	return true;
 }
 
 DWORD WINAPI workerUpdate(LPVOID arg)
@@ -149,6 +177,12 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 	// recv
 	QueueType local_queue{};
+
+	// TODO: 임시로 send 해보기.
+
+	// move 패킷 임시로 하나 만들어서
+	// doSend 호출.
+
 
 	BufferType buffer{};
 	cout << "Waiting for Send...\n";

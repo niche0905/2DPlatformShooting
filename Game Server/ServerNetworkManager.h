@@ -2,7 +2,6 @@
 
 
 using BufferType = std::array<char, myNP::MaxPacketSize>;
-using PacketType = BufferType;
 using QueueType  = std::queue<BufferType>;
 using PacketSize = uint8;
 
@@ -31,19 +30,33 @@ public:
 	void CreateLobbyThread(); // 로비 스레드 생성
 	void CreateUpdateThread(); // update 스레드 생성
 	void CreateRecvThread(SOCKET sock) const; // recv 스레드 생성
-	void SendPacket(PacketType packet);
 
 	// 추가된 함수
+
 	// Brief: 네트워크를 초기화 해준다.
 	void NetworkInit();
 	
 	// Brief: listen 소켓에 accept를 호출하고 받은 소켓으로 recv 쓰레드를 만든다.
 	void Accept();
 
-	// Brief:	Recv thread에서 호출하는 고정, 가변 길이 recv
-	// Param:	Recv 후 받은 buffer를 저장
-	// Return:	정상 종료 여부 (true: 정상, false: 오류)
+	// Brief
+	//  Recv thread에서 호출하는 고정, 가변 길이 recv
+	// Param
+	//  sock: 클라이언트 소켓
+	//  buffer: Recv로 받아온 내용을 저장할 버퍼
+	// Return
+	//  정상 종료 여부 (true: 정상, false: 오류)
 	static bool doRecv(SOCKET sock, BufferType& buffer);
+
+
+	// Brief
+	//  sock에 buffer의 내용을 보낸다.
+	// Param
+	//  sock: 보낼 client의 socket
+	//  buffer: 보낼 패킷의 내용이 담겨 있는 buffer
+	// Return
+	//  정상 종료 여부 (true: 정상, false: 오류)
+	static bool doSend(SOCKET sock, const BufferType& buffer);
 
 	// 삭제된 함수
 	// void PushBuffer(BufferType buffer);
