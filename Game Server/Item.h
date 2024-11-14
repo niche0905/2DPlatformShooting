@@ -5,7 +5,7 @@
 class Item : public MovingObject
 {
 private:
-	float dropSpeed;
+	float dropSpeed; // <- ³Ê ¾ø¾îµµ µÊ ¤·¤·
 	bool OnAir;
 
 public:
