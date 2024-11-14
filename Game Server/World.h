@@ -37,6 +37,7 @@ public:
 	World();
 
 	void Update();	// 인자로 deltaTime을 넘겨야 할 것으로 보인다
+	void CollisionCheck();	// World의 요소들을 충돌처리 함
 	void Process();	// 패킷을 처리하는 부분이 될 것 같다
 	void Recv();	// recv 스레드에서 받은 패킷들을 전달 받는 부분이 될 것으로 보인다
 

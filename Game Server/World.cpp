@@ -20,9 +20,12 @@ void World::Update()
 		item.Update();
 
 	// 충돌처리 구현
+	CollisionCheck();
+}
 
+void World::CollisionCheck()
+{
 	// TODO : 충돌 처리 후 데미지 패킷 전송 부분을 구현해야 한다
-
 	for (Bullet& b : b2) {
 		if (p1.Collision(b)) {
 			// 데미지 패킷 전송
