@@ -2,6 +2,7 @@
 #include "GunLoader.h"
 #include <random>
 #include <ranges>
+#include <fstream>
 
 
 std::ostream& operator<<(std::ostream& os, const Gun& gun)
@@ -29,6 +30,15 @@ std::istream& operator>>(std::istream& is, Gun& gun)
 	return is;
 }
 
+GunLoader::GunLoader()
+{
+	while (not loadGunFromFile(GunSavePath))
+	{
+		// retry...
+		// Gun 정보를 읽어야 사용할 수 있음 (게임이 진행 가능)
+	} 
+}
+
 const int GunLoader::getRandomGunId()
 {
 	int total{};
@@ -51,4 +61,43 @@ const int GunLoader::getRandomGunId()
 	}
 
 	return cnt;
+}
+
+bool GunLoader::loadGunFromFile(const std::string& filePath)
+{
+	std::ifstream inFile(filePath);
+	if (not inFile.is_open()) {
+		std::cerr << "Failed to open file: " << filePath << std::endl;
+		return false;
+	}
+
+	Gun gun;
+
+	uint8_t cnt{};
+	while (inFile >> gun)
+	{
+		gun.id = cnt;
+		gun_table[cnt++] = gun;
+	}
+
+	inFile.close();
+
+	return true;
+}
+
+void GunLoader::saveGunFromFile(const std::string& filePath)
+{
+	std::ofstream outFile(filePath);
+	if (not outFile.is_open()) {
+		std::cerr << "Failed to open file: " << filePath << std::endl;
+		return;
+	}
+
+	for (const auto& gun : gun_table | std::views::values) {
+		outFile << gun << std::endl;
+	}
+
+	outFile.close();
+
+	return;
 }
