@@ -7,6 +7,12 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{6fdef0cd-87e3-4944-aac9-a2bd72332f1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameInfo">
+      <UniqueIdentifier>{c10040d5-7742-4472-a10c-0b2a4b900c35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameInfo\GunLoader">
+      <UniqueIdentifier>{bfa1bfbf-00cf-4af8-8775-19e9a0d718a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -18,6 +24,9 @@
     <ClInclude Include="Packet.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="GunLoader.h">
+      <Filter>GameInfo\GunLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -25,6 +34,9 @@
     </ClCompile>
     <ClCompile Include="CorePch.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="GunLoader.cpp">
+      <Filter>GameInfo\GunLoader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
