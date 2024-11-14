@@ -23,6 +23,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>Objects\Item</Filter>
     </ClCompile>
+    <ClCompile Include="MovingObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -71,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Objects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingObject.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
