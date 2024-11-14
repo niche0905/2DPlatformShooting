@@ -7,7 +7,7 @@ Bullet::Bullet(uint8_t bullet_type, bool dir)
 	, b_type(bullet_type)
 	, direction(dir)
 {
-	//setVelocity(0.0f, 0.0f); b_type에 맞게 속도 설정
+	//SetVelocity(0.0f, 0.0f); b_type에 맞게 속도 설정
 }
 
 Bullet::Bullet(float x, float y, uint8_t bullet_type, bool dir)
@@ -15,7 +15,7 @@ Bullet::Bullet(float x, float y, uint8_t bullet_type, bool dir)
 	, b_type(bullet_type)
 	, direction(dir)
 {
-	//setVelocity(0.0f, 0.0f); b_type에 맞게 속도 설정
+	//SetVelocity(0.0f, 0.0f); b_type에 맞게 속도 설정
 }
 
 void Bullet::Update()

@@ -23,18 +23,18 @@ void MovingObject::Update()
 	// TODO : deltaTime 만큼 velocity 만큼 이동하여야 함
 }
 
-Velocity MovingObject::getVelocity() const
+Velocity MovingObject::GetVelocity() const
 {
 	return Velocity(velX, velY);
 }
 
-void MovingObject::setVelocity(Velocity velocity)
+void MovingObject::SetVelocity(Velocity velocity)
 {
 	velX = velocity.velX;
 	velY = velocity.velY;
 }
 
-void MovingObject::setVelocity(float vel_x, float vel_y)
+void MovingObject::SetVelocity(float vel_x, float vel_y)
 {
 	velX = vel_x;
 	velY = vel_y;

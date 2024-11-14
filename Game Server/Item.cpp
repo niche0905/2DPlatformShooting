@@ -3,9 +3,10 @@
 
 
 Item::Item(float x, float y)
-	: Object(x, y, myNP::ItemWidth, myNP::ItemHeight, 0.5f, 1.0f)
+	: MovingObject(x, y, myNP::ItemWidth, myNP::ItemHeight, 0.5f, 1.0f)
+	, OnAir(true)
 {
-
+	//SetVelocity(0.0f, 0.0f); 중력값으로 속도 수정 ㅇㅇ
 }
 
 void Item::Update()

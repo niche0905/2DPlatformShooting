@@ -1,8 +1,8 @@
 #pragma once
-#include "Object.h"
+#include "MovingObject.h"
 
 
-class Item : public Object
+class Item : public MovingObject
 {
 private:
 	float dropSpeed;
