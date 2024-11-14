@@ -9,7 +9,7 @@
 
 std::uniform_real_distribution<float> uid{ 0.0, 800.0 };
 
-Game::Game():
+Game::Game() :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"),
     level(),
     view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)),
@@ -42,7 +42,7 @@ void Game::InitView()
 
 void Game::run()
 {
-    buildGun();
+    //buildGun();
     // 윈도우가 열려있다면 게임 루프를 반복한다
     while (window.isOpen()) {
         handleInput();
@@ -210,7 +210,7 @@ void Game::InitText()
 
 void Game::updateTexts()
 {
-    texts[0].setString("Gun: " + g_guns[players[0].getGunID()].name);
+    texts[0].setString("Gun: " + GunInfo.gun_table[players[0].getGunID()].name);
     if (auto val = players[0].getCurMag(); -1 == val) {
         texts[1].setString("Remain: INF");
     }
@@ -218,7 +218,7 @@ void Game::updateTexts()
         texts[1].setString("Remain: " + std::to_string(val));
     }
     texts[2].setString("Life: " + std::to_string(players[0].getLife()));
-    texts[3].setString("Gun: " + g_guns[players[1].getGunID()].name);
+    texts[3].setString("Gun: " + GunInfo.gun_table[players[1].getGunID()].name);
     if (auto val = players[1].getCurMag(); -1 == val) {
         texts[4].setString("Remain: INF");
     }
@@ -239,48 +239,48 @@ void Game::drawTexts()
     window.setView(currentView);
 }
 
-void Game::buildGun()
-{
-    loadGunFromFile(GunSavePath);
-}
+//void Game::buildGun()
+//{
+//    loadGunFromFile(GunSavePath);
+//}
 
-bool Game::loadGunFromFile(const std::string& filePath)
-{
-    std::ifstream inFile(filePath);
-    if (not inFile.is_open()) {
-        std::cerr << "Failed to open file: " << filePath << std::endl;
-        return false;
-    }
+//bool Game::loadGunFromFile(const std::string& filePath)
+//{
+//    std::ifstream inFile(filePath);
+//    if (not inFile.is_open()) {
+//        std::cerr << "Failed to open file: " << filePath << std::endl;
+//        return false;
+//    }
+//
+//    Gun gun;
+//
+//    // [cham] 9.22 
+//    uint8 cnt{};
+//    while (inFile >> gun)
+//    {
+//        gun.id = cnt;
+//        g_guns[cnt++] = gun;
+//    }
+//
+//    inFile.close();
+//
+//    return true;
+//}
 
-    Gun gun;
-
-    // [cham] 9.22 
-    uint8 cnt{};
-    while (inFile >> gun)
-    {
-        gun.id = cnt;
-        g_guns[cnt++] = gun;
-    }
-
-    inFile.close();
-
-    return true;
-}
-
-void Game::saveGunFromFile(const std::string& filePath)
-{
-    std::ofstream outFile(filePath);
-    if (not outFile.is_open()) {
-        std::cerr << "Failed to open file: " << filePath << std::endl;
-        return;
-    }
-
-    // [cham] 9.22
-    for (const auto& gun : g_guns | std::views::values) {
-        outFile << gun << std::endl;
-    }
-
-    outFile.close();
-
-    return;
-}
+//void Game::saveGunFromFile(const std::string& filePath)
+//{
+//    std::ofstream outFile(filePath);
+//    if (not outFile.is_open()) {
+//        std::cerr << "Failed to open file: " << filePath << std::endl;
+//        return;
+//    }
+//
+//    // [cham] 9.22
+//    for (const auto& gun : g_guns | std::views::values) {
+//        outFile << gun << std::endl;
+//    }
+//
+//    outFile.close();
+//
+//    return;
+//}

@@ -3,6 +3,9 @@
 #include <random>
 #include <ranges>
 #include <fstream>
+#include <filesystem>
+#include <thread>
+#include <chrono>
 
 
 std::ostream& operator<<(std::ostream& os, const Gun& gun)

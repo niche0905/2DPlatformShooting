@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 
-const std::string GunSavePath = "./Saved/Guns/GunAttribute.txt";
+const char GunSavePath[] = "../Saved/Guns/GunAttribute.txt";
 
 
 struct Gun
@@ -25,9 +25,9 @@ struct Gun
 
 class GunLoader
 {
+public:
 	std::unordered_map<uint8_t, Gun> gun_table;
 
-public:
 	GunLoader();
 
 	const int getRandomGunId();

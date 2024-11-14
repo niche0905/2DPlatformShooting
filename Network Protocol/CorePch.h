@@ -15,5 +15,4 @@
 #include <iostream>
 #include <random>
 
-
 extern std::default_random_engine RANDOM_ENGINE;
