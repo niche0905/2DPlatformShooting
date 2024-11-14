@@ -21,6 +21,7 @@
 #include <array>
 #include <queue>
 #include <unordered_map>
+#include <memory>
 
 // 알고리즘
 #include <random>
@@ -33,6 +34,9 @@
 #include <fstream>
 #include <filesystem>
 #include <print>
+
+// 문자열
+#include <xstring>
 
 // 우리 라이브러리
 #define WIN32_LEAN_AND_MEAN
