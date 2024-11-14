@@ -5,6 +5,11 @@ struct Position
 	float posX, posY;
 };
 
+struct Velocity
+{
+	float velX, velY;
+};
+
 struct BoundingBox
 {
 	float left, right, top, bottom;
