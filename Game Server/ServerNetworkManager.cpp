@@ -145,10 +145,13 @@ DWORD WINAPI workerRecv(LPVOID arg)
 {
 	auto client_socket{ *reinterpret_cast<SOCKET*>(arg) };
 
+	cout << "Hi From Recv Thread\n";
+
 	// recv
 	QueueType local_queue{};
 
 	BufferType buffer{};
+	cout << "Waiting for Send...\n";
 	if (not _SNM::doRecv(client_socket, buffer)) {
 		cout << "workerRecv() ERROR: Recv Failed.\n";
 		closesocket(client_socket);
@@ -165,9 +168,9 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 DWORD WINAPI workerLobby(LPVOID arg)
 {
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 100; ++i) {
 		std::cout << "HI From Lobby Thread\n";
-		Sleep(5000);
+		Sleep(10000);
 	}
 	return 0;
 }

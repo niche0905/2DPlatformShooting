@@ -36,7 +36,10 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
     return 0;
 }
 
-ClientNetworkManager::ClientNetworkManager() { }
+ClientNetworkManager::ClientNetworkManager()
+{
+    // Init();
+}
 
 ClientNetworkManager::~ClientNetworkManager() { }
 
