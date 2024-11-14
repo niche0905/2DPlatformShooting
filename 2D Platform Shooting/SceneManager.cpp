@@ -1,6 +1,16 @@
 #include "pch.h"
 #include "SceneManager.h"
 
+SceneManager::SceneManager()
+{
+	activeScene = LoadTitleScene();
+}
+
+SceneManager::~SceneManager()
+{
+
+}
+
 void SceneManager::update()
 {
 

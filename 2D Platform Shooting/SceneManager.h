@@ -7,6 +7,9 @@ private:
 	std::shared_ptr<Scene> activeScene;
 
 public:
+	SceneManager();
+	~SceneManager();
+
 	void update();
 	void draw();
 	void LoadScene(std::wstring sceneName);
