@@ -158,26 +158,32 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
     switch (packet_id)
     {
         case myNP::CS_MOVE:
+        {
             int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MOVE_PACKET), 0);
             if (sendLen == SOCKET_ERROR) {
                 closesocket(clientSocket);
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
+        }
         case myNP::CS_MATCHMAKING:
+        {
             int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MATCHMAKING_PACKET), 0);
             if (sendLen == SOCKET_ERROR) {
                 closesocket(clientSocket);
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
+        }
         case myNP::CS_FIRE:
+        {
             int sendLen = send(clientSocket, buf, sizeof(myNP::CS_FIRE_PACKET), 0);
             if (sendLen == SOCKET_ERROR) {
                 closesocket(clientSocket);
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
+        }
 
     }
 }

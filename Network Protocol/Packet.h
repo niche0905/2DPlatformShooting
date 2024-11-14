@@ -22,8 +22,9 @@ namespace myNP {
 		SC_ITEM_REMOVE,
 		SC_GUN_UPDATE,
 		SC_LIFE_UPDATE,
-		SC_GAMEOVER
+		SC_GAMEOVER,
 
+		END	// 이 사이의 패킷 ID여야 함
 	};
 
 	constexpr int MaxPacketSize{ 32 };		// 패킷 최대 사이즈 (버퍼 사이즈를 정하는)
