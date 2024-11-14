@@ -4,6 +4,12 @@
 
 
 Object::Object()
+	: posX(0.0f)
+	, posY(0.0f)
+	, width(0.0f)
+	, height(0.0f)
+	, pivotX(0.0f)
+	, pivotY(0.0f)
 {
 
 }
