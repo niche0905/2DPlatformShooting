@@ -108,13 +108,16 @@ void ClientNetworkManager::Connect()
 
 void ClientNetworkManager::CreateRecvThread()
 {
+    // 클라이언트 스레드 초기화
     if (clientThread != NULL)
     {
         CloseHandle(clientThread);
         clientThread = NULL;
     }
 
+    // 클라이언트 스레드 생성
     clientThread = CreateThread(NULL, 0, WorkerRecv, (LPVOID)this, 0, NULL);
+    // 잘 생성됐나?
     if (clientThread == NULL)
     {
         if (clientSocket != INVALID_SOCKET)
@@ -155,6 +158,7 @@ void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 
 void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 {
+    // 패킷 ID별 다른 처리
     switch (packet_id)
     {
         case myNP::CS_MOVE:
