@@ -4,10 +4,15 @@
 class TitleScene : public Scene
 {
 private:
+    sf::RenderWindow window;
 
+    Image Background;
 public:
-    virtual void run() {};
-    virtual void update(long long deltaTime) {};
-    virtual void draw() {};
+    TitleScene();
+
+    virtual void run();
+    virtual void update(long long deltaTime);
+    virtual void draw();
+    virtual void handleInput();
 };
 
