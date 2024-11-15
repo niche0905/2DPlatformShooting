@@ -185,6 +185,17 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		return 0;
 	}
 
+	myNP::CS_MOVE_PACKET* packet = reinterpret_cast<myNP::CS_MOVE_PACKET*>(buffer.data());
+	packet->ntohByteOrder();
+
+	// TEMP : 테스트용 수정 (11/15 송승호)
+	std::cout << "id : " << packet->id << std::endl;
+	std::cout << "size : " << packet->size << std::endl;
+	std::cout << "p_id : " << packet->p_id << std::endl;
+	std::cout << "posX : " << packet->posX << std::endl;
+	std::cout << "posY : " << packet->posY << std::endl;
+	std::cout << "dir : " << packet->dir << std::endl;
+
 	// 큐에 정보 집어넣기
 	local_queue.push(buffer);
 
