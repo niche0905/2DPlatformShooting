@@ -191,12 +191,12 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 	char buffer[myNP::MaxPacketSize];
 	memset(buffer, 0, myNP::MaxPacketSize);
-	int recv_size = recv(client_socket, buffer, 2, MSG_WAITALL);
+	int recv_size = recv(client_socket, buffer, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
 	std::cout << recv_size << std::endl;
 	std::cout << static_cast<int>(buffer[0]) << std::endl;
 	std::cout << static_cast<int>(buffer[1]) << std::endl;
 
-	recv_size = recv(client_socket, buffer+ recv_size, 13, MSG_WAITALL);
+	recv_size = recv(client_socket, buffer+ recv_size, buffer[0] - recv_size, MSG_WAITALL);
 	std::cout << recv_size << std::endl;
 
 	myNP::CS_MOVE_PACKET* packet = reinterpret_cast<myNP::CS_MOVE_PACKET*>(buffer);
