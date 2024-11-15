@@ -48,8 +48,8 @@ void TitleScene::handleInput()
             // TEMP : 테스트용 수정 (11/15 송승호)
             std::cout << "패킷을 보낸다" << std::endl;
 
-            
-
+            myNP::CS_MOVE_PACKET packet = myNP::CS_MOVE_PACKET::MakePacket(12, 0.5f, 111.9f, true);
+            network_mgr.SendPacket(reinterpret_cast<char*>(&packet), myNP::CS_MOVE);
         }
         if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape) {
             window.close();
