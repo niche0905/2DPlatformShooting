@@ -3,8 +3,9 @@
 
 DWORD WINAPI WorkerRecv(LPVOID arg)
 {
-    ClientNetworkManager* network = (ClientNetworkManager*)arg;
-    WSAEVENT events[1] = { network->GetRecvEvent() };
+    std::cout << "recv 스레드 생성 완료" << std::endl;
+
+    WSAEVENT events[1] = { network_mgr.GetRecvEvent() };
     char buf[MAX_SIZE];
 
     while (true) {
@@ -14,7 +15,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         // 이벤트 확인
         WSANETWORKEVENTS networkEvents;
-        if (WSAEnumNetworkEvents(network->GetSocket(), network->GetRecvEvent(), &networkEvents) == SOCKET_ERROR)
+        if (WSAEnumNetworkEvents(network_mgr.GetSocket(), network_mgr.GetRecvEvent(), &networkEvents) == SOCKET_ERROR)
             break;
 
         // 연결 종료 확인
@@ -25,17 +26,17 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
         // 데이터 수신
         if (networkEvents.lNetworkEvents & FD_READ) {
             // 고정 길이 recv()
-            int recvLen = recv(network->GetSocket(), buf, network->GetSocket(), MSG_WAITALL);
+            int recvLen = recv(network_mgr.GetSocket(), buf, network_mgr.GetSocket(), MSG_WAITALL);
 
             if (recvLen > 0) {
                 // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
-                int remainingPacketLen = *(reinterpret_cast<int*>(buf)) - network->GetSocket();
+                int remainingPacketLen = *(reinterpret_cast<int*>(buf)) - network_mgr.GetSocket();
 
                 // 가변 길이 recv()
                 if (remainingPacketLen > 0) {
-                    recvLen = recv(network->GetSocket(), buf + network->GetSocket(), remainingPacketLen, MSG_WAITALL);
+                    recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
                     if (recvLen > 0) {
-                        network->PushBuffer(buf);
+                        network_mgr.PushBuffer(buf);
                     }
                 }
             }
@@ -99,6 +100,7 @@ void ClientNetworkManager::Connect()
         WSACleanup();
         return;
     }
+    std::cout << "소켓 주소 설정 완료" << std::endl;
 
     int result = connect(clientSocket, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
     if (result == SOCKET_ERROR) {
@@ -106,6 +108,7 @@ void ClientNetworkManager::Connect()
         WSACleanup();
         return;
     }
+    std::cout << "소켓 연결 설정 완료" << std::endl;
 
     result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
     if (result == SOCKET_ERROR) {
@@ -127,7 +130,7 @@ void ClientNetworkManager::CreateRecvThread()
     }
 
     // 클라이언트 스레드 생성
-    clientThread = CreateThread(NULL, 0, WorkerRecv, (LPVOID)this, 0, NULL);
+    clientThread = CreateThread(NULL, 0, WorkerRecv, NULL, 0, NULL);
     // 잘 생성됐나?
     if (clientThread == NULL)
     {
@@ -180,6 +183,8 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
+    // TEMP : 테스트용 수정 (11/15 송승호) 지워도 됨
+            std::cout << sendLen << std::endl;
         }
         case myNP::CS_MATCHMAKING:
         {
