@@ -79,14 +79,12 @@ void ServerNetworkManager::Accept()
 
 bool ServerNetworkManager::doRecv(SOCKET sock, BufferType& buffer)
 {
-	PacketSize	len{};
-	BufferType	buf{};
-
 	// 고정 길이 recv
+	// BASE_PACKET 만큼 먼저 읽는다.
 	auto retval{ ::recv(
 		sock,
-		reinterpret_cast<char*>(&len),
-		sizeof(PacketSize),
+		buffer.data(),
+		sizeof(BASE_PACKET),
 		MSG_WAITALL
 	) };
 
@@ -95,11 +93,19 @@ bool ServerNetworkManager::doRecv(SOCKET sock, BufferType& buffer)
 		return false;
 	}
 
+	// BASE PACKET 오류 검사
+	BASE_PACKET* base{ reinterpret_cast<BASE_PACKET*>(buffer.data()) };
+	if (not (0 <= base->size and base->size <= MaxPacketSize) ||
+		not (0 < base->id and base->id <= PacketID::END)) {
+		cout << "SNM::doRecv(): Invaild Packet.\n";
+		return false;
+	}
+
 	// 가변 길이 recv
 	retval = { ::recv(
 		sock,
-		buffer.data(),
-		len,
+		buffer.data() + sizeof(BASE_PACKET),
+		base->size - static_cast<PacketSizeType>(sizeof(BASE_PACKET)),
 		MSG_WAITALL
 	) };
 
@@ -131,21 +137,8 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 
 bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer)
 {
-	// 고정 길이 send
-	auto retval{ ::send(
-		sock,
-		&buffer[0],
-		sizeof(PacketSize),
-		0
-	)};
-
-	if (SOCKET_ERROR == retval) {
-		// err_display("send()");
-		return false;
-	}
-
 	// 가변 길이 send
-	retval = { ::send(
+	auto retval{ ::send(
 		sock,
 		buffer.data(),
 		buffer[0],

@@ -10,7 +10,7 @@
     <Filter Include="GameInfo">
       <UniqueIdentifier>{c10040d5-7742-4472-a10c-0b2a4b900c35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameInfo\GunLoader">
+    <Filter Include="Network\GunLoader">
       <UniqueIdentifier>{bfa1bfbf-00cf-4af8-8775-19e9a0d718a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -25,7 +25,7 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="GunLoader.h">
-      <Filter>GameInfo\GunLoader</Filter>
+      <Filter>Network\GunLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +36,7 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="GunLoader.cpp">
-      <Filter>GameInfo\GunLoader</Filter>
+      <Filter>Network\GunLoader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

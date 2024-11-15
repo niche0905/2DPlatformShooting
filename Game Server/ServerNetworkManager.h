@@ -1,9 +1,9 @@
 #pragma once
 
 
-using BufferType = std::array<char, myNP::MaxPacketSize>;
-using QueueType  = std::queue<BufferType>;
-using PacketSize = uint8;
+using BufferType		= std::array<char, myNP::MaxPacketSize>;
+using QueueType			= std::queue<BufferType>;
+using PacketSizeType	= uint8;
 
 class ServerNetworkManager
 {
