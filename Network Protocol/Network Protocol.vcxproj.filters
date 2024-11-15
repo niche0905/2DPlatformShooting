@@ -38,5 +38,8 @@
     <ClCompile Include="GunLoader.cpp">
       <Filter>GameInfo\GunLoader</Filter>
     </ClCompile>
+    <ClCompile Include="Packet.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
