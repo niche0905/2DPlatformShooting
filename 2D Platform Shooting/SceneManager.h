@@ -10,7 +10,6 @@ private:
 public:
 	SceneManager();
 	~SceneManager();
-	void LoadScene(std::wstring sceneName);
 
 	std::shared_ptr<Scene> LoadTitleScene();
 	std::shared_ptr<Scene> LoadGameScene();
