@@ -9,11 +9,7 @@
 
 std::uniform_real_distribution<float> uid{ 0.0, 800.0 };
 
-<<<<<<< HEAD:2D Platform Shooting/Scene.cpp
-Scene::Scene():
-=======
-Game::Game() :
->>>>>>> main:2D Platform Shooting/Game.cpp
+Scene::Scene() :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"),
     level(),
     view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)),
@@ -33,7 +29,6 @@ Game::Game() :
     UI[1].SetPosition(600, 0);
 
     InitText();
-    buildGun();
 }
 
 void Scene::InitView()
@@ -47,10 +42,7 @@ void Scene::InitView()
 
 void Scene::run()
 {
-<<<<<<< HEAD:2D Platform Shooting/Scene.cpp
-=======
     //buildGun();
->>>>>>> main:2D Platform Shooting/Game.cpp
     // 윈도우가 열려있다면 게임 루프를 반복한다
     while (window.isOpen()) {
         handleInput();
@@ -247,53 +239,6 @@ void Scene::drawTexts()
     window.setView(currentView);
 }
 
-<<<<<<< HEAD:2D Platform Shooting/Scene.cpp
-void Scene::buildGun()
-{
-    loadGunFromFile(GunSavePath);
-}
-
-bool Scene::loadGunFromFile(const std::string& filePath)
-{
-    std::ifstream inFile(filePath);
-    if (not inFile.is_open()) {
-        std::cerr << "Failed to open file: " << filePath << std::endl;
-        return false;
-    }
-
-    Gun gun;
-
-    // [cham] 9.22 
-    uint8 cnt{};
-    while (inFile >> gun)
-    {
-        gun.id = cnt;
-        g_guns[cnt++] = gun;
-    }
-
-    inFile.close();
-
-    return true;
-}
-
-void Scene::saveGunFromFile(const std::string& filePath)
-{
-    std::ofstream outFile(filePath);
-    if (not outFile.is_open()) {
-        std::cerr << "Failed to open file: " << filePath << std::endl;
-        return;
-    }
-
-    // [cham] 9.22
-    for (const auto& gun : g_guns | std::views::values) {
-        outFile << gun << std::endl;
-    }
-
-    outFile.close();
-
-    return;
-}
-=======
 //void Game::buildGun()
 //{
 //    loadGunFromFile(GunSavePath);
@@ -339,4 +284,3 @@ void Scene::saveGunFromFile(const std::string& filePath)
 //
 //    return;
 //}
->>>>>>> main:2D Platform Shooting/Game.cpp

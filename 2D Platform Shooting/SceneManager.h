@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "pch.h"
 
 class SceneManager {
 private:
@@ -9,7 +8,6 @@ private:
 public:
 	SceneManager();
 	~SceneManager();
-
 	void update();
 	void draw();
 	void LoadScene(std::wstring sceneName);

@@ -11,6 +11,7 @@ SceneManager::~SceneManager()
 
 }
 
+
 void SceneManager::update()
 {
 
@@ -30,7 +31,6 @@ std::shared_ptr<Scene> SceneManager::LoadTitleScene()
 {
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 
-	// 타이틀 씬 처리
 
 	return scene;
 }
@@ -38,8 +38,7 @@ std::shared_ptr<Scene> SceneManager::LoadTitleScene()
 std::shared_ptr<Scene> SceneManager::LoadGameScene()
 {
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-	
-	// 게임 씬 처리
-	
+
+
 	return scene;
 }
