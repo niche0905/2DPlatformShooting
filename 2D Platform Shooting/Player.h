@@ -40,7 +40,7 @@ private:
     sf::Keyboard::Key attackKeyBind;
 
     // [cham] 9.22
-    uint8 gunId;
+    uint8_t gunId;
     
     std::list<Bullet> bullets;
     int curMag;

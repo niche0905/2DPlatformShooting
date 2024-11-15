@@ -164,6 +164,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ClientNetworkManager.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ClientNetworkManager.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Image.h" />

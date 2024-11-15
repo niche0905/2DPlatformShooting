@@ -4,7 +4,7 @@
 SceneManager::SceneManager()
 {
 	// 게임이 실행될 때 가장 먼저 로드되는 씬
-	activeScene = LoadGameScene();
+	activeScene = LoadTitleScene();		// TEMP : 테스트용 수정 (11/15 송승호)
 }
 
 SceneManager::~SceneManager()

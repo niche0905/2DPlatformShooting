@@ -45,6 +45,8 @@
 
 #include "CorePch.h"
 
+#include "GlobalVariable.h"
+
 using std::cout;
 using std::endl;
 using namespace std::string_literals;

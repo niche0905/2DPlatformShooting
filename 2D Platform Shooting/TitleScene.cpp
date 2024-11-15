@@ -45,7 +45,11 @@ void TitleScene::handleInput()
             window.close();
         }
         if (event.type == sf::Event::MouseButtonPressed and event.key.code == sf::Mouse::Left) {
+            // TEMP : 테스트용 수정 (11/15 송승호)
+            std::cout << "패킷을 보낸다" << std::endl;
+
             
+
         }
         if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape) {
             window.close();
