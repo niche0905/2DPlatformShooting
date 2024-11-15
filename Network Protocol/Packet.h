@@ -59,12 +59,16 @@ namespace myNP {
 
 		BASE_PACKET(uint8_t packet_size, PacketID packet_id) : size(packet_size), id(packet_id) {}
 		BASE_PACKET() : size(2), id(static_cast<PacketID>(0)) {}
+		
+		virtual void ntohByteOrder();
 	};
 
 	// client to server 매치메이킹 잡는다
 	struct CS_MATCHMAKING_PACKET : public BASE_PACKET
 	{
 		CS_MATCHMAKING_PACKET() : BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), PacketID::CS_MATCHMAKING) {}
+		static CS_MATCHMAKING_PACKET MakePacket();
+		void ntohByteOrder();
 	};
 
 	// client to server 플레이어가 해당 위치로 이동했다
@@ -80,6 +84,8 @@ namespace myNP {
 			, posX(x)
 			, posY(y)
 			, dir(direction) {}
+		static CS_MOVE_PACKET MakePacket(uint32_t player_id, float x, float y, bool direction);
+		void ntohByteOrder();
 	};
 
 	// client to server 플레이어가 해당 위치에서 총알을 발사 하였다
@@ -100,6 +106,9 @@ namespace myNP {
 			, dir(direction)
 			, type(bullet_type)
 			, fire_t(fire_time) {}
+		static CS_FIRE_PACKET MakePacket(uint32_t bullet_id, float x, float y, bool direction,
+			uint32_t bullet_type, std::chrono::milliseconds fire_time);
+		void ntohByteOrder();
 	};
 
 	// server to client 매치메이킹 잡혔다
@@ -110,6 +119,8 @@ namespace myNP {
 		SC_MATCHMAKING_PACKET(bool success = true)
 			: BASE_PACKET(sizeof(SC_MATCHMAKING_PACKET), PacketID::SC_MATCHMAKING)
 			, succ(success) {}
+		static SC_MATCHMAKING_PACKET MakePacket(bool success);
+		void ntohByteOrder();
 	};
 
 	// server to client 플레이어가 이쪽으로 이동했다
@@ -125,6 +136,8 @@ namespace myNP {
 			, posX(x)
 			, posY(y)
 			, dir(direction) {}
+		static SC_MOVE_PACKET MakePacket(uint32_t player_id, float x, float y, bool direction);
+		void ntohByteOrder();
 	};
 
 	// server to client 플레이어가 데미지를 입었다
@@ -135,6 +148,8 @@ namespace myNP {
 		SC_PLAYER_DAMAGE_PACKET(float damaged)
 			: BASE_PACKET(sizeof(SC_PLAYER_DAMAGE_PACKET), PacketID::SC_PLAYER_DAMAGE)
 			, damage(damaged) {}
+		static SC_PLAYER_DAMAGE_PACKET MakePacket(float damaged);
+		void ntohByteOrder();
 	};
 
 	// server to client 플레이어가 총을 쏜 사실을 알림
@@ -155,6 +170,9 @@ namespace myNP {
 			, dir(direction)
 			, type(bullet_type)
 			, fire_t(fire_time) {}
+		static SC_FIRE_PACKET MakePacket(uint32_t bullet_id, float x, float y, bool direction,
+			uint32_t bullet_type, std::chrono::milliseconds fire_time);
+		void ntohByteOrder();
 	};
 
 	// server to client 해당 총알이 사라졌음을 알리는 패킷
@@ -167,6 +185,8 @@ namespace myNP {
 			: BASE_PACKET(sizeof(SC_BULLET_REMOVE_PACKET), PacketID::SC_BULLET_REMOVE)
 			, p_id(player_id)
 			, b_id(bullet_id) {}
+		static SC_BULLET_REMOVE_PACKET MakePacket(uint32_t player_id, uint32_t bullet_id);
+		void ntohByteOrder();
 	};
 
 	// server to client 아이템 해당 위치에 생성 되었다
@@ -180,6 +200,8 @@ namespace myNP {
 			, i_id(item_id)
 			, posX(x)
 			, posY(y) {}
+		static SC_ITEM_CREATE_PACKET MakePacket(uint32_t item_id, float x, float y);
+		void ntohByteOrder();
 	};
 
 	// server to client 해당 아이템이 삭제되었다
@@ -190,6 +212,8 @@ namespace myNP {
 		SC_ITEM_REMOVE_PACKET(uint32_t item_id)
 			: BASE_PACKET(sizeof(SC_ITEM_REMOVE_PACKET), PacketID::SC_ITEM_REMOVE)
 			, i_id(item_id) {}
+		static SC_ITEM_REMOVE_PACKET MakePacket(uint32_t item_id);
+		void ntohByteOrder();
 	};
 
 	// server to client 해당 플레이어가 해당 총으로 변경되었다
@@ -202,6 +226,8 @@ namespace myNP {
 			: BASE_PACKET(sizeof(SC_GUN_UPDATE_PACKET), PacketID::SC_GUN_UPDATE)
 			, p_id(player_id)
 			, g_id(gun_id) {}
+		static SC_GUN_UPDATE_PACKET MakePacket(uint32_t player_id, uint32_t gun_id);
+		void ntohByteOrder();
 	};
 
 	// server to client 해당 플레이어의 목숨이 감소했다
@@ -212,6 +238,8 @@ namespace myNP {
 		SC_LIFE_UPDATE_PACKET(uint32_t player_id)
 			: BASE_PACKET(sizeof(SC_LIFE_UPDATE_PACKET), PacketID::SC_LIFE_UPDATE)
 			, p_id(player_id) {}
+		static SC_LIFE_UPDATE_PACKET MakePacket(uint32_t player_id);
+		void ntohByteOrder();
 	};
 
 	// server to client 게임이 종료되었음을 알림
@@ -219,6 +247,8 @@ namespace myNP {
 	{
 		SC_GAMEOVER_PACKET()
 			: BASE_PACKET(sizeof(SC_GAMEOVER_PACKET), PacketID::SC_GAMEOVER) {}
+		static SC_GAMEOVER_PACKET MakePacket();
+		void ntohByteOrder();
 	};
 
 #pragma pack(pop)
