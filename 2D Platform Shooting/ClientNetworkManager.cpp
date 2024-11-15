@@ -24,9 +24,20 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         // 데이터 수신
         if (networkEvents.lNetworkEvents & FD_READ) {
-            int recvLen = recv(network->GetSocket(), buf, MAX_SIZE, 0);
+            // 고정 길이 recv()
+            int recvLen = recv(network->GetSocket(), buf, network->GetSocket(), MSG_WAITALL);
+
             if (recvLen > 0) {
-                network->PushBuffer(buf);
+                // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
+                int remainingPacketLen = *(reinterpret_cast<int*>(buf)) - network->GetSocket();
+
+                // 가변 길이 recv()
+                if (remainingPacketLen > 0) {
+                    recvLen = recv(network->GetSocket(), buf + network->GetSocket(), remainingPacketLen, MSG_WAITALL);
+                    if (recvLen > 0) {
+                        network->PushBuffer(buf);
+                    }
+                }
             }
             else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
                 break;

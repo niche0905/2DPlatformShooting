@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "GameScene.h"
-#include "Player.h"
 #include "Level.h"
 #include "Gun.h"
 #include "Item.h"
@@ -42,7 +41,6 @@ void GameScene::InitView()
 
 void GameScene::run()
 {
-    //buildGun();
     // 윈도우가 열려있다면 게임 루프를 반복한다
     while (window.isOpen()) {
         handleInput();
@@ -71,7 +69,6 @@ void GameScene::handleInput()
 
         for (Player& player : players)
             player.handleInput(event);
-        //dummy.handleInput(event);
     }
 }
 
@@ -84,7 +81,6 @@ void GameScene::update(long long deltaTime)
     for (Item& item : items)
         item.update(deltaTime);
 
-    //dummy.update(deltaTime);
     // TODO: 아직 구현 안되었음
     bulletHit();
 
@@ -99,8 +95,6 @@ void GameScene::update(long long deltaTime)
         makeItem();
         makeTime = nowTime;
     }
-
-    //players[0].hitTheEnemy(dummy);
 
     updateTexts();
 

@@ -1,6 +1,5 @@
 #pragma once
 #include "Level.h"
-#include "Player.h"
 #include "Item.h"
 #include "Image.h"
 
@@ -11,4 +10,5 @@ public:
     virtual void run() {};
     virtual void update(long long deltaTime) {};
     virtual void draw() {};
+    virtual void handleInput() {};
 };

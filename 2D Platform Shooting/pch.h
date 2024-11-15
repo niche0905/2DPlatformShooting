@@ -63,9 +63,6 @@ using uint64 = unsigned __int64;
 // constant
 constexpr auto FONT_PATH{ "Resource\\Font\\malgun.ttf" };
 
-
-extern std::default_random_engine RANDOM_ENGINE;
-
 // Scene ฐüทร
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;

@@ -34,7 +34,7 @@ public:
     virtual void run();
 
     // 유저 Input을 처리한다
-    void handleInput();
+    virtual void handleInput();
 
     // 게임의 객체들을 업데이트한다
     virtual void update(long long deltaTime);
