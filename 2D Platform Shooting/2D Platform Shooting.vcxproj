@@ -163,8 +163,7 @@
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ClientNetworkManager.cpp" />
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -177,21 +176,18 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ClientNetworkManager.h" />
-    <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
