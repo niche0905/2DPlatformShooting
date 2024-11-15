@@ -106,7 +106,7 @@ void Player::handleInput(const sf::Event& event)
             dash();
         }
         if (event.key.code == sf::Keyboard::Q) {
-            gunId = getRandomGunId();
+            gunId = GunInfo.getRandomGunId();
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
@@ -140,7 +140,7 @@ void Player::fireBullet()
     // 
 
     // 임시 총 발싸
-    bullets.push_back(Bullet(direction, position, g_guns[gunId].speed, g_guns[gunId].damage));
+    bullets.push_back(Bullet(direction, position, GunInfo.gun_table[gunId].speed, GunInfo.gun_table[gunId].damage));
 }
 
 void Player::update(long long deltaTime)
@@ -156,7 +156,7 @@ void Player::update(long long deltaTime)
 
     if (fireKeyDown) {
         auto nowTime = std::chrono::system_clock::now();
-        std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
+        std::chrono::milliseconds deltaTime(int((60.0 / GunInfo.gun_table[gunId].RPM) * 1000));
         if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
             fireBullet();
     }
@@ -364,8 +364,8 @@ void Player::damageControll(long long deltaTime)
 
 void Player::getItem()
 {
-    gunId = getRandomGunId();
-    curMag = g_guns[gunId].mag;
+    gunId = GunInfo.getRandomGunId();
+    curMag = GunInfo.gun_table[gunId].mag;
     // TODO: player에다가 장탄수 세팅
     // 그리고 다쓰면 0번으로 바뀌게
     // [cham] 할거: 총 정보 저장할 때

@@ -15,7 +15,7 @@ const sf::Color BackgroundColor = sf::Color(135, 206, 235, 255);
 constexpr float CameraLagging = 10.0f;
 constexpr float CameraOffset = 60.0f;
 
-const std::string GunSavePath = "./Saved/Guns/GunAttribute.txt";
+//const std::string GunSavePath = "./Saved/Guns/GunAttribute.txt"; <- GunLoader 사용
 
 class Scene {
 private:
@@ -75,7 +75,7 @@ public:
 
 
     // cham TODO: gun manager에서 작업하도록 변경
-    void buildGun();
-    bool loadGunFromFile(const std::string& filePath);
-    void saveGunFromFile(const std::string& filePath);
+    //void buildGun();
+    //bool loadGunFromFile(const std::string& filePath);
+    //void saveGunFromFile(const std::string& filePath);
 };

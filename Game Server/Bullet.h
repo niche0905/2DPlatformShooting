@@ -1,10 +1,8 @@
 #pragma once
-#include "Object.h"
+#include "MovingObject.h"
 
 
-
-
-class Bullet : public Object
+class Bullet : public MovingObject
 {
 private:
 	uint8_t b_type;

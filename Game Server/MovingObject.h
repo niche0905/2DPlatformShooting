@@ -13,10 +13,10 @@ public:
 
 	void Update();
 
-	Velocity getVelocity() const;
+	Velocity GetVelocity() const;
 
-	void setVelocity(Velocity velocity);
-	void setVelocity(float vel_x, float vel_y);
+	void SetVelocity(Velocity velocity);
+	void SetVelocity(float vel_x, float vel_y);
 
 };
 
