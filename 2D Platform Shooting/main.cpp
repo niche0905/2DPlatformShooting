@@ -2,8 +2,6 @@
 #include "SceneManager.h"
 #include "ClientNetworkManager.h"
 
-SceneManager sceneManager;
-ClientNetworkManager network_mgr;
 
       //-----//
      //     //  (ªÃ¢¥¥ø`)ªÃ
