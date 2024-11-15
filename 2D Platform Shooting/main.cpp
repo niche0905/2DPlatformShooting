@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "Scene.h"
+#include "SceneManager.h"
 #include "ClientNetworkManager.h"
 
-Scene game;
+SceneManager scene_manager;
 ClientNetworkManager network_mgr;
 
       //-----//
@@ -13,7 +14,7 @@ int main()//
 {
     network_mgr.Init();
     network_mgr.Connect();
-    game.run();
+    scene_manager.GetActiveScene()->run();
 
     return 0;
 }

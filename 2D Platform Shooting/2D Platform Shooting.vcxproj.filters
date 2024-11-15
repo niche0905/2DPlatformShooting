@@ -76,6 +76,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gun.h">
@@ -109,6 +112,9 @@
       <Filter>Manager\ClientNetworkManager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>

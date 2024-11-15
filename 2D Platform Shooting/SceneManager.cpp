@@ -3,7 +3,7 @@
 
 SceneManager::SceneManager()
 {
-	activeScene = LoadTitleScene();
+	activeScene = LoadGameScene();
 }
 
 SceneManager::~SceneManager()
