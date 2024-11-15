@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "ServerNetworkManager.h"
-// TEMP : 테스트용 수정 (11/15 송승호) 아래 삭제해야 함
-#include <thread>
 
 using _SNM = ServerNetworkManager;
 using namespace myNP;
@@ -179,42 +177,16 @@ DWORD WINAPI workerRecv(LPVOID arg)
 	// doSend 호출.
 
 
-	//BufferType buffer{};
-	//cout << "Waiting for Send...\n";
-	//if (not _SNM::doRecv(client_socket, buffer)) {
-	//	cout << "workerRecv() ERROR: Recv Failed.\n";
-	//	closesocket(client_socket);
-	//	return 0;
-	//}
+	BufferType buffer{};
+	cout << "Waiting for Send...\n";
+	if (not _SNM::doRecv(client_socket, buffer)) {
+		cout << "workerRecv() ERROR: Recv Failed.\n";
+		closesocket(client_socket);
+		return 0;
+	}
 
-	// TEMP : 테스트용 수정 (11/15 송승호) 위는 주석 해제 아래는 삭제 해야함
-
-	char buffer[myNP::MaxPacketSize];
-	memset(buffer, 0, myNP::MaxPacketSize);
-	int recv_size = recv(client_socket, buffer, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
-	std::cout << recv_size << std::endl;
-	std::cout << static_cast<int>(buffer[0]) << std::endl;
-	std::cout << static_cast<int>(buffer[1]) << std::endl;
-
-	recv_size = recv(client_socket, buffer+ recv_size, buffer[0] - recv_size, MSG_WAITALL);
-	std::cout << recv_size << std::endl;
-
-	myNP::CS_MOVE_PACKET* packet = reinterpret_cast<myNP::CS_MOVE_PACKET*>(buffer);
-	cout << "test1\n";
-	packet->ntohByteOrder();
-
-	cout << "test2\n";
-	std::cout << "id : " << static_cast<int>(packet->id) << std::endl;
-	std::cout << "size : " << static_cast<int>(packet->size) << std::endl;
-	std::cout << "p_id : " << packet->p_id << std::endl;
-	std::cout << "posX : " << packet->posX << std::endl;
-	std::cout << "posY : " << packet->posY << std::endl;
-	std::cout << "dir : " << packet->dir << std::endl;
-
-	// TEMP : 테스트용 수정 (11/15 송승호) 아래도 주석 해제 해야함
-	
 	// 큐에 정보 집어넣기
-	//local_queue.push(buffer);
+	local_queue.push(buffer);
 
 
 	// TODO: 양쪽에서 무브 패킷이 들어오게 되면 큐를 

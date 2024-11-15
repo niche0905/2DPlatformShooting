@@ -183,8 +183,6 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
-    // TEMP : 테스트용 수정 (11/15 송승호) 지워도 됨
-            std::cout << sendLen << std::endl;
         }
         case myNP::CS_MATCHMAKING:
         {
