@@ -1,7 +1,5 @@
 #include "pch.h"
-#include "ServerNetworkManager.h"
 
-ServerNetworkManager SNMgr;
 
 int main()
 {

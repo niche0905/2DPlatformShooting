@@ -26,6 +26,9 @@
     <ClCompile Include="MovingObject.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalVariable.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -77,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="MovingObject.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalVariable.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

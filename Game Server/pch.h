@@ -33,6 +33,9 @@
 #include <fstream>
 #include <filesystem>
 
+// 우리 라이브러리
+#include "GlobalVariable.h"
+
 // 출력을 편하게.
 using std::cout;
 using std::endl;
