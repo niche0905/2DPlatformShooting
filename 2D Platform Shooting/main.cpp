@@ -14,6 +14,5 @@ int main()//
     network_mgr.Init();
     network_mgr.Connect();
     acvite_scene.GetActiveScene()->run();
-
     return 0;
 }

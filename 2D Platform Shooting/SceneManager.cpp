@@ -37,7 +37,7 @@ std::shared_ptr<Scene> SceneManager::LoadTitleScene()
 
 std::shared_ptr<Scene> SceneManager::LoadGameScene()
 {
-	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+	std::shared_ptr<GameScene> scene = std::make_shared<GameScene>();
 
 
 	return scene;
