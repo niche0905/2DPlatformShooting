@@ -29,7 +29,7 @@ void SceneManager::LoadScene(std::wstring sceneName)
 
 std::shared_ptr<Scene> SceneManager::LoadTitleScene()
 {
-	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+	std::shared_ptr<TitleScene> scene = std::make_shared<TitleScene>();
 
 
 	return scene;

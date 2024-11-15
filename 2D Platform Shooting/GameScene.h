@@ -5,14 +5,6 @@
 #include "Image.h"
 #include "Scene.h"
 
-constexpr int WINDOW_WIDTH = 800;
-constexpr int WINDOW_HEIGHT = 600;
-
-const sf::Color BackgroundColor = sf::Color(135, 206, 235, 255);
-
-constexpr float CameraLagging = 10.0f;
-constexpr float CameraOffset = 60.0f;
-
 class GameScene : public Scene {
     sf::RenderWindow window;
     sf::Clock clock;
