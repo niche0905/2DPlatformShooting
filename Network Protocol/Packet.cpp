@@ -4,6 +4,11 @@
 
 namespace myNP
 {
+	void BASE_PACKET::ntohByteOrder()
+	{
+
+	}
+
 	CS_MATCHMAKING_PACKET CS_MATCHMAKING_PACKET::MakePacket()
 	{
 		return CS_MATCHMAKING_PACKET();
