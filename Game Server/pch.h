@@ -49,3 +49,6 @@ using uint64 = unsigned __int64;
 
 // constant
 constexpr int SERVERPORT{ 9000 };
+
+// 전역 변수
+extern GunLoader GunInfo;
