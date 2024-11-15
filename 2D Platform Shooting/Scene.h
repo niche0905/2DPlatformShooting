@@ -9,8 +9,6 @@ private:
     
 public:
     virtual void run() {};
-
     virtual void update(long long deltaTime) {};
-
     virtual void draw() {};
 };

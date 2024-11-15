@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "ClientNetworkManager.h"
 
-SceneManager acvite_scene;
+SceneManager sceneManager;
 ClientNetworkManager network_mgr;
 
       //-----//
@@ -13,6 +13,6 @@ int main()//
 {
     network_mgr.Init();
     network_mgr.Connect();
-    acvite_scene.GetActiveScene()->run();
+    sceneManager.GetActiveScene()->run();
     return 0;
 }
