@@ -3,8 +3,6 @@
 
 DWORD WINAPI WorkerRecv(LPVOID arg)
 {
-    std::cout << "recv 스레드 생성 완료" << std::endl;
-
     WSAEVENT events[1] = { network_mgr.GetRecvEvent() };
     char buf[MAX_SIZE];
 
@@ -100,7 +98,6 @@ void ClientNetworkManager::Connect()
         WSACleanup();
         return;
     }
-    std::cout << "소켓 주소 설정 완료" << std::endl;
 
     int result = connect(clientSocket, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
     if (result == SOCKET_ERROR) {
@@ -108,7 +105,6 @@ void ClientNetworkManager::Connect()
         WSACleanup();
         return;
     }
-    std::cout << "소켓 연결 설정 완료" << std::endl;
 
     result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
     if (result == SOCKET_ERROR) {
