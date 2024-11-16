@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SceneManager.h"
-#include "ClientNetworkManager.h"
+
+SceneManager sceneManager;
 
 
       //-----//
