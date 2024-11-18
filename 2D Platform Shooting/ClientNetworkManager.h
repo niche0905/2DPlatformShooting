@@ -1,5 +1,6 @@
 #pragma once
 #include "Utilities.h"
+#include "Scene.h"
 
 class ClientNetworkManager {
 private:
@@ -14,6 +15,9 @@ private:
 	// 이벤트
 	HANDLE recvEvent;
 	HANDLE processEvent;
+
+	// 현재 씬
+	std::shared_ptr<Scene> currentScene;
 
 public:
 	ClientNetworkManager();
@@ -34,7 +38,10 @@ public:
 	HANDLE GetProcessEvent() { return processEvent; }
 	SOCKET GetSocket() { return clientSocket;  }
 
-
+	void ProcessPacket();
+	void ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet);
+	void ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet);
+	void ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet);
 
 	void Update();
 };

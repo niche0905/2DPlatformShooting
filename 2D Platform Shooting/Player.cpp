@@ -362,6 +362,15 @@ void Player::damageControll(long long deltaTime)
     }
 }
 
+void Player::setPosition(float x, float y)
+{
+    sf::Vector2f vec;
+    vec.x = x;
+    vec.y = y;
+
+    shape.setPosition(vec);
+}
+
 void Player::getItem()
 {
     gunId = GunInfo.getRandomGunId();

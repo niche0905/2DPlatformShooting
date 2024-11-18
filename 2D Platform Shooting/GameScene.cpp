@@ -222,8 +222,6 @@ void GameScene::updateTexts()
     texts[5].setString("Life: " + std::to_string(players[1].getLife()));
 }
 
-
-
 void GameScene::drawTexts()
 {
     sf::View currentView = window.getView();

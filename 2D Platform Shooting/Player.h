@@ -107,10 +107,13 @@ public:
     // 피해량을 조절해준다(업데이트에서 호출)
     void damageControll(long long deltaTime);
 
+    void setPosition(float x, float y);
+
     int getCurMag() const { return curMag; }
     void getItem();
     int getGunID() const { return gunId; }
     int getLife() const { return life; }
+
 };
 
 
