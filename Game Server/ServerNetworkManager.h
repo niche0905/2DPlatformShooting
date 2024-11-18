@@ -30,6 +30,7 @@ public:
 	void CreateLobbyThread(); // 로비 스레드 생성
 	void CreateUpdateThread(); // update 스레드 생성
 	void CreateRecvThread(SOCKET sock) const; // recv 스레드 생성
+	static void SendPacket(SOCKET sock, myNP::PacketID id);
 
 	// 추가된 함수
 

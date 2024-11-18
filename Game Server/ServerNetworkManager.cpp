@@ -135,6 +135,34 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 	else { CloseHandle(th); }
 }
 
+void ServerNetworkManager::SendPacket(SOCKET sock, PacketID id)
+{
+	switch (id) {
+	case PacketID::CS_MOVE:
+	{
+		BufferType buf{};
+		auto packet{ SC_MOVE_PACKET::MakePacket(
+			1,		// player_id
+			100,	// posX
+			100,	// posY
+			1		// dir
+		) };
+
+		::memcpy_s(
+			buf.data(),
+			buf.size(),
+			reinterpret_cast<const char*>(&packet),
+			sizeof(packet)
+		);
+
+		doSend(sock, buf);
+	}
+		break;
+	default:
+		break;
+	}
+}
+
 bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer)
 {
 	// 가변 길이 send
@@ -175,6 +203,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 	// move 패킷 임시로 하나 만들어서
 	// doSend 호출.
+
+
 
 
 	BufferType buffer{};
