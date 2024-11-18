@@ -13,6 +13,9 @@
     <Filter Include="GameInfo\GunLoader">
       <UniqueIdentifier>{bfa1bfbf-00cf-4af8-8775-19e9a0d718a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{b5227c32-e3fe-4ae2-99d6-a6e4b3553893}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -27,6 +30,9 @@
     <ClInclude Include="GunLoader.h">
       <Filter>GameInfo\GunLoader</Filter>
     </ClInclude>
+    <ClInclude Include="TimerManager.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -40,6 +46,9 @@
     </ClCompile>
     <ClCompile Include="Packet.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerManager.cpp">
+      <Filter>Timer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
