@@ -148,14 +148,7 @@ void ServerNetworkManager::SendPacket(SOCKET sock, PacketID id)
 			1		// dir
 		) };
 
-		::memcpy_s(
-			buf.data(),
-			buf.size(),
-			reinterpret_cast<const char*>(&packet),
-			sizeof(packet)
-		);
-
-		doSend(sock, buf);
+		doSend(sock, packet);
 	}
 		break;
 	default:

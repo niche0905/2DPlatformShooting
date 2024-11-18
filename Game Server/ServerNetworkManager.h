@@ -59,6 +59,17 @@ public:
 	//  정상 종료 여부 (true: 정상, false: 오류)
 	static bool doSend(SOCKET sock, const BufferType& buffer);
 
+
+	// Brief
+	//  sock에 buffer의 내용을 보낸다.
+	// Param
+	//  sock: 보낼 client의 socket
+	//  packet: 패킷 자체.
+	// Return
+	//  정상 종료 여부 (true: 정상, false: 오류)
+	template <class _Packet>
+	static bool doSend(SOCKET sock, _Packet packet);
+
 	// 삭제된 함수
 	// void PushBuffer(BufferType buffer);
 	// QueueType& GetQueue();
@@ -74,3 +85,18 @@ DWORD WINAPI workerRecv(LPVOID arg);
 
 // 매치메이킹 검사(인자: 없음)
 DWORD WINAPI workerLobby(LPVOID arg);
+
+
+template<class _Packet>
+inline bool ServerNetworkManager::doSend(SOCKET sock, _Packet packet)
+{
+	BufferType buf{};
+	::memcpy_s(
+		buf.data(),
+		buf.size(),
+		reinterpret_cast<const char*>(&packet),
+		sizeof(_Packet)
+	);
+
+	return doSend(sock, buf);
+}
