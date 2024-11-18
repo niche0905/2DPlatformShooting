@@ -214,3 +214,67 @@ void ClientNetworkManager::Update()
     // 이벤트 재설정
     ResetEvent(processEvent);
 }
+
+void ClientNetworkManager::ProcessPacket()
+{
+    while (true) {
+        WaitForSingleObject(processEvent, INFINITE);
+
+        while (!process_queue.empty()) {
+            std::array<char, MAX_SIZE> buffer = process_queue.front();
+            process_queue.pop();
+
+            // 첫 바이트가 패킷 타입
+            uint8_t packetType = static_cast<uint8_t>(buffer[0]);
+
+            switch (packetType) {
+            case myNP::CS_MOVE:
+            {
+                myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
+
+                ProcessPlayerMove(move_packet);
+                break;
+            }
+            case myNP::CS_MATCHMAKING:
+            {
+                myNP::SC_MATCHMAKING_PACKET* matchmaking_packet = reinterpret_cast<myNP::SC_MATCHMAKING_PACKET*>(buffer.data());
+
+                ProcessMatchMaking(matchmaking_packet);
+                break;
+            }
+            case myNP::CS_FIRE:
+            {
+                myNP::SC_FIRE_PACKET* fire_packet = reinterpret_cast<myNP::SC_FIRE_PACKET*>(buffer.data());
+
+                ProcessFirebullet(fire_packet);
+                break;
+            }
+            }
+        }
+
+        ResetEvent(processEvent);
+    }
+}
+
+void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
+{
+    if (std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene)) {
+
+        auto& players = gameScene->GetPlayers();
+        // 자기 자신이 아니면
+        if (move_packet->p_id != ClientID) {
+            players[move_packet->p_id].setPosition(move_packet->posX, move_packet->posY);
+        }
+
+    }
+}
+
+void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* move_packet)
+{
+    // 씬 전환?
+}
+
+void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* move_packet)
+{
+
+}

@@ -58,4 +58,6 @@ public:
     void InitText();
     void updateTexts();
     void drawTexts();
+
+    std::vector<Player>& GetPlayers() { return players; }
 };
