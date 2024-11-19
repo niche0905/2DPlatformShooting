@@ -16,6 +16,9 @@
     <Filter Include="Timer">
       <UniqueIdentifier>{b5227c32-e3fe-4ae2-99d6-a6e4b3553893}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameInfo\Platform">
+      <UniqueIdentifier>{a7c279db-4490-41a5-adf1-e01ddebf8c72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -33,6 +36,9 @@
     <ClInclude Include="TimerManager.h">
       <Filter>Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Platfoms.h">
+      <Filter>GameInfo\Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -49,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="TimerManager.cpp">
       <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Platfoms.cpp">
+      <Filter>GameInfo\Platform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
