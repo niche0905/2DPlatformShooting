@@ -254,7 +254,7 @@ void ClientNetworkManager::ProcessPacket()
     ResetEvent(processEvent);
 }
 
-void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
+void ClientNetworkManager::ProcessPlayerMove(myNP::CS_MOVE_PACKET* move_packet)
 {
     if (std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene)) {
 
@@ -266,19 +266,17 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
     }
 }
 
-void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
+void ClientNetworkManager::ProcessMatchMaking(myNP::CS_MATCHMAKING_PACKET* matchmaking_packet)
 {
-    // TODO : 기본 인스턴스들 초기화 (위치 초기값 받아서 설정)
-    // *********************************************************************************
-    // 민경원 질문
-    // 일단 매치메이킹 패킷을 처리할 때 씬을 로드할거고
-    // 로드할 때 해당 플레이어가 몇 번째 플레이어인지 알려주고 초기 위치를 잡으라 했는데
-    // 매치메이킹 패킷만 받는다고 해서 해당 플레이어가 몇 P인지 어떻게 확인하지?
-    // *********************************************************************************
+    // 플레이어 추가가 가능해지면 Scene을 로드할 때 p_id를 보내서
+    // 몇 번째 플레이어인지 확인하고 플레이어 위치를 로드
+    // GameScene 생성자 수정 필요
+    //sceneManager.LoadGameScene(matchmaking_packet->p_id);
+    
     sceneManager.LoadGameScene();
 }
 
-void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* firebullet_packet)
+void ClientNetworkManager::ProcessFirebullet(myNP::CS_FIRE_PACKET* firebullet_packet)
 {
 
 }
