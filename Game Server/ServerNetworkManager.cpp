@@ -78,7 +78,7 @@ void ServerNetworkManager::Accept()
 	}
 }
 
-bool ServerNetworkManager::doRecv(SOCKET sock, BufferType& buffer)
+bool ServerNetworkManager::doRecv(SOCKET sock, BufferType& buffer) const
 {
 	// 고정 길이 recv
 	// BASE_PACKET 만큼 먼저 읽는다.
@@ -136,7 +136,7 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 	else { CloseHandle(th); }
 }
 
-bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer)
+bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 {
 	// 가변 길이 send
 	auto retval{ ::send(
@@ -180,8 +180,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 	// doSend 호출.
 	SNMgr.SendPacket<SC_MOVE_PACKET>(client_socket,
 		0,
-		200,
-		200,
+		200.f,
+		200.f,
 		false
 	);
  

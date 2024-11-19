@@ -38,7 +38,7 @@ private:
 	// Params:
 	//  sock: 보낼 client의 socket
 	//  buffer: 보낼 패킷의 내용이 담겨 있는 buffer
-	bool doSend(SOCKET sock, const BufferType& buffer);
+	bool doSend(SOCKET sock, const BufferType& buffer) const;
 
 
 	// Brief
@@ -49,7 +49,7 @@ private:
 	// Return
 	//  정상 종료 여부 (true: 정상, false: 오류)
 	template <class _Packet>
-	bool doSend(SOCKET sock, _Packet packet);
+	bool doSend(SOCKET sock, _Packet packet) const;
 
 
 public:
@@ -67,7 +67,7 @@ public:
 	//  sock: 보낼 클라이언트의 소켓
 	//  Args...: 패킷을 만들 때 인자로 넣을 인자들
 	template <class _Packet, class ...Args>
-	void SendPacket(SOCKET sock, Args... args);
+	void SendPacket(SOCKET sock, Args... args) const;
 
 	// 추가된 함수
 
@@ -82,7 +82,7 @@ public:
 	// Params:
 	//  sock: 클라이언트 소켓
 	//  buffer: Recv로 받아온 내용을 저장할 버퍼
-	bool doRecv(SOCKET sock, BufferType& buffer);
+	bool doRecv(SOCKET sock, BufferType& buffer) const;
 
 	// Brief: 새로운 클라이언트에서 ID를 할당받는 함수.
 	// Return: 얻어온 ID.
@@ -109,14 +109,14 @@ DWORD WINAPI workerLobby(LPVOID arg);
 
 
 template<class _Packet, class ...Args>
-inline void ServerNetworkManager::SendPacket(SOCKET sock, Args ...args)
+inline void ServerNetworkManager::SendPacket(SOCKET sock, Args ...args) const
 {
 	auto packet{ _Packet::MakePacket(std::forward<Args>(args)...)};
 	doSend(sock, packet);
 }
 
 template<class _Packet>
-inline bool ServerNetworkManager::doSend(SOCKET sock, _Packet packet)
+inline bool ServerNetworkManager::doSend(SOCKET sock, _Packet packet) const
 {
 	BufferType buf{};
 	::memcpy_s(
