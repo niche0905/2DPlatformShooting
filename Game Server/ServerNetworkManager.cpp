@@ -5,8 +5,6 @@
 using _SNM = ServerNetworkManager;
 using namespace myNP;
 
-ServerNetworkManager SNMgr;
-
 ServerNetworkManager::ServerNetworkManager()
 {
 }

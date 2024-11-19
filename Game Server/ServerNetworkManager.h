@@ -128,6 +128,3 @@ inline bool ServerNetworkManager::doSend(SOCKET sock, _Packet packet)
 
 	return doSend(sock, buf);
 }
-
-
-extern ServerNetworkManager SNMgr;
