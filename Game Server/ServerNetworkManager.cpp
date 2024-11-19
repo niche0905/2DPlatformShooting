@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "ServerNetworkManager.h"
 
+// using
 using _SNM = ServerNetworkManager;
 using namespace myNP;
 
-int _SNM::nextId = 1;
+ServerNetworkManager SNMgr;
 
 ServerNetworkManager::ServerNetworkManager()
 {
@@ -170,14 +171,16 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 	cout << "Hi From Recv Thread\n";
 
+
 	// recv
 	std::list<BufferType> local_list{};
+	int client_id{ SNMgr.GetNextId() };
 
 	// TODO: 임시로 send 해보기.
 
 	// move 패킷 임시로 하나 만들어서
 	// doSend 호출.
-	_SNM::SendPacket<SC_MOVE_PACKET>(client_socket,
+	SNMgr.SendPacket<SC_MOVE_PACKET>(client_socket,
 		0,
 		200,
 		200,
@@ -188,22 +191,20 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 		BufferType buffer{};
 		cout << "Waiting for Send...\n";
-		if (not _SNM::doRecv(client_socket, buffer)) {
+		if (not SNMgr.doRecv(client_socket, buffer)) {
 			cout << "workerRecv() ERROR: Recv Failed.\n";
 			closesocket(client_socket);
 			return 0;
 		}
 		
 		// if 해당 클라이언트의 ID가 게임 진행중이라면
+		//  list에 패킷 저장
 		//  if 만약 move 패킷이 왔다면
 		//   이미 다른 한쪽에서 move 대기중이면 Ingame thread에 정보 전달
-		//  
+		//  아니면 대기 등록
 		
-		// Queue에 패킷 전달. 
-		// 이때 move packet이면 Ingame thread에 큐 전달
-
-		// 큐에 정보 집어넣기
-		local_list.push_back(buffer);
+		// 게임 진행중 아니고 && 등록하지 않았고 && 매치매이킹 패킷이면 등록.
+		
 	}
 		
 	return 0;
@@ -211,9 +212,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 DWORD WINAPI workerLobby(LPVOID arg)
 {
-	for (int i = 0; i < 100; ++i) {
-		std::cout << "HI From Lobby Thread\n";
-		Sleep(10000);
-	}
+	std::cout << "HI From Lobby Thread\n";
+
+
 	return 0;
 }

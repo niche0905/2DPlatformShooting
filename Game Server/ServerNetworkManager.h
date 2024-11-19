@@ -11,16 +11,19 @@ class ServerNetworkManager
 {
 private:
 
-	std::vector<QueueType> processQueue; // 스레드 전달 큐 벡터
-	std::array<HANDLE, 2> recvEvent{};
-	std::array<HANDLE, 2> processEvent{}; // 스레드 동기화를 위한 이벤트
-	std::list<int>		  matchmakingList{};
-	static int			  nextId;
-
+	std::vector<QueueType>	processQueue; // 스레드 전달 큐 벡터
+	std::array<HANDLE, 2>	recvEvent{};
+	std::array<HANDLE, 2>	processEvent{}; // 스레드 동기화를 위한 이벤트
+	
 	// 추가된 변수
 	SOCKET listenSocket{ NULL }; // 소켓
 	HANDLE updateThread{};
 	HANDLE lobbyThread{};
+
+	// static 변수
+	std::queue<int>	matchmakingList{};
+	int				nextId{ 1 };
+
 
 	// 삭제된 변수
 	// SOCKET socket{NULL}; // 소켓
@@ -35,7 +38,7 @@ private:
 	// Params:
 	//  sock: 보낼 client의 socket
 	//  buffer: 보낼 패킷의 내용이 담겨 있는 buffer
-	static bool doSend(SOCKET sock, const BufferType& buffer);
+	bool doSend(SOCKET sock, const BufferType& buffer);
 
 
 	// Brief
@@ -46,7 +49,7 @@ private:
 	// Return
 	//  정상 종료 여부 (true: 정상, false: 오류)
 	template <class _Packet>
-	static bool doSend(SOCKET sock, _Packet packet);
+	bool doSend(SOCKET sock, _Packet packet);
 
 
 public:
@@ -64,7 +67,7 @@ public:
 	//  sock: 보낼 클라이언트의 소켓
 	//  Args...: 패킷을 만들 때 인자로 넣을 인자들
 	template <class _Packet, class ...Args>
-	static void SendPacket(SOCKET sock, Args... args);
+	void SendPacket(SOCKET sock, Args... args);
 
 	// 추가된 함수
 
@@ -79,10 +82,14 @@ public:
 	// Params:
 	//  sock: 클라이언트 소켓
 	//  buffer: Recv로 받아온 내용을 저장할 버퍼
-	static bool doRecv(SOCKET sock, BufferType& buffer);
+	bool doRecv(SOCKET sock, BufferType& buffer);
 
+	// Brief: 새로운 클라이언트에서 ID를 할당받는 함수.
+	// Return: 얻어온 ID.
+	int GetNextId() { return nextId++; };
 
-	static int GetNextId() { return nextId++; };
+	
+
 
 	// 삭제된 함수
 	// void PushBuffer(BufferType buffer);
@@ -121,3 +128,6 @@ inline bool ServerNetworkManager::doSend(SOCKET sock, _Packet packet)
 
 	return doSend(sock, buf);
 }
+
+
+extern ServerNetworkManager SNMgr;
