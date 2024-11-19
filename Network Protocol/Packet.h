@@ -66,12 +66,9 @@ namespace myNP {
 	// client to server 매치메이킹 잡는다
 	struct CS_MATCHMAKING_PACKET : public BASE_PACKET
 	{
-		uint32_t p_id;
-
-		CS_MATCHMAKING_PACKET(uint32_t player_id) 
-			: BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), PacketID::CS_MATCHMAKING)
-			, p_id(player_id) {}
-		static CS_MATCHMAKING_PACKET MakePacket(uint32_t player_id);
+		CS_MATCHMAKING_PACKET() 
+			: BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), PacketID::CS_MATCHMAKING) {}
+		static CS_MATCHMAKING_PACKET MakePacket();
 		void ntohByteOrder();
 	};
 
@@ -119,11 +116,13 @@ namespace myNP {
 	struct SC_MATCHMAKING_PACKET : public BASE_PACKET
 	{
 		bool succ;
+		uint32_t p_id;
 
-		SC_MATCHMAKING_PACKET(bool success = true)
+		SC_MATCHMAKING_PACKET(bool success = true, uint32_t player_id)
 			: BASE_PACKET(sizeof(SC_MATCHMAKING_PACKET), PacketID::SC_MATCHMAKING)
-			, succ(success) {}
-		static SC_MATCHMAKING_PACKET MakePacket(bool success);
+			, succ(success)
+			, p_id(player_id) {}
+		static SC_MATCHMAKING_PACKET MakePacket(bool success, uint32_t player_id);
 		void ntohByteOrder();
 	};
 
