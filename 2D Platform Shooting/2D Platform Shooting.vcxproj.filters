@@ -40,6 +40,12 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{85134b14-4cc2-41a9-9c23-4bdecfef8ba1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\SceneType">
+      <UniqueIdentifier>{70250829-5448-44bb-80d6-b6a18bdddea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SceneManager">
+      <UniqueIdentifier>{d439e3cc-c7c7-4ff8-8edb-020bc02cfce8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gun.cpp">
@@ -73,17 +79,17 @@
     <ClCompile Include="ClientNetworkManager.cpp">
       <Filter>Manager\ClientNetworkManager</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="GlobalVariable.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene\SceneType</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Scene\SceneType</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Manager\SceneManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,17 +123,17 @@
     <ClInclude Include="ClientNetworkManager.h">
       <Filter>Manager\ClientNetworkManager</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalVariable.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene\SceneType</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene\SceneType</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Manager\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
