@@ -263,18 +263,22 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
         if (move_packet->p_id != ClientID) {
             players[move_packet->p_id].setPosition(move_packet->posX, move_packet->posY);
         }
-
     }
 }
 
-void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* move_packet)
+void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
 {
     // TODO : 기본 인스턴스들 초기화 (위치 초기값 받아서 설정)
-    // 씬 전환
-    sceneManager->LoadGameScene();
+    // *********************************************************************************
+    // 민경원 질문
+    // 일단 매치메이킹 패킷을 처리할 때 씬을 로드할거고
+    // 로드할 때 해당 플레이어가 몇 번째 플레이어인지 알려주고 초기 위치를 잡으라 했는데
+    // 매치메이킹 패킷만 받는다고 해서 해당 플레이어가 몇 P인지 어떻게 확인하지?
+    // *********************************************************************************
+    sceneManager.LoadGameScene();
 }
 
-void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* move_packet)
+void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* firebullet_packet)
 {
 
 }
