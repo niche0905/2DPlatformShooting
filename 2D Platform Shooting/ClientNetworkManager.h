@@ -25,7 +25,7 @@ public:
 	ClientNetworkManager();
 	~ClientNetworkManager();
 
-	void Init(SceneManager* sceneManager);
+	void Init();
 	void Connect();
 
 	// Recv() 스레드 생성

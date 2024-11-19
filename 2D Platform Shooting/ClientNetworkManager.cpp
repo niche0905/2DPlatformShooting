@@ -50,9 +50,8 @@ ClientNetworkManager::ClientNetworkManager() {}
 
 ClientNetworkManager::~ClientNetworkManager() { }
 
-void ClientNetworkManager::Init(SceneManager* newSceneManager)
+void ClientNetworkManager::Init()
 {
-    sceneManager = newSceneManager;
     // 윈속 초기화
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) return;

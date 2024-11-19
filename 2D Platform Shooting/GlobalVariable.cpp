@@ -3,4 +3,4 @@
 
 
 ClientNetworkManager network_mgr;
-//SceneManager sceneManager;
+SceneManager sceneManager;

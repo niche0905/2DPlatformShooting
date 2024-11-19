@@ -3,4 +3,4 @@
 #include "SceneManager.h"
 
 extern ClientNetworkManager network_mgr;
-//extern SceneManager sceneManager;
+extern SceneManager sceneManager;
