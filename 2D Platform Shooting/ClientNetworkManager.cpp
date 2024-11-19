@@ -50,8 +50,9 @@ ClientNetworkManager::ClientNetworkManager() {}
 
 ClientNetworkManager::~ClientNetworkManager() { }
 
-void ClientNetworkManager::Init()
+void ClientNetworkManager::Init(SceneManager* newSceneManager)
 {
+    sceneManager = newSceneManager;
     // 윈속 초기화
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) return;
@@ -271,6 +272,7 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* move_
 {
     // TODO : 기본 인스턴스들 초기화 (위치 초기값 받아서 설정)
     // 씬 전환
+    sceneManager->LoadGameScene();
 }
 
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* move_packet)

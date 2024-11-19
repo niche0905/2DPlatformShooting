@@ -1,6 +1,7 @@
 #pragma once
 #include "Utilities.h"
 #include "Scene.h"
+#include "SceneManager.h"
 
 class ClientNetworkManager {
 private:
@@ -18,12 +19,13 @@ private:
 
 	// 현재 씬
 	std::shared_ptr<Scene> currentScene;
+	SceneManager* sceneManager;
 
 public:
 	ClientNetworkManager();
 	~ClientNetworkManager();
 
-	void Init();
+	void Init(SceneManager* sceneManager);
 	void Connect();
 
 	// Recv() 스레드 생성
