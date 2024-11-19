@@ -9,14 +9,14 @@ namespace myNP
 
 	}
 
-	CS_MATCHMAKING_PACKET CS_MATCHMAKING_PACKET::MakePacket()
+	CS_MATCHMAKING_PACKET CS_MATCHMAKING_PACKET::MakePacket(uint32_t player_id)
 	{
-		return CS_MATCHMAKING_PACKET();
+		return CS_MATCHMAKING_PACKET(htonl(player_id));
 	}
 
 	void CS_MATCHMAKING_PACKET::ntohByteOrder()
 	{
-
+		p_id = ntohl(p_id);
 	}
 
 	CS_MOVE_PACKET CS_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)
