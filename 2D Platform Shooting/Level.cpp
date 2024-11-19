@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Level.h"
 
-
 void Platform::draw(sf::RenderWindow& window)
 {
 	window.draw(shape);
@@ -17,7 +16,8 @@ std::istream& operator>>(std::istream& is, Platform& platform)
 	is >> platform.x >> platform.y >> platform.sizeX >> platform.sizeY;
 	platform.shape.setSize(sf::Vector2f(platform.sizeX, platform.sizeY));
 	platform.shape.setPosition(platform.x, platform.y);
-
+	// PlatformColor로 그리면 안그려짐, 임시로 블랙으로 처리
+	platform.shape.setFillColor(sf::Color::Black);
 	return is;
 }
 

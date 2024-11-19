@@ -19,7 +19,6 @@ private:
 
 	// ÇöÀç ¾À
 	std::shared_ptr<Scene> currentScene;
-	SceneManager* sceneManager;
 
 public:
 	ClientNetworkManager();

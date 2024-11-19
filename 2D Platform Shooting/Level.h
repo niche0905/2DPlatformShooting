@@ -1,8 +1,6 @@
 #pragma once
 
-
 const sf::Color PlatformColor = sf::Color(55, 55, 55, 255);
-
 
 class Platform
 {

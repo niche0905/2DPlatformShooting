@@ -10,7 +10,7 @@ std::uniform_real_distribution<float> uid{ 0.0, 800.0 };
 
 GameScene::GameScene() :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"),
-    level(),
+    level{},
     view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)),
     Background{ TextureID::BACKGROUND, 3200, 3200 },
     UI{ {TextureID::UI1, 200, 150}, {TextureID::UI2, 200, 150} }
