@@ -4,6 +4,8 @@
 using _SNM = ServerNetworkManager;
 using namespace myNP;
 
+int _SNM::nextId = 1;
+
 ServerNetworkManager::ServerNetworkManager()
 {
 }
@@ -169,7 +171,7 @@ DWORD WINAPI workerRecv(LPVOID arg)
 	cout << "Hi From Recv Thread\n";
 
 	// recv
-	QueueType local_queue{};
+	std::list<BufferType> local_list{};
 
 	// TODO: 임시로 send 해보기.
 
@@ -181,20 +183,29 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		200,
 		false
 	);
+ 
+	while (true) {
 
+		BufferType buffer{};
+		cout << "Waiting for Send...\n";
+		if (not _SNM::doRecv(client_socket, buffer)) {
+			cout << "workerRecv() ERROR: Recv Failed.\n";
+			closesocket(client_socket);
+			return 0;
+		}
+		
+		// if 해당 클라이언트의 ID가 게임 진행중이라면
+		//  if 만약 move 패킷이 왔다면
+		//   이미 다른 한쪽에서 move 대기중이면 Ingame thread에 정보 전달
+		//  
+		
+		// Queue에 패킷 전달. 
+		// 이때 move packet이면 Ingame thread에 큐 전달
 
-	BufferType buffer{};
-	cout << "Waiting for Send...\n";
-	if (not _SNM::doRecv(client_socket, buffer)) {
-		cout << "workerRecv() ERROR: Recv Failed.\n";
-		closesocket(client_socket);
-		return 0;
+		// 큐에 정보 집어넣기
+		local_list.push_back(buffer);
 	}
-
-	// 큐에 정보 집어넣기
-	local_queue.push(buffer);
-
-	// TODO: 양쪽에서 무브 패킷이 들어오게 되면 큐를 Update 쓰레드에서 처리
+		
 	return 0;
 }
 

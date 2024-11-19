@@ -14,6 +14,8 @@ private:
 	std::vector<QueueType> processQueue; // 스레드 전달 큐 벡터
 	std::array<HANDLE, 2> recvEvent{};
 	std::array<HANDLE, 2> processEvent{}; // 스레드 동기화를 위한 이벤트
+	std::list<int>		  matchmakingList{};
+	static int			  nextId;
 
 	// 추가된 변수
 	SOCKET listenSocket{ NULL }; // 소켓
@@ -78,6 +80,9 @@ public:
 	//  sock: 클라이언트 소켓
 	//  buffer: Recv로 받아온 내용을 저장할 버퍼
 	static bool doRecv(SOCKET sock, BufferType& buffer);
+
+
+	static int GetNextId() { return nextId++; };
 
 	// 삭제된 함수
 	// void PushBuffer(BufferType buffer);
