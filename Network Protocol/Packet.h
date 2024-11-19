@@ -66,8 +66,12 @@ namespace myNP {
 	// client to server 매치메이킹 잡는다
 	struct CS_MATCHMAKING_PACKET : public BASE_PACKET
 	{
-		CS_MATCHMAKING_PACKET() : BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), PacketID::CS_MATCHMAKING) {}
-		static CS_MATCHMAKING_PACKET MakePacket();
+		uint32_t p_id;
+
+		CS_MATCHMAKING_PACKET(uint32_t player_id) 
+			: BASE_PACKET(sizeof(CS_MATCHMAKING_PACKET), PacketID::CS_MATCHMAKING)
+			, p_id(player_id) {}
+		static CS_MATCHMAKING_PACKET MakePacket(uint32_t player_id);
 		void ntohByteOrder();
 	};
 

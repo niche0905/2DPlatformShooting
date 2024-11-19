@@ -217,44 +217,42 @@ void ClientNetworkManager::Update()
 
 void ClientNetworkManager::ProcessPacket()
 {
-    while (true) {
-        WaitForSingleObject(processEvent, INFINITE);
+    WaitForSingleObject(processEvent, INFINITE);
 
-        while (!process_queue.empty()) {
-            std::array<char, MAX_SIZE> buffer = process_queue.front();
-            process_queue.pop();
+    while (!process_queue.empty()) {
+        std::array<char, MAX_SIZE> buffer = process_queue.front();
+        process_queue.pop();
 
-            // TODO : 1 index가 패킷 타입 0은 size
-            // 첫 바이트가 패킷 타입
-            uint8_t packetType = static_cast<uint8_t>(buffer[0]);
+        // TODO : 1 index가 패킷 타입 0은 size
+        // 첫 바이트가 패킷 타입
+        uint8_t packetType = static_cast<uint8_t>(buffer[0]);
 
-            switch (packetType) {
-            case myNP::CS_MOVE:
-            {
-                myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
+        switch (packetType) {
+        case myNP::CS_MOVE:
+        {
+            myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
 
-                ProcessPlayerMove(move_packet);
-                break;
-            }
-            case myNP::CS_MATCHMAKING:
-            {
-                myNP::SC_MATCHMAKING_PACKET* matchmaking_packet = reinterpret_cast<myNP::SC_MATCHMAKING_PACKET*>(buffer.data());
-
-                ProcessMatchMaking(matchmaking_packet);
-                break;
-            }
-            case myNP::CS_FIRE:
-            {
-                myNP::SC_FIRE_PACKET* fire_packet = reinterpret_cast<myNP::SC_FIRE_PACKET*>(buffer.data());
-
-                ProcessFirebullet(fire_packet);
-                break;
-            }
-            }
+            ProcessPlayerMove(move_packet);
+            break;
         }
+        case myNP::CS_MATCHMAKING:
+        {
+            myNP::SC_MATCHMAKING_PACKET* matchmaking_packet = reinterpret_cast<myNP::SC_MATCHMAKING_PACKET*>(buffer.data());
 
-        ResetEvent(processEvent);
+            ProcessMatchMaking(matchmaking_packet);
+            break;
+        }
+        case myNP::CS_FIRE:
+        {
+            myNP::SC_FIRE_PACKET* fire_packet = reinterpret_cast<myNP::SC_FIRE_PACKET*>(buffer.data());
+
+            ProcessFirebullet(fire_packet);
+            break;
+        }
+        }
     }
+
+    ResetEvent(processEvent);
 }
 
 void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
