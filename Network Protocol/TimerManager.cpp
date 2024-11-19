@@ -3,7 +3,8 @@
 
 void TimerManager::Init()
 {
-
+	oldTime = std::chrono::system_clock::now();
+	deltaTime = std::chrono::milliseconds::zero();
 }
 
 void TimerManager::Update()
