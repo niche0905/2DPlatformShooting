@@ -5,15 +5,15 @@ void TimerManager::Init()
 {
 	startTime = Clock::now();
 	oldTime = startTime;
-	deltaTime = 0.0;
-	syncTime = 0.0;
+	deltaTime = 0;
+	syncTime = 0;
 }
 
 void TimerManager::Update()
 {
 	TimePoint now_time = Clock::now();
 
-	std::chrono::duration<double> elapsed = now_time - oldTime;
+	MilliSec elapsed = std::chrono::duration_cast<MilliSec>(now_time - oldTime);
 
 	deltaTime = elapsed.count();
 
