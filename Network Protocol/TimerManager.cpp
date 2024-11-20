@@ -24,6 +24,14 @@ void TimerManager::Update()
 
 bool TimerManager::isSyncTime()
 {
+	Update();
+
+	if (syncTime >= syncStand) {
+		syncTime -= syncStand;
+
+		return true;
+	}
+
 	return false;
 }
 
