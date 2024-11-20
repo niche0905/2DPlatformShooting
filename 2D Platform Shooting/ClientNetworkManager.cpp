@@ -254,7 +254,7 @@ void ClientNetworkManager::ProcessPacket()
     ResetEvent(processEvent);
 }
 
-void ClientNetworkManager::ProcessPlayerMove(myNP::CS_MOVE_PACKET* move_packet)
+void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
 {
     if (std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene)) {
 
@@ -266,7 +266,7 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::CS_MOVE_PACKET* move_packet)
     }
 }
 
-void ClientNetworkManager::ProcessMatchMaking(myNP::CS_MATCHMAKING_PACKET* matchmaking_packet)
+void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
 {
     // 플레이어 추가가 가능해지면 Scene을 로드할 때 p_id를 보내서
     // 몇 번째 플레이어인지 확인하고 플레이어 위치를 로드
@@ -276,7 +276,7 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::CS_MATCHMAKING_PACKET* match
     sceneManager.LoadGameScene();
 }
 
-void ClientNetworkManager::ProcessFirebullet(myNP::CS_FIRE_PACKET* firebullet_packet)
+void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 {
 
 }

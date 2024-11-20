@@ -40,9 +40,9 @@ public:
 	SOCKET GetSocket() { return clientSocket;  }
 
 	void ProcessPacket();
-	void ProcessPlayerMove(myNP::CS_MOVE_PACKET* move_packet);
-	void ProcessMatchMaking(myNP::CS_MATCHMAKING_PACKET* matchmaking_packet);
-	void ProcessFirebullet(myNP::CS_FIRE_PACKET* fire_packet);
+	void ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet);
+	void ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet);
+	void ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet);
 
 	void Update();
 };
