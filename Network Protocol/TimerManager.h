@@ -5,8 +5,16 @@
 class TimerManager
 {
 private:
-	std::chrono::system_clock::time_point oldTime;		// 이전 업데이트 프레임 시점
-	std::chrono::milliseconds deltaTime;				// deltatTime
+	static constexpr double syncStand = (1.0 / 30);
+
+private:
+	using Clock = std::chrono::high_resolution_clock;
+	using TimePoint = std::chrono::time_point<Clock>;
+
+	TimePoint startTime;	// 타이머 시작 시간 (동기화 시간을 구하기 위한)
+	TimePoint oldTime;		// 이전 업데이트 프레임 시점
+	double deltaTime;		// deltatTime
+	double syncTime;		// deltatTime
 
 public:
 	void Init();		// 초기화

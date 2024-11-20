@@ -3,13 +3,23 @@
 
 void TimerManager::Init()
 {
-	oldTime = std::chrono::system_clock::now();
-	deltaTime = std::chrono::milliseconds::zero();
+	startTime = Clock::now();
+	oldTime = startTime;
+	deltaTime = 0.0;
+	syncTime = 0.0;
 }
 
 void TimerManager::Update()
 {
+	TimePoint now_time = Clock::now();
 
+	std::chrono::duration<double> elapsed = now_time - oldTime;
+
+	deltaTime = elapsed.count();
+
+	oldTime = now_time;
+
+	syncTime += deltaTime;
 }
 
 bool TimerManager::isSyncTime()
