@@ -118,7 +118,7 @@ namespace myNP {
 		bool succ;
 		uint32_t p_id;
 
-		SC_MATCHMAKING_PACKET(bool success = true, uint32_t player_id)
+		SC_MATCHMAKING_PACKET(bool success, uint32_t player_id)
 			: BASE_PACKET(sizeof(SC_MATCHMAKING_PACKET), PacketID::SC_MATCHMAKING)
 			, succ(success)
 			, p_id(player_id) {}

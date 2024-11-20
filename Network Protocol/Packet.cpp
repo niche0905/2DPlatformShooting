@@ -45,7 +45,7 @@ namespace myNP
 		fire_t = std::chrono::milliseconds(ntohll(fire_t.count()));
 	}
 
-	SC_MATCHMAKING_PACKET SC_MATCHMAKING_PACKET::MakePacket(bool success = true, uint32_t player_id)
+	SC_MATCHMAKING_PACKET SC_MATCHMAKING_PACKET::MakePacket(bool success, uint32_t player_id)
 	{
 		return SC_MATCHMAKING_PACKET(success, htonl(player_id));
 	}
