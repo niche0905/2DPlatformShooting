@@ -37,8 +37,7 @@ bool TimerManager::isSyncTime()
 
 std::chrono::milliseconds TimerManager::epochToMillis()
 {
-	static const EpochPoint epochStand = EpochPoint{};
-	MilliSec return_value = std::chrono::duration_cast<MilliSec>(oldTime.time_since_epoch() - epochStand.time_since_epoch());
+	MilliSec return_value = std::chrono::duration_cast<MilliSec>(oldTime.time_since_epoch());
 
 	return return_value;
 }
