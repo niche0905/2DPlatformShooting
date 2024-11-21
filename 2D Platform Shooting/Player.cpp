@@ -116,10 +116,6 @@ void Player::handleInput(const sf::Event& event)
 
 void Player::fireBullet()
 {
-    // 현재 총 이름과 탄창 상태를 알아보기 위한 로깅
-    //std::cout << g_guns[gunId].getName() << " - " << curMag << std::endl;
-
-    // 추후에 연사 속도나 남은 잔탄 수 같은 기능 넣어야 함 <- 넣었음 [송승호 09/26]
     if (curMag > 0) {
         if (--curMag == 0) {
             gunId = 0;
@@ -132,11 +128,6 @@ void Player::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    // TODO: 이 구조를 바꾸어야 함.
-    // Bullet 객체를 생성할 때 총 포인터로만 생성할 수 있도록 제작
-    // 
-
-    // 임시 총 발싸
     bullets.push_back(Bullet(direction, position, GunInfo.gun_table[gunId].speed, GunInfo.gun_table[gunId].damage));
 }
 
@@ -211,6 +202,7 @@ void Player::update(long long deltaTime)
         OnAir = true;
     }
 
+    // 임시
     if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
     {
         isActive = false;
@@ -235,9 +227,7 @@ void Player::updateBullets(long long deltaTime)
 }
 
 void Player::draw(sf::RenderWindow& window) {
-    if (not isActive) return;   // 활성화 상태가 아니라면 Draw 종료
-
-    // window.draw(shape);
+    if (not isActive) return;
 
     for (const Bullet& bullet : bullets) {
         bullet.draw(window);
@@ -272,8 +262,6 @@ sf::Vector2f Player::getPosition() const
 
 void Player::revivePlayer()
 {
-    if (isActive) return;   // 살아 있다면 revive 취소
-
     // 부활 시 처리해 할 행동들 추가하기
     isActive = true;    // 활성화 시키기
 
@@ -281,8 +269,6 @@ void Player::revivePlayer()
     shape.setPosition((level->leftBound+level->rightBound) / 2.0f, -1000.0f);  // -1000.0f 는 수정해야 할수도
 
     damaged = 0;
-
-    --life;
 }
 
 bool Player::checkCollisionBullet(sf::FloatRect other)

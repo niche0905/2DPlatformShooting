@@ -121,6 +121,7 @@ void Dummy::update(long long deltaTime)
         OnAir = true;
     }
 
+    // 임시
     if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
     {
         isActive = false;
@@ -192,8 +193,6 @@ bool Dummy::checkCollisionBullet(sf::FloatRect other)
 
 void Dummy::reviveDummy()
 {
-    if (isActive) return;   // 살아 있다면 revive 취소
-
     // 부활 시 처리해 할 행동들 추가하기
     isActive = true;    // 활성화 시키기
 
@@ -201,8 +200,6 @@ void Dummy::reviveDummy()
     shape.setPosition((level->leftBound + level->rightBound) / 2.0f, -1000.0f);  // -1000.0f 는 수정해야 할수도
 
     damaged = 0;
-
-    --life;
 }
 
 void Dummy::takeDamage(bool direction, float damage)

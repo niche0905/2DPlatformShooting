@@ -82,6 +82,8 @@ void ClientNetworkManager::Init()
 
     // 스레드 핸들 초기화
     clientThread = NULL;
+
+    currentScene = sceneManager.GetActiveScene();
     
     Connect();
 
@@ -227,25 +229,32 @@ void ClientNetworkManager::ProcessPacket()
         uint8_t packetType = static_cast<uint8_t>(buffer[1]);
 
         switch (packetType) {
-        case myNP::CS_MOVE:
+        case myNP::SC_MY_MOVE:
         {
             myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
 
             ProcessPlayerMove(move_packet);
             break;
         }
-        case myNP::CS_MATCHMAKING:
+        case myNP::SC_MATCHMAKING:
         {
             myNP::SC_MATCHMAKING_PACKET* matchmaking_packet = reinterpret_cast<myNP::SC_MATCHMAKING_PACKET*>(buffer.data());
 
             ProcessMatchMaking(matchmaking_packet);
             break;
         }
-        case myNP::CS_FIRE:
+        case myNP::SC_FIRE:
         {
             myNP::SC_FIRE_PACKET* fire_packet = reinterpret_cast<myNP::SC_FIRE_PACKET*>(buffer.data());
 
             ProcessFirebullet(fire_packet);
+            break;
+        }
+        case myNP::SC_LIFE_UPDATE:
+        {
+            myNP::SC_LIFE_UPDATE_PACKET* lift_packet = reinterpret_cast<myNP::SC_LIFE_UPDATE_PACKET*>(buffer.data());
+
+            ProcessLifeUpdate(lift_packet);
             break;
         }
         }
@@ -256,11 +265,8 @@ void ClientNetworkManager::ProcessPacket()
 
 void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
 {
-    if (std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene)) {
-
-        auto& dummy_enemy = gameScene->GetDummyEnemy();
-        dummy_enemy.setPosition(move_packet->posX, move_packet->posY);
-    }
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+    gameScene->GetDummyEnemy().setPosition(move_packet->posX, move_packet->posY);
 }
 
 void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
@@ -271,4 +277,11 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 {
 
+}
+
+void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet)
+{
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+    if(!life_packet->p_id) gameScene->GetPlayers().revivePlayer();
+    else gameScene->GetDummyEnemy().reviveDummy();
 }
