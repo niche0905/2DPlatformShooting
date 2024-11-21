@@ -4,6 +4,10 @@
 
 World::World()
 {
+	level = new StdLevel();
+
+	cout << level->platforms[0] << endl;
+
 	//objects.clear();
 	//objects.reserve(n);
 }
