@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ServerNetworkManager.h"
-#include "World.h"
 
 // using
 using _SNM = ServerNetworkManager;
@@ -212,8 +211,6 @@ DWORD WINAPI workerRecv(LPVOID arg)
 DWORD WINAPI workerLobby(LPVOID arg)
 {
 	std::cout << "HI From Lobby Thread\n";
-
-	World test;
 
 	return 0;
 }
