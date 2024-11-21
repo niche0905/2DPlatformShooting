@@ -90,16 +90,6 @@ void ClientNetworkManager::Init()
 
 void ClientNetworkManager::Connect()
 {
-    auto packet = myNP::CS_MATCHMAKING_PACKET::MakePacket();
-    int sendLen = send(clientSocket, 
-        reinterpret_cast<char*>(&packet), sizeof(myNP::CS_MATCHMAKING), 0);
-    cout << "connect\n";
-    if (sendLen == SOCKET_ERROR) {
-        closesocket(clientSocket);
-        clientSocket = INVALID_SOCKET;
-        WSACleanup();
-    }
-
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
