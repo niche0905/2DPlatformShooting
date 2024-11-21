@@ -44,5 +44,8 @@ std::chrono::milliseconds TimerManager::epochToMillis()
 
 std::chrono::milliseconds TimerManager::timeGap(std::chrono::milliseconds bullet_fire_t)
 {
-	return std::chrono::milliseconds();
+	MilliSec this_epoch_delta = epochToMillis();
+	MilliSec result = this_epoch_delta - bullet_fire_t;
+
+	return result;
 }
