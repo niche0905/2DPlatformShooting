@@ -37,10 +37,15 @@ bool TimerManager::isSyncTime()
 
 std::chrono::milliseconds TimerManager::epochToMillis()
 {
-	return std::chrono::milliseconds();
+	MilliSec return_value = std::chrono::duration_cast<MilliSec>(oldTime.time_since_epoch());
+
+	return return_value;
 }
 
 std::chrono::milliseconds TimerManager::timeGap(std::chrono::milliseconds bullet_fire_t)
 {
-	return std::chrono::milliseconds();
+	MilliSec this_epoch_delta = epochToMillis();
+	MilliSec result = this_epoch_delta - bullet_fire_t;
+
+	return result;
 }

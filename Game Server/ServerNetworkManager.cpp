@@ -15,12 +15,14 @@ ServerNetworkManager::~ServerNetworkManager()
 		closesocket(listenSocket);
 	}
 
+
 	WSACleanup();
 }
 
 void ServerNetworkManager::Init()
 {
 	NetworkInit();
+	EventInit();
 	CreateLobbyThread();
 }
 
@@ -60,6 +62,16 @@ void ServerNetworkManager::NetworkInit()
 	}
 }
 
+void ServerNetworkManager::EventInit()
+{
+	for (auto& event_ : recvEvent) {
+		event_ = CreateEvent(NULL, FALSE, FALSE, NULL);
+	}
+	for (auto& event_ : processEvent) {
+		event_ = CreateEvent(NULL, FALSE, FALSE, NULL);
+	}
+}
+
 void ServerNetworkManager::Accept()
 {
 	while (true) {
@@ -72,13 +84,17 @@ void ServerNetworkManager::Accept()
 			// err_display("accept()");
 			continue;
 		}
-
-		// recv 스레드 생성
-		CreateRecvThread(client_socket);
+			
+		if (nextId >= 2) {
+			closesocket(client_socket);
+		}
+		else {
+			CreateRecvThread(client_socket);
+		}
 	}
 }
 
-bool ServerNetworkManager::doRecv(SOCKET sock, BufferType& buffer)
+bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 {
 	// 고정 길이 recv
 	// BASE_PACKET 만큼 먼저 읽는다.
@@ -136,7 +152,7 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 	else { CloseHandle(th); }
 }
 
-bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer)
+bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 {
 	// 가변 길이 send
 	auto retval{ ::send(
@@ -167,42 +183,53 @@ DWORD WINAPI workerRecv(LPVOID arg)
 {
 	auto client_socket{ *reinterpret_cast<SOCKET*>(arg) };
 
-	cout << "Hi From Recv Thread\n";
-
 
 	// recv
 	std::list<BufferType> local_list{};
 	int client_id{ SNMgr.GetNextId() };
+	cout << "Hi From Recv Thread " << client_id << "\n";
 
-	// TODO: 임시로 send 해보기.
 
-	// move 패킷 임시로 하나 만들어서
-	// doSend 호출.
-	SNMgr.SendPacket<SC_MOVE_PACKET>(client_socket,
-		0,
-		200,
-		200,
-		false
-	);
+	//SNMgr.SendPacket<SC_MOVE_PACKET>(client_socket,
+	//	0,
+	//	200.f,
+	//	200.f,
+	//	false
+	//);
  
 	while (true) {
 
 		BufferType buffer{};
 		cout << "Waiting for Send...\n";
-		if (not SNMgr.doRecv(client_socket, buffer)) {
+		if (not SNMgr.DoRecv(client_socket, buffer)) {
 			cout << "workerRecv() ERROR: Recv Failed.\n";
+			SNMgr.DecreaseNextId();
+			// 게임 중이면 2 감소
+			
+			// 게임 중이 아니면 1 감소
 			closesocket(client_socket);
 			return 0;
 		}
 		
+		if (not SNMgr.IsPlaying() &&
+			PacketID::CS_MATCHMAKING == buffer[1]) {
+			cout << "[Client " << client_id << "] Set Recv event." << "\n";
+			SNMgr.SetRecvEvent(client_id);
+			cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
+			SNMgr.WaitforProcessEvent(client_id);
+			cout << "[Client " << client_id << "] get Process event." << "\n";
+		}
+		
 		// if 해당 클라이언트의 ID가 게임 진행중이라면
-		//  list에 패킷 저장
-		//  if 만약 move 패킷이 왔다면
-		//   이미 다른 한쪽에서 move 대기중이면 Ingame thread에 정보 전달
-		//  아니면 대기 등록
+		//		큐에 넣기
+		//		if 만약 move 패킷이 왔다면
+		//			큐 정보를 집어넣기
+		//			process 이벤트 활성화
+		//			완료 대기
 		
-		// 게임 진행중 아니고 && 등록하지 않았고 && 매치매이킹 패킷이면 등록.
-		
+		// 게임 진행중 아니고 && 매치매이킹 패킷이면
+		//		recv 이벤트 활성화.
+		//		완료 대기
 	}
 		
 	return 0;
@@ -210,8 +237,10 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 DWORD WINAPI workerLobby(LPVOID arg)
 {
-	std::cout << "HI From Lobby Thread\n";
-
+	std::cout << "workerLobby(): Waiting For Recv Events...\n";
+	SNMgr.WaitforRecvEvent();
+	std::cout << "workerLobby(): set Process Events.\n";
+	SNMgr.SetProcessEvent();
 
 	return 0;
 }
