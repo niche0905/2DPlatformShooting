@@ -14,15 +14,16 @@ private:
 	std::vector<QueueType>	processQueue; // 스레드 전달 큐 벡터
 	std::array<HANDLE, 2>	recvEvent{};
 	std::array<HANDLE, 2>	processEvent{}; // 스레드 동기화를 위한 이벤트
+
 	
 	// 추가된 변수
 	SOCKET listenSocket{ NULL }; // 소켓
 	HANDLE updateThread{};
 	HANDLE lobbyThread{};
 
-	// static 변수
 	std::queue<int>	matchmakingList{};
-	int				nextId{ 1 };
+	int				nextId{ 0 };
+	bool			playing{ false };
 
 
 	// 삭제된 변수
@@ -73,6 +74,8 @@ public:
 
 	// Brief: 네트워크를 초기화 해준다.
 	void NetworkInit();
+
+	void EventInit();
 	
 	// Brief: listen 소켓에 accept를 호출하고 받은 소켓으로 recv 쓰레드를 만든다.
 	void Accept();
@@ -82,12 +85,20 @@ public:
 	// Params:
 	//  sock: 클라이언트 소켓
 	//  buffer: Recv로 받아온 내용을 저장할 버퍼
-	bool doRecv(SOCKET sock, BufferType& buffer) const;
+	bool DoRecv(SOCKET sock, BufferType& buffer) const;
 
-	// Brief: 새로운 클라이언트에서 ID를 할당받는 함수.
-	// Return: 얻어온 ID.
-	int GetNextId() { return nextId++; };
+	// getter and setter
+	int GetNextId() { return nextId++; }
+	bool IsPlaying() const { return playing; }
+	void DecreaseNextId() { nextId--; }
 
+	// handle recv events
+	void SetRecvEvent(const int c_id) { SetEvent(recvEvent[c_id]); }
+	void WaitforRecvEvent() { WaitForMultipleObjects(2, recvEvent.data(), TRUE, INFINITE); }
+
+	// handle process events
+	void SetProcessEvent() { SetEvent(processEvent[0]); SetEvent(processEvent[1]); }
+	void WaitforProcessEvent(const int c_id) { WaitForSingleObject(recvEvent[c_id], INFINITE); }
 	
 
 
