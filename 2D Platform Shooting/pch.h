@@ -74,16 +74,3 @@ const sf::Color BackgroundColor = sf::Color(135, 206, 235, 255);
 
 constexpr float CameraLagging = 10.0f;
 constexpr float CameraOffset = 60.0f;
-
-#define GET_SINGLE(type)	type::GetInstance()
-
-#define DECLARE_SINGLE(type)        \
-public:                             \
-    static type* GetInstance()      \
-    {                               \
-        static type instance;       \
-        return &instance;           \
-    }                               \
-private:                            \
-    type() = default;               \
-    ~type() = default;						\

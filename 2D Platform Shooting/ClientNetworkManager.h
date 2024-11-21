@@ -1,6 +1,7 @@
 #pragma once
 #include "Utilities.h"
 #include "Scene.h"
+#include "SceneManager.h"
 
 class ClientNetworkManager {
 private:

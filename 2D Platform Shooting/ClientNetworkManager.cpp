@@ -223,9 +223,8 @@ void ClientNetworkManager::ProcessPacket()
         std::array<char, MAX_SIZE> buffer = process_queue.front();
         process_queue.pop();
 
-        // TODO : 1 index가 패킷 타입 0은 size
-        // 첫 바이트가 패킷 타입
-        uint8_t packetType = static_cast<uint8_t>(buffer[0]);
+        // 두 번째 바이트가 패킷 타입
+        uint8_t packetType = static_cast<uint8_t>(buffer[1]);
 
         switch (packetType) {
         case myNP::CS_MOVE:
@@ -264,17 +263,20 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
         if (move_packet->p_id != ClientID) {
             players[move_packet->p_id].setPosition(move_packet->posX, move_packet->posY);
         }
-
     }
 }
 
-void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* move_packet)
+void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
 {
-    // TODO : 기본 인스턴스들 초기화 (위치 초기값 받아서 설정)
-    // 씬 전환?
+    // 플레이어 추가가 가능해지면 Scene을 로드할 때 p_id를 보내서
+    // 몇 번째 플레이어인지 확인하고 플레이어 위치를 로드
+    // GameScene 생성자 수정 필요
+    //sceneManager.LoadGameScene(matchmaking_packet->p_id);
+    
+    sceneManager.LoadGameScene();
 }
 
-void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* move_packet)
+void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 {
 
 }

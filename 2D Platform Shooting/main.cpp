@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "SceneManager.h"
 
-// ¿Ö ½Ì±ÛÅæÀÌ ¾ÈµÇÁö
-//SceneManager sceneManager = GET_SINGLE(SceneManager);
-SceneManager sceneManager;
-
       //-----//
      //     //  (ªÃ¢¥¥ø`)ªÃ
     //-----//
