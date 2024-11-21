@@ -7,12 +7,12 @@ class Dummy {
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
-    float damaged;      // 피해 입은 양 -(음수) 왼쪽으로 힘을 받음 +(양수) 오른쪽으로 힘을 받음
-
     bool direction;     // true : Left(←),	false : Right(→)
     float width;
     float height;
     float speed;
+    
+    float damaged;      // 피해 입은 양 -(음수) 왼쪽으로 힘을 받음 +(양수) 오른쪽으로 힘을 받음
 
     float jumpHeight;
     int jumpChance;     // 점프 기회
@@ -26,7 +26,6 @@ class Dummy {
     int curMag;
     std::chrono::system_clock::time_point lastFireTime;
 
-    sf::RenderWindow window;
     Level* level;
     Image image{ TextureID::BANANA };
 
@@ -34,9 +33,6 @@ public:
     Dummy() = default;
 
     Dummy(float x, float y, Level* level, int texture_id);
-
-    // 더미의 Input을 처리한다
-    void handleInput(const sf::Event& event);
 
     // 더미가 총을 발사한다.
     void fireBullet();
@@ -59,6 +55,9 @@ public:
     // 더미의 위치(피봇 점)을 찾는 함수
     sf::Vector2f getPosition() const;
 
+    // 부활하는 함수(활성화)
+    void reviveDummy();
+
     // 총알 충돌체크(기존의 충돌체크완 다르게 충돌 유무만 처리)
     bool checkCollisionBullet(sf::FloatRect other);
 
@@ -68,13 +67,11 @@ public:
     // 피해량을 조절해준다(업데이트)
     void damageControll(long long deltaTime);
 
+    // 더미 포지션 set
     void setPosition(float x, float y);
-
-    void getItem();
 
     // Getter
     int getCurMag() const { return curMag; }
     int getGunID() const { return gunId; }
     int getLife() const { return life; }
-
 };

@@ -35,27 +35,8 @@ Dummy::Dummy(float x, float y, Level* level, int texture_id)
     jumpChance = maxJumpChance;
 }
 
-void Dummy::handleInput(const sf::Event& event)
-{
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::I) {
-            // Space 키가 눌렸을 때 한 번만 실행되는 코드
-            if (jumpChance > 0) {
-                //velocity.y -= jumpHeight; // 이 둘 중 선택해야 함
-                velocity.y = -jumpHeight;
-                OnAir = true;
-                --jumpChance;
-            }
-        }
-    }
-}
-
 void Dummy::fireBullet()
 {
-    // 현재 총 이름과 탄창 상태를 알아보기 위한 로깅
-    //std::cout << g_guns[gunId].getName() << " - " << curMag << std::endl;
-
-    // 추후에 연사 속도나 남은 잔탄 수 같은 기능 넣어야 함 <- 넣었음 [송승호 09/26]
     if (curMag > 0) {
         if (--curMag == 0) {
             gunId = 0;
@@ -68,7 +49,6 @@ void Dummy::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    // 임시 총 발싸
     bullets.push_back(Bullet(direction, position, GunInfo.gun_table[gunId].speed, GunInfo.gun_table[gunId].damage));
 }
 
@@ -97,12 +77,6 @@ void Dummy::setPosition(float x, float y)
     vec.y = y;
 
     shape.setPosition(vec);
-}
-
-void Dummy::getItem()
-{
-    gunId = GunInfo.getRandomGunId();
-    curMag = GunInfo.gun_table[gunId].mag;
 }
 
 void Dummy::update(long long deltaTime)
@@ -147,6 +121,12 @@ void Dummy::update(long long deltaTime)
         OnAir = true;
     }
 
+    if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
+    {
+        isActive = false;
+        reviveDummy();
+    }
+
     auto& pos = shape.getPosition();
     image.SetPosition(pos.x, pos.y + 25.f);
     image.scale(width * 2, height * 2);
@@ -166,6 +146,7 @@ void Dummy::updateBullets(long long deltaTime)
 
 void Dummy::draw(sf::RenderWindow& window)
 {
+    if (not isActive) return;
     for (const Bullet& bullet : bullets) {
         bullet.draw(window);
     }
@@ -207,6 +188,21 @@ bool Dummy::checkCollisionBullet(sf::FloatRect other)
     }
 
     return false;
+}
+
+void Dummy::reviveDummy()
+{
+    if (isActive) return;   // 살아 있다면 revive 취소
+
+    // 부활 시 처리해 할 행동들 추가하기
+    isActive = true;    // 활성화 시키기
+
+    // 맵 중앙 공중에 스폰
+    shape.setPosition((level->leftBound + level->rightBound) / 2.0f, -1000.0f);  // -1000.0f 는 수정해야 할수도
+
+    damaged = 0;
+
+    --life;
 }
 
 void Dummy::takeDamage(bool direction, float damage)
