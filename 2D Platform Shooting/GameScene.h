@@ -11,7 +11,9 @@ class GameScene : public Scene {
 
     Level level;
 
-    std::vector<Player> players;
+    Player player;
+    
+    Dummy* dummy_enemy;
 
     std::list<Item> items;
     sf::View view;
@@ -25,7 +27,7 @@ class GameScene : public Scene {
 
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
-    GameScene();
+    GameScene(uint32_t p_id);
 
     // 카메라 뷰를 Player어 중심으로
     void InitView();
@@ -59,5 +61,6 @@ public:
     void updateTexts();
     void drawTexts();
 
-    std::vector<Player>& GetPlayers() { return players; }
+    Player& GetPlayers() { return player; }
+    Dummy& GetDummyEnemy() { return *dummy_enemy; }
 };

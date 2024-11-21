@@ -84,10 +84,22 @@ void ClientNetworkManager::Init()
     clientThread = NULL;
     
     Connect();
+
+    CreateRecvThread();
 }
 
 void ClientNetworkManager::Connect()
 {
+    auto packet = myNP::CS_MATCHMAKING_PACKET::MakePacket();
+    int sendLen = send(clientSocket, 
+        reinterpret_cast<char*>(&packet), sizeof(myNP::CS_MATCHMAKING), 0);
+    cout << "connect\n";
+    if (sendLen == SOCKET_ERROR) {
+        closesocket(clientSocket);
+        clientSocket = INVALID_SOCKET;
+        WSACleanup();
+    }
+
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
@@ -112,8 +124,6 @@ void ClientNetworkManager::Connect()
         WSACleanup();
         return;
     }
-
-    CreateRecvThread();
 }
 
 void ClientNetworkManager::CreateRecvThread()
@@ -258,22 +268,14 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
 {
     if (std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene)) {
 
-        auto& players = gameScene->GetPlayers();
-        // 자기 자신이 아니면
-        if (move_packet->p_id != ClientID) {
-            players[move_packet->p_id].setPosition(move_packet->posX, move_packet->posY);
-        }
+        auto& dummy_enemy = gameScene->GetDummyEnemy();
+        dummy_enemy.setPosition(move_packet->posX, move_packet->posY);
     }
 }
 
 void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
 {
-    // 플레이어 추가가 가능해지면 Scene을 로드할 때 p_id를 보내서
-    // 몇 번째 플레이어인지 확인하고 플레이어 위치를 로드
-    // GameScene 생성자 수정 필요
-    //sceneManager.LoadGameScene(matchmaking_packet->p_id);
-    
-    sceneManager.LoadGameScene();
+    sceneManager.LoadGameScene(matchmaking_packet->p_id);
 }
 
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
