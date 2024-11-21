@@ -43,6 +43,7 @@ public:
 	void ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet);
 	void ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet);
 	void ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet);
+	void ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet);
 
 	void Update();
 };

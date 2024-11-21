@@ -282,6 +282,8 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet)
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+    
+    // 해당 플레이어 id가 본인인지 상대인지 어떻게 알지???
     if(!life_packet->p_id) gameScene->GetPlayers().revivePlayer();
     else gameScene->GetDummyEnemy().reviveDummy();
 }
