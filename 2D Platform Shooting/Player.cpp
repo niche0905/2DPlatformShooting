@@ -102,9 +102,6 @@ void Player::handleInput(const sf::Event& event)
             //if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
             //    fireBullet();
         }
-        if (event.key.code == sf::Keyboard::D) {
-            dash();
-        }
         if (event.key.code == sf::Keyboard::Q) {
             gunId = GunInfo.getRandomGunId();
         }
@@ -273,44 +270,6 @@ sf::Vector2f Player::getPosition() const
     return shape.getPosition();
 }
 
-void Player::dash()
-{
-    if (!direction) shape.move(100, 0);
-    else shape.move(-100, 0);
-}
-
-void Player::hitTheEnemy(class Dummy& dummy)
-{
-    for (auto it = bullets.begin(); it != bullets.end(); ) {
-        if (dummy.checkCollisionBullet(it->getGlobalBounds())) {
-        // 맞았다면(충돌이라면)
-            // 데미지를 적용하고
-            dummy.takeDamage(it->getDirection(), it->getDamage());
-
-            // 총알 삭제
-            it = bullets.erase(it);
-        }
-        else
-            ++it;
-    }
-}
-
-void Player::hitTheEnemy(class Player& otherPlayer)
-{
-    for (auto it = bullets.begin(); it != bullets.end(); ) {
-        // 맞았다면(충돌이라면)
-        if (otherPlayer.checkCollisionBullet(it->getGlobalBounds())) {
-            // 데미지를 적용하고
-            otherPlayer.takeDamage(it->getDirection(), it->getDamage());
-
-            // 총알 삭제
-            it = bullets.erase(it);
-        }
-        else
-            ++it;
-    }
-}
-
 void Player::revivePlayer()
 {
     if (isActive) return;   // 살아 있다면 revive 취소
@@ -379,12 +338,41 @@ void Player::getItem()
     // 그리고 다쓰면 0번으로 바뀌게
     // [cham] 할거: 총 정보 저장할 때
     // 총 이름으로 해당 ID 값 반환하는 함수 만들기.
-    // 니하는플레이보이예전에하더놈같은데이제얼굴까고하는갑지돈좀버냐?개노잼노라라
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+Dummy::Dummy(float x, float y, Level* level, int texture_id)
+    : isActive(true)
+    , direction(true)
+    , width(100.0f)
+    , height(100.0f)
+    , speed(500.0f)
+    , jumpHeight(650.0f)
+    , maxJumpChance(2)
+    , jumpChance(maxJumpChance)
+    , OnAir(false)
+    , level(level)
+    , image(texture_id)
+    , life(3)
+{
+    // 피봇은 가운대 아래
+    shape.setOrigin(width / 2, height);
+    shape.setSize(sf::Vector2f(width, height));
+    shape.setPosition(x, y);
+    shape.setFillColor(sf::Color::Green);
+
+    // 총의 발사속도 제한을 위한 변수 초기화
+    lastFireTime = std::chrono::system_clock::now();
+
+    // 초기화 되지 않은 변수들 설정
+    curMag = -1;
+    damaged = 0;
+    gunId = 0;
+    jumpChance = maxJumpChance;
+}
 
 void Dummy::handleInput(const sf::Event& event)
 {
@@ -399,6 +387,32 @@ void Dummy::handleInput(const sf::Event& event)
             }
         }
     }
+}
+
+void Dummy::fireBullet()
+{
+    // 현재 총 이름과 탄창 상태를 알아보기 위한 로깅
+    //std::cout << g_guns[gunId].getName() << " - " << curMag << std::endl;
+
+    // 추후에 연사 속도나 남은 잔탄 수 같은 기능 넣어야 함 <- 넣었음 [송승호 09/26]
+    if (curMag > 0) {
+        if (--curMag == 0) {
+            gunId = 0;
+            curMag = -1;
+        }
+    }
+
+    lastFireTime = std::chrono::system_clock::now();
+
+    sf::Vector2f position = shape.getPosition();
+    position.y -= 25.0f;
+
+    // TODO: 이 구조를 바꾸어야 함.
+    // Bullet 객체를 생성할 때 총 포인터로만 생성할 수 있도록 제작
+    // 
+
+    // 임시 총 발싸
+    bullets.push_back(Bullet(direction, position, GunInfo.gun_table[gunId].speed, GunInfo.gun_table[gunId].damage));
 }
 
 void Dummy::damageControll(long long deltaTime)
@@ -419,33 +433,27 @@ void Dummy::damageControll(long long deltaTime)
     }
 }
 
+void Dummy::setPosition(float x, float y)
+{
+    sf::Vector2f vec;
+    vec.x = x;
+    vec.y = y;
+
+    shape.setPosition(vec);
+}
+
+void Dummy::getItem()
+{
+    gunId = GunInfo.getRandomGunId();
+    curMag = GunInfo.gun_table[gunId].mag;
+    // TODO: player에다가 장탄수 세팅
+    // 그리고 다쓰면 0번으로 바뀌게
+    // [cham] 할거: 총 정보 저장할 때
+    // 총 이름으로 해당 ID 값 반환하는 함수 만들기.
+}
+
 void Dummy::update(long long deltaTime)
 {
-    // 좌우 키가 눌리고 있는지
-    leftKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::J);
-    rightKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::L);
-
-    if (not (leftKeyDown and rightKeyDown)) {
-        if (leftKeyDown) {
-            direction = true;
-            if (-speed <= velocity.x and velocity.x <= speed)
-                velocity.x = -speed;
-            else if (velocity.x > speed)
-                velocity.x -= speed * (deltaTime / 1000000.0f);
-
-        }
-        else if (rightKeyDown) {
-            direction = false;
-            if (-speed <= velocity.x and velocity.x <= speed)
-                velocity.x = speed;
-            else if (velocity.x < -speed)
-                velocity.x += speed * (deltaTime / 1000000.0f);
-        }
-        else {
-            velocity.x = 0.0f;
-        }
-    }
-
     // 공중에 떠있는지 (점프 또는 플랫폼과 충돌 처리 후 정해짐)
     if (OnAir) {
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
@@ -463,7 +471,7 @@ void Dummy::update(long long deltaTime)
 
     if (not sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
     // 아래키가 눌리고 있지 않다면
-        for (const auto& platform : level.platforms) {
+        for (const auto& platform : level->platforms) {
         // 플랫폼 루프로 충돌처리
             if (checkCollision(platform.getGlobalBounds())) {
             // 한 플랫폼이라도 위에서 밟고있는 충돌이라면
@@ -481,6 +489,10 @@ void Dummy::update(long long deltaTime)
     if (noOnePlatformCollide) {
         OnAir = true;
     }
+}
+
+void Dummy::updateBullets(long long deltaTime)
+{
 }
 
 void Dummy::draw(sf::RenderWindow& window)
