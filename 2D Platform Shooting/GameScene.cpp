@@ -20,13 +20,13 @@ GameScene::GameScene(uint32_t p_id) :
     // 1p
     if (!p_id)
     {
-        player = Player{ 100.0f, 400.0f, &level, TextureID::PLAYER1 };
+        player = new Player{ 100.0f, 400.0f, &level, TextureID::PLAYER1 };
         dummy_enemy = new Dummy{ 400.0f, 400.0f, &level, TextureID::PLAYER2 };
     }
     // 2p
     else
     {
-        player = Player{ 400.0f, 400.0f, &level, TextureID::PLAYER2 };
+        player = new Player{ 400.0f, 400.0f, &level, TextureID::PLAYER2 };
         dummy_enemy = new Dummy{ 100.0f, 400.0f, &level, TextureID::PLAYER1 };
     }
 
@@ -42,7 +42,7 @@ GameScene::GameScene(uint32_t p_id) :
 
 void GameScene::InitView()
 {
-    sf::Vector2f newPosition = player.getPosition();
+    sf::Vector2f newPosition = player->getPosition();
     newPosition.y -= CameraOffset;
 
     view.setCenter(newPosition);
@@ -77,14 +77,14 @@ void GameScene::handleInput()
             window.close();
         }
 
-        player.handleInput(event);
+        player->handleInput(event);
     }
 }
 
 void GameScene::update(long long deltaTime)
 {
     // 모든 업데이트 해야할 항목을 업데이트
-    player.update(deltaTime);
+    player->update(deltaTime);
     dummy_enemy->update(deltaTime);
 
     for (Item& item : items)
@@ -126,9 +126,9 @@ void GameScene::update(long long deltaTime)
 //{
 //    for (Player& player : players) {
 //        for (auto iter{ items.begin() }; iter != items.end();) {
-//            if (iter->checkCollisionBullet(player.getGlobalBounds())) {
+//            if (iter->checkCollisionBullet(player->getGlobalBounds())) {
 //                iter = items.erase(iter);
-//                player.getItem();
+//                player->getItem();
 //                makeTime = std::chrono::system_clock::now();
 //            }
 //            else { ++iter; }
@@ -145,7 +145,7 @@ void GameScene::makeItem()
 void GameScene::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한
-    sf::Vector2f targetPosition = player.getPosition();
+    sf::Vector2f targetPosition = player->getPosition();
     // 지금 view의 위치를 알기위한
     sf::Vector2f currentPosition = view.getCenter();
     // view의 center를 약간 올리기 위해
@@ -170,7 +170,7 @@ void GameScene::draw()
     for (Item& item : items)
         item.draw(window);
 
-    player.draw(window);
+    player->draw(window);
     dummy_enemy->draw(window);
 
     for (auto& obj : UI)
@@ -212,14 +212,14 @@ void GameScene::InitText()
 
 void GameScene::updateTexts()
 {
-    texts[0].setString("Gun: " + GunInfo.gun_table[player.getGunID()].name);
-    if (auto val = player.getCurMag(); -1 == val) {
+    texts[0].setString("Gun: " + GunInfo.gun_table[player->getGunID()].name);
+    if (auto val = player->getCurMag(); -1 == val) {
         texts[1].setString("Remain: INF");
     }
     else {
         texts[1].setString("Remain: " + std::to_string(val));
     }
-    texts[2].setString("Life: " + std::to_string(player.getLife()));
+    texts[2].setString("Life: " + std::to_string(player->getLife()));
     texts[3].setString("Gun: " + GunInfo.gun_table[dummy_enemy->getGunID()].name);
     if (auto val = dummy_enemy->getCurMag(); -1 == val) {
         texts[4].setString("Remain: INF");

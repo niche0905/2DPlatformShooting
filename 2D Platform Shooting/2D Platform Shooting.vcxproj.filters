@@ -91,6 +91,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Manager\SceneManager</Filter>
     </ClCompile>
+    <ClCompile Include="Dummy.cpp">
+      <Filter>Objects\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gun.h">
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Manager\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Dummy.h">
+      <Filter>Objects\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

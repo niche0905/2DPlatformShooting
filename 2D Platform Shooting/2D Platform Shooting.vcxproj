@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ClientNetworkManager.cpp" />
+    <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -185,6 +186,7 @@
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ClientNetworkManager.h" />
+    <ClInclude Include="Dummy.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="Scene.h" />

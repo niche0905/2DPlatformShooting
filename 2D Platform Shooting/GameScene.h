@@ -1,6 +1,7 @@
 #pragma once
 #include "Level.h"
 #include "Player.h"
+#include "Dummy.h"
 #include "Item.h"
 #include "Image.h"
 #include "Scene.h"
@@ -11,7 +12,7 @@ class GameScene : public Scene {
 
     Level level;
 
-    Player player;
+    Player* player;
     
     Dummy* dummy_enemy;
 
@@ -61,6 +62,6 @@ public:
     void updateTexts();
     void drawTexts();
 
-    Player& GetPlayers() { return player; }
+    Player& GetPlayers() { return *player; }
     Dummy& GetDummyEnemy() { return *dummy_enemy; }
 };
