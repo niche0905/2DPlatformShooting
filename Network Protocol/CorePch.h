@@ -2,6 +2,7 @@
 
 #include "Packet.h"
 #include "GunLoader.h"
+#include "Platfoms.h"
 
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <winsock2.h>

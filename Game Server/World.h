@@ -33,6 +33,8 @@ private:
 
 	std::list<Item> items;	// item들 정보를 담고 있는 자료구조
 
+	StdLevel* level;
+
 public:
 	World();
 
