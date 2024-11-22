@@ -5,20 +5,27 @@
 World::World()
 {
 	level = new StdLevel();
+	tm = new TimerManager();
 
 	cout << level->platforms[0] << endl;
 
 	//objects.clear();
 	//objects.reserve(n);
+
+	tm->Update();
 }
 
 void World::Update()
 {
 	// TODO : 플레이어 위치값 받은거 적용하기 -> Process Queue 에서 해야할 것 같은 내용
-	
+
+	tm->Update();
+
+	int64_t delta_time = tm->getDeltaTime();
+
 	// TODO : 총알들 업데이트 후 총알이 맵 밖으로 나가면 삭제 처리
 	for (auto it = b1.begin(); it != b1.end(); ) {
-		//it->update(deltaTime);
+		it->Update(delta_time);
 		//if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
 		//	it = bullets.erase(it);
 		//else
@@ -26,7 +33,7 @@ void World::Update()
 	}
 
 	for (auto it = b2.begin(); it != b2.end(); ) {
-		//it->update(deltaTime);
+		it->Update(delta_time);
 		//if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
 		//	it = bullets.erase(it);
 		//else
@@ -34,7 +41,7 @@ void World::Update()
 	}
 
 	for (Item& item : items)
-		item.Update();
+		item.Update(delta_time);
 
 	// 충돌처리 구현
 	CollisionCheck();

@@ -25,6 +25,8 @@ private:
 	//				 객체별로 나누어진 컨테이너가 필요한거 아닌가?
 	//				 objects 의 존재 이유를 모르겠다
 
+	TimerManager* tm;		// TimerManager
+
 	Player p1;
 	Player p2;
 
