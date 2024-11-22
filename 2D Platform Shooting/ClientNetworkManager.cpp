@@ -271,7 +271,9 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
 
 void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
 {
-    sceneManager.LoadGameScene(matchmaking_packet->p_id);
+    // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
+    ClientID = matchmaking_packet->p_id;
+    sceneManager.LoadGameScene(ClientID);
 }
 
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
@@ -283,7 +285,8 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     
-    // 해당 플레이어 id가 본인인지 상대인지 어떻게 알지???
-    if(!life_packet->p_id) gameScene->GetPlayers().revivePlayer();
+    // 본인이면
+    if(ClientID == life_packet->p_id) gameScene->GetPlayers().revivePlayer();
+    // 상대면
     else gameScene->GetDummyEnemy().reviveDummy();
 }

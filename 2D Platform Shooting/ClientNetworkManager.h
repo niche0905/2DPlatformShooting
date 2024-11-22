@@ -12,7 +12,7 @@ private:
 	// 스레드 전달 큐
 	std::queue<std::array<char, MAX_SIZE>> process_queue;
 	// 클라이언트 ID
-	int ClientID;
+	uint32_t ClientID;
 	// 이벤트
 	HANDLE recvEvent;
 	HANDLE processEvent;
