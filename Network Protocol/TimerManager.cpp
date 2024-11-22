@@ -49,3 +49,8 @@ std::chrono::milliseconds TimerManager::timeGap(std::chrono::milliseconds bullet
 
 	return result;
 }
+
+const int64_t TimerManager::getDeltaTime() const
+{
+	return deltaTime;
+}

@@ -27,5 +27,7 @@ public:
 	std::chrono::milliseconds epochToMillis();		// epoch 시간으로 부터의 차이 (우리만의 epoch)
 	std::chrono::milliseconds timeGap(std::chrono::milliseconds bullet_fire_t);		// 총알이 발사 되었을 때와 시차 (ping 차이를 보간하기 위한)
 
+	const int64_t getDeltaTime() const;
+
 };
 
