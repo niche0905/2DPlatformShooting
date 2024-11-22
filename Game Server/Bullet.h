@@ -14,7 +14,7 @@ public:
 	Bullet(uint8_t bullet_type, bool dir);
 	Bullet(float x, float y, uint8_t bullet_type, bool dir);
 
-	void Update();
+	void Update(int64_t delta_time);
 
 };
 

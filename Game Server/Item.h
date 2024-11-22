@@ -13,7 +13,7 @@ public:
 
 	Item(float x, float y);
 
-	void Update();
+	void Update(int64_t delta_time);
 
 };
 

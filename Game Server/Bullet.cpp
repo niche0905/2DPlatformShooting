@@ -18,7 +18,7 @@ Bullet::Bullet(float x, float y, uint8_t bullet_type, bool dir)
 	//SetVelocity(0.0f, 0.0f); b_type에 맞게 속도 설정
 }
 
-void Bullet::Update()
+void Bullet::Update(int64_t delta_time)
 {
 	// TODO : deltaTime 만큼 이동
 	//		  여기서도 gun_id (b_type) 으로 사용
