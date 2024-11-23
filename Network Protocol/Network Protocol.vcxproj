@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CoreGlobal.h" />
     <ClInclude Include="CorePch.h" />
     <ClInclude Include="GunLoader.h" />
     <ClInclude Include="Packet.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="TimerManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CoreGlobal.cpp" />
     <ClCompile Include="CorePch.cpp" />
     <ClCompile Include="GunLoader.cpp" />
     <ClCompile Include="Packet.cpp" />
