@@ -1,6 +1,5 @@
 #pragma once
-
-const sf::Color PlatformColor = sf::Color(55, 55, 55, 255);
+#include "pch.h"
 
 class Platform
 {
@@ -12,20 +11,10 @@ public:
 	sf::RectangleShape shape;
 
 public:
-	Platform() : x(0.0f), y(0.0f), sizeX(0.0f), sizeY(0.0f), shape(sf::Vector2f(sizeX, sizeY))
-	{
-		// 피봇은 그대로 왼쪽 위
-		shape.setPosition(x, y);
-		shape.setFillColor(PlatformColor);
-	}
+	Platform();
 
 	// 왼쪽 위 (-x, -y) 값을 받고 width, height 값을 받는다
-	Platform(float left, float top, float sizeX, float sizeY) : x(left), y(top), sizeX(sizeX), sizeY(sizeY), shape(sf::Vector2f(sizeX, sizeY))
-	{
-		// 피봇은 그대로 왼쪽 위
-		shape.setPosition(x, y);
-		shape.setFillColor(PlatformColor);
-	}
+	Platform(float left, float top, float sizeX, float sizeY);
 
 	// 이 플랫폼을 그려준다
 	void draw(sf::RenderWindow& window);

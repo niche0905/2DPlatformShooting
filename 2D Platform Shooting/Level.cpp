@@ -1,6 +1,20 @@
 #include "pch.h"
 #include "Level.h"
 
+Platform::Platform() : x(0.0f), y(0.0f), sizeX(0.0f), sizeY(0.0f), shape(sf::Vector2f(sizeX, sizeY))
+{
+	// 피봇은 그대로 왼쪽 위
+	shape.setPosition(x, y);
+	shape.setFillColor(PlatformColor);
+}
+
+Platform::Platform(float left, float top, float sizeX, float sizeY) : x(left), y(top), sizeX(sizeX), sizeY(sizeY), shape(sf::Vector2f(sizeX, sizeY))
+{
+	// 피봇은 그대로 왼쪽 위
+	shape.setPosition(x, y);
+	shape.setFillColor(PlatformColor);
+}
+
 void Platform::draw(sf::RenderWindow& window)
 {
 	window.draw(shape);
@@ -16,7 +30,7 @@ std::istream& operator>>(std::istream& is, Platform& platform)
 	is >> platform.x >> platform.y >> platform.sizeX >> platform.sizeY;
 	platform.shape.setSize(sf::Vector2f(platform.sizeX, platform.sizeY));
 	platform.shape.setPosition(platform.x, platform.y);
-	// PlatformColor로 그리면 안그려짐, 임시로 블랙으로 처리
+	// pch에 PlatformColor를 상수로 정의해 봤지만 똑같이 문제가 생겼다
 	platform.shape.setFillColor(sf::Color::Black);
 	return is;
 }
