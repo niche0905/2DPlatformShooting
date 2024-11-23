@@ -29,6 +29,9 @@
     <ClCompile Include="GlobalVariable.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Objects\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -54,6 +57,9 @@
     </Filter>
     <Filter Include="Objects\Item">
       <UniqueIdentifier>{128a5c5b-9e0d-4da0-a7c3-d2bb218aba4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Platform">
+      <UniqueIdentifier>{4afe6328-8f85-491f-9955-917785b40035}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +89,9 @@
     </ClInclude>
     <ClInclude Include="GlobalVariable.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Objects\Platform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
