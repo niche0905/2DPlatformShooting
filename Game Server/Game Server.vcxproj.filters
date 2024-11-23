@@ -32,6 +32,9 @@
     <ClCompile Include="Platform.cpp">
       <Filter>Objects\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Objects\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -91,6 +94,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Platform.h">
+      <Filter>Objects\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
       <Filter>Objects\Platform</Filter>
     </ClInclude>
   </ItemGroup>
