@@ -3,8 +3,8 @@
 
 
 Level::Level()
-	: leftBound{0.0f}
-	, rightBound{0.0f}
+	: leftBound{ 10000.0f }
+	, rightBound{ -10000.0f }
 {
 
 }
@@ -16,6 +16,9 @@ void Level::load()
 	platforms.clear();
 	platforms.reserve(vec.size());
 	for (StdPlatfom& SP : vec) {
+		leftBound = leftBound > SP.posX ? SP.posX : leftBound;
+		rightBound = rightBound < SP.posX + SP.width ? SP.posX + SP.width : rightBound;
+
 		platforms.emplace_back(SP.posX, SP.posY, SP.width, SP.height);
 	}
 }
