@@ -5,14 +5,16 @@ Platform::Platform() : x(0.0f), y(0.0f), sizeX(0.0f), sizeY(0.0f), shape(sf::Vec
 {
 	// 피봇은 그대로 왼쪽 위
 	shape.setPosition(x, y);
-	shape.setFillColor(PlatformColor);
+	// PlatformColor를 pch에서 정의 해두었지만 정의되지 않아서 생상이 안나와서 임시로 sf::color::Black으로 설정
+	shape.setFillColor(sf::Color::Black);
 }
 
 Platform::Platform(float left, float top, float sizeX, float sizeY) : x(left), y(top), sizeX(sizeX), sizeY(sizeY), shape(sf::Vector2f(sizeX, sizeY))
 {
 	// 피봇은 그대로 왼쪽 위
 	shape.setPosition(x, y);
-	shape.setFillColor(PlatformColor);
+	// PlatformColor를 pch에서 정의 해두었지만 정의되지 않아서 생상이 안나와서 임시로 sf::color::Black으로 설정
+	shape.setFillColor(sf::Color::Black);
 }
 
 void Platform::draw(sf::RenderWindow& window)
@@ -42,6 +44,7 @@ std::ostream& operator<<(std::ostream& os, const Platform& platform)
 	return os;
 }
 
+/*
 bool Level::save(const std::string& filename)
 {
 	std::ofstream outFile(filename);
@@ -61,34 +64,17 @@ bool Level::save(const std::string& filename)
 
 	return true;
 }
+*/
 
-bool Level::load(const std::string& filename)
+bool Level::load()
 {
-	std::ifstream inFile(filename);
-
-	// 파일이 열리지 않았다면 load 실패 반환
-	if (!inFile.is_open())
-		return false;
+	std::vector<StdPlatfom> vec = StdLevel::Instance().GetPlatforms();
 
 	platforms.clear();
-
-	size_t platformCount;
-
-	inFile >> platformCount;
-	platforms.reserve(platformCount);
-
-	for (size_t i = 0; i < platformCount; ++i) {
-		Platform platform;
-		inFile >> platform;
-		platforms.push_back(platform);
-
-		if (platform.x < leftBound)
-			leftBound = platform.x;
-		if (rightBound < platform.x + platform.sizeX)
-			rightBound = platform.x + platform.sizeX;
+	platforms.reserve(vec.size());
+	for (StdPlatfom& SP : vec) {
+		platforms.emplace_back(SP.posX, SP.posY, SP.width, SP.height);
 	}
-
-	inFile.close();
 
 	return true;
 }
