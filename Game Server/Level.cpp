@@ -3,6 +3,8 @@
 
 
 Level::Level()
+	: leftBound{0.0f}
+	, rightBound{0.0f}
 {
 
 }
@@ -11,8 +13,10 @@ void Level::load()
 {
 	std::vector<StdPlatfom> vec = StdLevel::Instance().GetPlatforms();
 
+	platforms.clear();
+	platforms.reserve(vec.size());
 	for (StdPlatfom& SP : vec) {
-		std::cout << SP.posX << " " << SP.posY << "\n";
+		platforms.emplace_back(SP.posX, SP.posY, SP.width, SP.height);
 	}
 }
 
