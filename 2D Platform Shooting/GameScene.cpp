@@ -212,7 +212,7 @@ void GameScene::InitText()
 
 void GameScene::updateTexts()
 {
-    texts[0].setString("Gun: " + GunInfo.gun_table[player->getGunID()].name);
+    texts[0].setString("Gun: " + GunLoader::Instance().GetGunTable()[player->getGunID()].name);
     if (auto val = player->getCurMag(); -1 == val) {
         texts[1].setString("Remain: INF");
     }
@@ -220,7 +220,7 @@ void GameScene::updateTexts()
         texts[1].setString("Remain: " + std::to_string(val));
     }
     texts[2].setString("Life: " + std::to_string(player->getLife()));
-    texts[3].setString("Gun: " + GunInfo.gun_table[dummy_enemy->getGunID()].name);
+    texts[3].setString("Gun: " + GunLoader::Instance().GetGunTable()[dummy_enemy->getGunID()].name);
     if (auto val = dummy_enemy->getCurMag(); -1 == val) {
         texts[4].setString("Remain: INF");
     }

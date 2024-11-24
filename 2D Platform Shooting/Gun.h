@@ -21,7 +21,8 @@
 //};
 
 // cham TODO: guns를 관리하는 매니저가 필요할듯.
+// 이를 싱글톤으로 라이브러리에 저장해 두었다
 //extern std::unordered_map<uint8_t, Gun> g_guns;
-extern GunLoader GunInfo;
+//extern GunLoader GunInfo;
 
 //const int getRandomGunId();

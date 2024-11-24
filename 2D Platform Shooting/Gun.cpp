@@ -2,7 +2,7 @@
 #include "Gun.h"
 // [cham] 9.22: 
 //std::unordered_map<uint8_t, Gun> g_guns;
-GunLoader GunInfo{};
+//GunLoader GunInfo{};
 
 //std::ostream& operator<<(std::ostream& os, const Gun& gun)
 //{

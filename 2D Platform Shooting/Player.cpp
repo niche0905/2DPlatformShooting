@@ -103,7 +103,7 @@ void Player::handleInput(const sf::Event& event)
             //    fireBullet();
         }
         if (event.key.code == sf::Keyboard::Q) {
-            gunId = GunInfo.getRandomGunId();
+            gunId = GunLoader::Instance().getRandomGunId();
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
@@ -128,7 +128,7 @@ void Player::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    bullets.push_back(Bullet(direction, position, GunInfo.gun_table[gunId].speed, GunInfo.gun_table[gunId].damage));
+    bullets.push_back(Bullet(direction, position, GunLoader::Instance().GetGunTable()[gunId].speed, GunLoader::Instance().GetGunTable()[gunId].damage));
 }
 
 void Player::update(long long deltaTime)
@@ -144,7 +144,7 @@ void Player::update(long long deltaTime)
 
     if (fireKeyDown) {
         auto nowTime = std::chrono::system_clock::now();
-        std::chrono::milliseconds deltaTime(int((60.0 / GunInfo.gun_table[gunId].RPM) * 1000));
+        std::chrono::milliseconds deltaTime(int((60.0 / GunLoader::Instance().GetGunTable()[gunId].RPM) * 1000));
         if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
             fireBullet();
     }

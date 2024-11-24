@@ -42,6 +42,12 @@ GunLoader::GunLoader()
 	} 
 }
 
+GunLoader& GunLoader::Instance()
+{
+	static GunLoader instance;
+	return instance;
+}
+
 const int GunLoader::getRandomGunId()
 {
 	int total{};
@@ -103,4 +109,14 @@ void GunLoader::saveGunFromFile(const std::string& filePath)
 	outFile.close();
 
 	return;
+}
+
+const std::unordered_map<uint8_t, Gun>& GunLoader::GetGunTable() const
+{
+	return gun_table;
+}
+
+std::unordered_map<uint8_t, Gun>& GunLoader::GetGunTable()
+{
+	return gun_table;
 }

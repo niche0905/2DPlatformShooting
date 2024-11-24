@@ -25,15 +25,26 @@ struct Gun
 
 class GunLoader
 {
-public:
+private:
 	std::unordered_map<uint8_t, Gun> gun_table;
 
 	GunLoader();
+
+	GunLoader(const GunLoader&) = delete;
+	GunLoader& operator=(const GunLoader&) = delete;
+	GunLoader(GunLoader&&) = delete;
+	GunLoader& operator=(GunLoader&&) = delete;
+	
+public:
+	static GunLoader& Instance();
 
 	const int getRandomGunId();
 
 	bool loadGunFromFile(const std::string& filePath);
 
 	void saveGunFromFile(const std::string& filePath);
+
+	const std::unordered_map<uint8_t, Gun>& GetGunTable() const;
+	std::unordered_map<uint8_t, Gun>& GetGunTable();
 };
 

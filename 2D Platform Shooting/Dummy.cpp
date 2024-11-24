@@ -49,7 +49,7 @@ void Dummy::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    bullets.push_back(Bullet(direction, position, GunInfo.gun_table[gunId].speed, GunInfo.gun_table[gunId].damage));
+    bullets.push_back(Bullet(direction, position, GunLoader::Instance().GetGunTable()[gunId].speed, GunLoader::Instance().GetGunTable()[gunId].damage));
 }
 
 void Dummy::damageControll(long long deltaTime)
