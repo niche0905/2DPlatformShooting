@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "World.h"
+#include "Platform.h"
 
 
 World::World()
 {
-	level = new StdLevel();
 	tm = new TimerManager();
 
-	cout << level->platforms[0] << endl;
+	level.load();
 
 	//objects.clear();
 	//objects.reserve(n);

@@ -1,4 +1,6 @@
 #pragma once
+#include "Platform.h"
+
 
 class Object;
 class Platform;
@@ -10,6 +12,8 @@ class Level
 	float rightBound;
 
 public:
+	Level();
+
 	void load();
 
 	bool Collsion(const Object& other);

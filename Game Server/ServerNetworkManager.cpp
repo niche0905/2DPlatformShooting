@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ServerNetworkManager.h"
+#include "World.h"
 
 // using
 using _SNM = ServerNetworkManager;
@@ -237,6 +238,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 DWORD WINAPI workerLobby(LPVOID arg)
 {
+	//World world; <- 테스트 용 지워도 됨
+
 	std::cout << "workerLobby(): Waiting For Recv Events...\n";
 	SNMgr.WaitforRecvEvent();
 	std::cout << "workerLobby(): set Process Events.\n";

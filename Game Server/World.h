@@ -7,9 +7,12 @@
 #include "Bullet.h"
 #include "Item.h"
 #include "list"
+#include "Level.h"
+#include "Platform.h"
 
 
 class Object;
+class Level;
 
 class World
 {
@@ -35,7 +38,7 @@ private:
 
 	std::list<Item> items;	// item들 정보를 담고 있는 자료구조
 
-	StdLevel* level;
+	Level level;	// 플랫폼들 (레벨)
 
 public:
 	World();
