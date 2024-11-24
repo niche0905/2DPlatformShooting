@@ -26,6 +26,8 @@ public:
 	Object();
 	Object(float pos_x, float pos_y, float width, float height, float pivot_x, float pivot_y);
 
+	void SetElement(float pos_x, float pos_y, float width, float height, float pivot_x, float pivot_y);
+
 	void Update();
 	void SetPos(float pos_x, float pos_y);
 	void SetPivot(float pivot_x, float pivot_y);
