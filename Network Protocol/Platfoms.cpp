@@ -23,6 +23,12 @@ StdLevel::StdLevel()
 	Load("Level1");
 }
 
+StdLevel& StdLevel::Instance()
+{
+	static StdLevel instance;
+	return instance;
+}
+
 bool StdLevel::Save(const std::string& filename)
 {
 	std::string filePath = LevelPath + filename;
@@ -69,4 +75,14 @@ bool StdLevel::Load(const std::string& filename)
 	inFile.close();
 	
 	return true;
+}
+
+const std::vector<StdPlatfom>& StdLevel::GetPlatforms() const
+{
+	return platforms;
+}
+
+std::vector<StdPlatfom>& StdLevel::GetPlatforms()
+{
+	return platforms;
 }

@@ -14,12 +14,23 @@ struct StdPlatfom
 
 class StdLevel
 {
-public:
+private:
 	std::vector<StdPlatfom> platforms;
+
+	StdLevel();
+
+	StdLevel(const StdLevel&) = delete;
+	StdLevel& operator=(const StdLevel&) = delete;
+	StdLevel(StdLevel&&) = delete;
+	StdLevel& operator=(StdLevel&&) = delete;
 	
 public:
-	StdLevel();
+
+	static StdLevel& Instance();
 
 	bool Save(const std::string& filename);
 	bool Load(const std::string& filename);
+
+	const std::vector<StdPlatfom>& GetPlatforms() const;
+	std::vector<StdPlatfom>& GetPlatforms();
 };
