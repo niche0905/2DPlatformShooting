@@ -278,7 +278,11 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
 
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 {
-
+    // 패킷을 받으면 gunId를 확인한 후
+    // 총알을 Scene에 추가하고
+    // Id에 따라서 총알의 속도를 타임갭으로 보간
+    auto time_gap = timer.timeGap(fire_packet->fire_t);
+    time_gap.count();
 }
 
 void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet)
