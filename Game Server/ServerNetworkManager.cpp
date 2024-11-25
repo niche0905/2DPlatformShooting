@@ -149,6 +149,14 @@ void ServerNetworkManager::ProcessPackets()
 				// TODO: 실제 움직임 처리
 				break;
 
+			case PacketID::CS_FIRE:
+				// TODO : SC_FIRE_PAKCET 정리해야한다
+				myNP::CS_FIRE_PACKET* packet = reinterpret_cast<myNP::CS_FIRE_PACKET*>(buffer.data());
+				packet->ntohByteOrder();
+				// 상대방 소켓에 보내기 <- 접근을 어케함?
+				//doSend(socket, SC_FIRE_PACKET::MakePacket(packet->b_id, packet->posX, packet->posY, packet->dir, packet->type, packet->fire_t));
+				break;
+
 			default:
 				break;
 			}
