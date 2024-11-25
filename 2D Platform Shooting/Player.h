@@ -53,6 +53,8 @@ private:
     Level* level;
     Image image{ TextureID::BANANA };
 
+    uint64_t bulletId;
+
 public:
     Player() = default;
 
