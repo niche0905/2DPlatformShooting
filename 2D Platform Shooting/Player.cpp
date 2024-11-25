@@ -121,6 +121,7 @@ void Player::handleInput(const sf::Event& event)
 
 void Player::fireBullet()
 {
+    bulletId++;
     if (curMag > 0) {
         if (--curMag == 0) {
             gunId = 0;
@@ -134,10 +135,19 @@ void Player::fireBullet()
     position.y -= 25.0f;
 
     bullets.push_back(Bullet(direction, position, GunLoader::Instance().GetGunTable()[gunId].speed, GunLoader::Instance().GetGunTable()[gunId].damage));
+
+    // FirePacket 보내기
+    /*auto buf = myNP::CS_FIRE_PACKET::MakePacket(bulletId, position.x, position.y, direction, gunId, timer.epochToMillis());
+    network_mgr.SendPacket(
+        reinterpret_cast<char*>(&buf),
+        myNP::CS_FIRE
+    );*/
 }
 
 void Player::update(long long deltaTime)
 {
+    timer.Update();
+
     updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
 
     if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
@@ -224,7 +234,7 @@ void Player::update(long long deltaTime)
     if (timer.isSyncTime()) {
         // send move packet.
         // 임시로 0번. 플레이어 id 저장하기
-        auto buf = myNP::CS_MOVE_PACKET::MakePacket(0, width, height, direction);
+        auto buf = myNP::CS_MOVE_PACKET::MakePacket(0, shape.getPosition().x, shape.getPosition().y, direction);
         network_mgr.SendPacket(
             reinterpret_cast<char*>(&buf),
             myNP::CS_MOVE
