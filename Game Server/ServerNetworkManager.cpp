@@ -145,11 +145,13 @@ void ServerNetworkManager::ProcessPackets()
 			cout << "Processing packet " << packet_id << "\n";
 			switch (packet_id)
 			{
-				
+			case PacketID::CS_MOVE:
+				// TODO: 실제 움직임 처리
+				break;
+
 			default:
 				break;
 			}
-			
 			
 			queue_.pop();
 		}
@@ -219,10 +221,9 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		cout << "Waiting for Send...\n";
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
 			cout << "workerRecv() ERROR: Recv Failed.\n";
-			SNMgr.DecreaseNextId();
-			// 게임 중이면 2 감소
-			
-			// 게임 중이 아니면 1 감소
+			if (not SNMgr.IsPlaying()) {
+				SNMgr.DecreaseNextID();
+			}
 			closesocket(client_socket);
 			return 0;
 		}
@@ -243,8 +244,11 @@ DWORD WINAPI workerRecv(LPVOID arg)
 			local_queue.push(buffer);
 			if (PacketID::CS_MOVE == packet_id) {
 				SNMgr.setProcessQueue(local_queue, client_id);
+				cout << "[Client " << client_id << "] Set Recv event." << "\n";
 				SNMgr.SetRecvEvent(client_id);
+				cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 				SNMgr.WaitforProcessEvent(client_id);
+				cout << "[Client " << client_id << "] get Process event." << "\n";
 			}
 		}
 	}

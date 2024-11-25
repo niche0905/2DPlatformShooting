@@ -14,8 +14,6 @@ private:
 	std::array<QueueType, 2>	processQueue{}; // 스레드 전달 큐 벡터
 	std::array<HANDLE, 2>		recvEvent{};
 	std::array<HANDLE, 2>		processEvent{}; // 스레드 동기화를 위한 이벤트
-
-
 	
 	// 추가된 변수
 	SOCKET listenSocket{ NULL }; // 소켓
@@ -93,10 +91,10 @@ public:
 
 
 	// getter and setter
-	int GetNextId() { return nextId++; }
+	int GetNextId() { return nextId++ % 2; }
+	void DecreaseNextID() { --nextId; };
 	bool IsPlaying() const { return playing; }
 	void setPlaying(const bool value) { playing = value; }
-	void DecreaseNextId() { nextId--; }
 	void setProcessQueue(const QueueType& queue_, const int client_id) {
 		processQueue[client_id] = queue_;
 	}
@@ -107,7 +105,7 @@ public:
 
 	// handle process events
 	void SetProcessEvent() { SetEvent(processEvent[0]); SetEvent(processEvent[1]); }
-	void WaitforProcessEvent(const int c_id) { WaitForSingleObject(recvEvent[c_id], INFINITE); }
+	void WaitforProcessEvent(const int c_id) { WaitForSingleObject(processEvent[c_id], INFINITE); }
 	
 
 

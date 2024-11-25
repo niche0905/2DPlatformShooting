@@ -110,6 +110,11 @@ void Player::handleInput(const sf::Event& event)
         }
         if (event.key.code == sf::Keyboard::R) {
             // revivePlayer();     // 임시로 키 바인딩으로 부활 호출
+            auto buf = myNP::CS_MATCHMAKING_PACKET::MakePacket();
+            network_mgr.SendPacket(
+                reinterpret_cast<char*>(&buf),
+                myNP::CS_MATCHMAKING
+            );
         }
     }
 }
