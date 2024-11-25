@@ -11,9 +11,10 @@ class ServerNetworkManager
 {
 private:
 
-	std::vector<QueueType>	processQueue; // 스레드 전달 큐 벡터
-	std::array<HANDLE, 2>	recvEvent{};
-	std::array<HANDLE, 2>	processEvent{}; // 스레드 동기화를 위한 이벤트
+	std::array<QueueType, 2>	processQueue{}; // 스레드 전달 큐 벡터
+	std::array<HANDLE, 2>		recvEvent{};
+	std::array<HANDLE, 2>		processEvent{}; // 스레드 동기화를 위한 이벤트
+
 
 	
 	// 추가된 변수
@@ -21,7 +22,6 @@ private:
 	HANDLE updateThread{};
 	HANDLE lobbyThread{};
 
-	std::queue<int>	matchmakingList{};
 	int				nextId{ 0 };
 	bool			playing{ false };
 
@@ -72,12 +72,13 @@ public:
 
 	// 추가된 함수
 
-	// Brief: 네트워크를 초기화 해준다.
+	// 네트워크를 초기화한다.
 	void NetworkInit();
 
+	// 이벤트를 초기화한다.
 	void EventInit();
 	
-	// Brief: listen 소켓에 accept를 호출하고 받은 소켓으로 recv 쓰레드를 만든다.
+	// listen 소켓에 accept를 호출하고 받은 소켓으로 recv 쓰레드를 만든다.
 	void Accept();
 
 	// Brief: Recv thread에서 호출하는 고정, 가변 길이 recv
@@ -87,10 +88,18 @@ public:
 	//  buffer: Recv로 받아온 내용을 저장할 버퍼
 	bool DoRecv(SOCKET sock, BufferType& buffer) const;
 
+	// 큐에 있는 내용을 실질적으로 처리한다.
+	void ProcessPackets();
+
+
 	// getter and setter
 	int GetNextId() { return nextId++; }
 	bool IsPlaying() const { return playing; }
+	void setPlaying(const bool value) { playing = value; }
 	void DecreaseNextId() { nextId--; }
+	void setProcessQueue(const QueueType& queue_, const int client_id) {
+		processQueue[client_id] = queue_;
+	}
 
 	// handle recv events
 	void SetRecvEvent(const int c_id) { SetEvent(recvEvent[c_id]); }

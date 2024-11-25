@@ -1,4 +1,4 @@
 #include "pch.h"
 
 
-GunLoader GunInfo{};
+//GunLoader GunInfo{};

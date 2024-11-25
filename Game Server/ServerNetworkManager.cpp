@@ -135,6 +135,27 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 	return true;
 }
 
+void ServerNetworkManager::ProcessPackets()
+{
+	cout << "HI From process Packet.\n";
+	for (auto& queue_ : processQueue) {
+		while (not queue_.empty()) {
+			auto& buffer{ queue_.front() };
+			PacketID packet_id{ buffer[1] };
+			cout << "Processing packet " << packet_id << "\n";
+			switch (packet_id)
+			{
+				
+			default:
+				break;
+			}
+			
+			
+			queue_.pop();
+		}
+	}
+}
+
 void ServerNetworkManager::CreateLobbyThread()
 {
 	lobbyThread = { CreateThread(NULL, 0, workerLobby, NULL, 0, NULL) };
@@ -186,17 +207,11 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 
 	// recv
-	std::list<BufferType> local_list{};
+	QueueType local_queue{};
 	int client_id{ SNMgr.GetNextId() };
 	cout << "Hi From Recv Thread " << client_id << "\n";
 
 
-	//SNMgr.SendPacket<SC_MOVE_PACKET>(client_socket,
-	//	0,
-	//	200.f,
-	//	200.f,
-	//	false
-	//);
  
 	while (true) {
 
@@ -211,9 +226,10 @@ DWORD WINAPI workerRecv(LPVOID arg)
 			closesocket(client_socket);
 			return 0;
 		}
+		PacketID packet_id{ buffer[1] };
 		
 		if (not SNMgr.IsPlaying() &&
-			PacketID::CS_MATCHMAKING == buffer[1]) {
+			PacketID::CS_MATCHMAKING == packet_id) {
 			cout << "[Client " << client_id << "] Set Recv event." << "\n";
 			SNMgr.SetRecvEvent(client_id);
 			cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
@@ -221,16 +237,16 @@ DWORD WINAPI workerRecv(LPVOID arg)
 			cout << "[Client " << client_id << "] get Process event." << "\n";
 		}
 		
-		// if 해당 클라이언트의 ID가 게임 진행중이라면
-		//		큐에 넣기
-		//		if 만약 move 패킷이 왔다면
-		//			큐 정보를 집어넣기
-		//			process 이벤트 활성화
-		//			완료 대기
-		
-		// 게임 진행중 아니고 && 매치매이킹 패킷이면
-		//		recv 이벤트 활성화.
-		//		완료 대기
+
+		if (SNMgr.IsPlaying())
+		{
+			local_queue.push(buffer);
+			if (PacketID::CS_MOVE == packet_id) {
+				SNMgr.setProcessQueue(local_queue, client_id);
+				SNMgr.SetRecvEvent(client_id);
+				SNMgr.WaitforProcessEvent(client_id);
+			}
+		}
 	}
 		
 	return 0;
@@ -240,10 +256,34 @@ DWORD WINAPI workerLobby(LPVOID arg)
 {
 	//World world; <- 테스트 용 지워도 됨
 
-	std::cout << "workerLobby(): Waiting For Recv Events...\n";
-	SNMgr.WaitforRecvEvent();
-	std::cout << "workerLobby(): set Process Events.\n";
-	SNMgr.SetProcessEvent();
+	while (true) {
 
-	return 0;
+		// 게임 중이 아닐 경우
+		if (not SNMgr.IsPlaying()) {
+			std::cout << "workerLobby(): Playing: false\n";
+			std::cout << "workerLobby(): Waiting For Recv Events...\n";
+			SNMgr.WaitforRecvEvent();
+
+			SNMgr.setPlaying(true);
+			// 일단 필요가 없어보여서 제거했음. 추후 필요하다 싶으면 추가
+			// SNMgr.CreateUpdateThread();
+			
+			std::cout << "workerLobby(): set Process Events.\n";
+			SNMgr.SetProcessEvent();
+		}
+
+		// 게임 중일 경우
+		else {
+			std::cout << "workerLobby(): Playing: true\n";
+			std::cout << "workerLobby(): Waiting For Recv Events...\n";
+			SNMgr.WaitforRecvEvent();
+			std::cout << "workerLobby(): Recved Events. Start Proccesing...\n";
+
+			SNMgr.ProcessPackets();
+
+			std::cout << "workerLobby(): set Process Events.\n";
+			SNMgr.SetProcessEvent();
+
+		}
+	}
 }
