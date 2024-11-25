@@ -86,7 +86,7 @@ void ServerNetworkManager::Accept()
 			continue;
 		}
 			
-		if (nextId >= 2) {
+		if (playing) {
 			closesocket(client_socket);
 		}
 		else {
@@ -221,11 +221,12 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		cout << "Waiting for Send...\n";
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
 			cout << "workerRecv() ERROR: Recv Failed.\n";
-			if (not SNMgr.IsPlaying()) {
-				SNMgr.DecreaseNextID();
-			}
-			closesocket(client_socket);
-			return 0;
+			//if (not SNMgr.IsPlaying()) {
+			//	SNMgr.DecreaseNextID();
+			//}
+			//closesocket(client_socket);
+			//return 0;
+			continue;
 		}
 		PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
 		

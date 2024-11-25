@@ -14,7 +14,7 @@ private:
 	std::array<QueueType, 2>	processQueue{}; // 스레드 전달 큐 벡터
 	std::array<HANDLE, 2>		recvEvent{};
 	std::array<HANDLE, 2>		processEvent{}; // 스레드 동기화를 위한 이벤트
-	
+		
 	// 추가된 변수
 	SOCKET listenSocket{ NULL }; // 소켓
 	HANDLE updateThread{};

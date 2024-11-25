@@ -38,6 +38,8 @@ GameScene::GameScene(uint32_t p_id) :
     UI[1].SetPosition(600, 0);
 
     InitText();
+
+    timer.Init();
 }
 
 void GameScene::InitView()

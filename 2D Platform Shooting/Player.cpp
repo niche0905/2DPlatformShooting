@@ -218,6 +218,19 @@ void Player::update(long long deltaTime)
     image.SetPosition(pos.x, pos.y + 25.f);
     image.scale(width * 2, height * 2);
     image.SetReversed(direction);
+
+
+    // Timer Update
+    if (timer.isSyncTime()) {
+        // send move packet.
+        // 임시로 0번. 플레이어 id 저장하기
+        auto buf = myNP::CS_MOVE_PACKET::MakePacket(0, width, height, direction);
+        network_mgr.SendPacket(
+            reinterpret_cast<char*>(&buf),
+            myNP::CS_MOVE
+        );
+    }
+
 }
 
 void Player::updateBullets(long long deltaTime)

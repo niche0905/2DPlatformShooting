@@ -4,3 +4,4 @@
 
 ClientNetworkManager network_mgr;
 SceneManager sceneManager;
+TimerManager timer;

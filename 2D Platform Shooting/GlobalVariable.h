@@ -4,3 +4,4 @@
 
 extern ClientNetworkManager network_mgr;
 extern SceneManager sceneManager;
+extern TimerManager timer;
