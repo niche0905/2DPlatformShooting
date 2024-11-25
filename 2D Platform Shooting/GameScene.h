@@ -26,6 +26,8 @@ class GameScene : public Scene {
     sf::Font font;
     sf::Text texts[6];
 
+    std::vector<Bullet> bullets;
+
 public:
     // 윈도우 크기와 타이틀 이름을 설정한다
     GameScene(uint32_t p_id);
@@ -56,6 +58,9 @@ public:
 
     // 게임의 모든 객체를 그린다
     virtual void draw();
+
+    // 씬에 Bullet 추가
+    void AddPlayerBullet(float x, float y, bool direction, uint32_t type);
 
     // 문자 객체 초기화
     void InitText();
