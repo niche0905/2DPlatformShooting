@@ -141,7 +141,7 @@ void ServerNetworkManager::ProcessPackets()
 	for (auto& queue_ : processQueue) {
 		while (not queue_.empty()) {
 			auto& buffer{ queue_.front() };
-			PacketID packet_id{ buffer[1] };
+			PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
 			cout << "Processing packet " << packet_id << "\n";
 			switch (packet_id)
 			{
@@ -226,7 +226,7 @@ DWORD WINAPI workerRecv(LPVOID arg)
 			closesocket(client_socket);
 			return 0;
 		}
-		PacketID packet_id{ buffer[1] };
+		PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
 		
 		if (not SNMgr.IsPlaying() &&
 			PacketID::CS_MATCHMAKING == packet_id) {

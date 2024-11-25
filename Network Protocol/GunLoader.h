@@ -28,6 +28,7 @@ class GunLoader
 private:
 	std::unordered_map<uint8_t, Gun> gun_table;
 
+public:
 	GunLoader();
 
 	GunLoader(const GunLoader&) = delete;

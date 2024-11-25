@@ -52,6 +52,10 @@ namespace myNP {
 #pragma pack(push, 1)
 
 // 패킷 헤더
+
+	// BASE_PACKET
+	//  size: 패킷의 사이즈
+	//  id: 패킷의 id
 	struct BASE_PACKET
 	{
 		uint8_t size;
@@ -73,6 +77,9 @@ namespace myNP {
 	};
 
 	// client to server 플레이어가 해당 위치로 이동했다
+	//  uint32	p_id: 플레이어 id
+	//  float	posX, posY: 플레어의 위치
+	//  bool	dir: 플레이어의 방향
 	struct CS_MOVE_PACKET : public BASE_PACKET
 	{
 		uint32_t p_id;
@@ -90,6 +97,11 @@ namespace myNP {
 	};
 
 	// client to server 플레이어가 해당 위치에서 총알을 발사 하였다
+	//  uint32	b_id: 총알의 id
+	//  float	posX, posY: 총알의 위치
+	//  bool	dir: 총알의 방향
+	//  uint32	type: 
+	//  milliseconds	fire_t: 발사 시간
 	struct CS_FIRE_PACKET : public BASE_PACKET
 	{
 		uint32_t b_id;
@@ -113,6 +125,8 @@ namespace myNP {
 	};
 
 	// server to client 매치메이킹 잡혔다
+	//  bool	succ: 성공 여부
+	//  uint32	p_id: 플레이어 ID
 	struct SC_MATCHMAKING_PACKET : public BASE_PACKET
 	{
 		bool succ;
@@ -127,6 +141,9 @@ namespace myNP {
 	};
 
 	// server to client 플레이어가 이쪽으로 이동했다
+	//  uint32	p_id: 플레이어 id
+	//  float	posX, posY: 플레어의 위치
+	//  bool	dir: 플레이어의 방향
 	struct SC_MOVE_PACKET : public BASE_PACKET
 	{
 		uint32_t p_id;
@@ -144,6 +161,7 @@ namespace myNP {
 	};
 
 	// server to client 플레이어가 데미지를 입었다
+	//  float	damage: 입은 데미지
 	struct SC_PLAYER_DAMAGE_PACKET : public BASE_PACKET
 	{
 		float damage;
@@ -156,6 +174,11 @@ namespace myNP {
 	};
 
 	// server to client 플레이어가 총을 쏜 사실을 알림
+	//  uint32	b_id: 총알의 id
+	//  float	posX, posY: 총알의 위치
+	//  bool	dir: 총알의 방향
+	//  uint32	type: 총알의 타입
+	//  milliseconds	fire_t: 발사 시간
 	struct SC_FIRE_PACKET : public BASE_PACKET
 	{
 		uint32_t b_id;
@@ -179,6 +202,8 @@ namespace myNP {
 	};
 
 	// server to client 해당 총알이 사라졌음을 알리는 패킷
+	//  uint32	p_id: 플레이어의 id
+	//  uint32	b_id: 사라진 총알의 id
 	struct SC_BULLET_REMOVE_PACKET : public BASE_PACKET
 	{
 		uint32_t p_id;
@@ -193,6 +218,8 @@ namespace myNP {
 	};
 
 	// server to client 아이템 해당 위치에 생성 되었다
+	//  uint32	p_id: 아이템의 id
+	//  float	posX, posY: 아이템의 위치
 	struct SC_ITEM_CREATE_PACKET : public BASE_PACKET
 	{
 		uint32_t i_id;
@@ -208,6 +235,7 @@ namespace myNP {
 	};
 
 	// server to client 해당 아이템이 삭제되었다
+	//  uint32	p_id: 아이템의 id
 	struct SC_ITEM_REMOVE_PACKET : public BASE_PACKET
 	{
 		uint32_t i_id;
@@ -220,6 +248,8 @@ namespace myNP {
 	};
 
 	// server to client 해당 플레이어가 해당 총으로 변경되었다
+	//  uint32	p_id: 플레이어의 id
+	//  uint32	g_id: 총의 id
 	struct SC_GUN_UPDATE_PACKET : public BASE_PACKET
 	{
 		uint32_t p_id;
@@ -234,6 +264,7 @@ namespace myNP {
 	};
 
 	// server to client 해당 플레이어의 목숨이 감소했다
+	//  uint32	p_id: 플레이어의 id
 	struct SC_LIFE_UPDATE_PACKET : public BASE_PACKET
 	{
 		uint32_t p_id;
