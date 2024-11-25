@@ -185,6 +185,11 @@ void GameScene::draw()
     window.display();
 }
 
+void GameScene::AddPlayerBullet(float x, float y, bool direction, uint32_t type)
+{
+    // 불릿 어떻게 넣을까
+}
+
 
 void GameScene::InitText()
 {

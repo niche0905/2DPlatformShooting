@@ -276,13 +276,29 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
     sceneManager.LoadGameScene(ClientID);
 }
 
+// 패킷을 받으면 gunId를 확인한 후
+// 총알을 Scene에 추가하고
+// Id에 따라서 총알의 속도를 타임갭으로 보간
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 {
-    // 패킷을 받으면 gunId를 확인한 후
-    // 총알을 Scene에 추가하고
-    // Id에 따라서 총알의 속도를 타임갭으로 보간
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+
+    // 시간 차이 계산 (ms 단위)
     auto time_gap = timer.timeGap(fire_packet->fire_t);
-    time_gap.count();
+    int elapsed_ms = time_gap.count();
+
+    // 총알의 초기 위치 설정
+    float startX = fire_packet->posX;
+    float startY = fire_packet->posY;
+
+    // 총알 속도 (단위: 픽셀/ms)
+    const float BULLET_SPEED = 0.5f;
+
+    // 시간 차이만큼 총알 위치 보간
+    float currentX = startX + (fire_packet->dir * BULLET_SPEED * elapsed_ms);
+    float currentY = startY + (fire_packet->dir * BULLET_SPEED * elapsed_ms);
+
+    gameScene->AddPlayerBullet(currentX, currentY, fire_packet->dir, fire_packet->type);
 }
 
 void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet)
