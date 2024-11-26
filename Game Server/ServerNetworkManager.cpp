@@ -139,7 +139,9 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 
 void ServerNetworkManager::ProcessPackets()
 {
-	for (auto& queue_ : processQueue) {
+	for (int i = 0; i <= 1; ++i) {
+		auto&	queue_ = processQueue[i];
+		int		client_id = i;
 		while (not queue_.empty()) {
 			auto& buffer{ queue_.front() };
 			PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
@@ -149,6 +151,7 @@ void ServerNetworkManager::ProcessPackets()
 			{
 				// TODO: 角力 框流烙 贸府
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
+				packet->ntohByteOrder();
 				world.p1.SetPos(packet->posX, packet->posY);
 				cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
 			}
