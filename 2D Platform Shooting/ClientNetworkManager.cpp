@@ -301,7 +301,7 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
     float currentX = startX + (fire_packet->dir * BULLET_SPEED * elapsed_ms);
     float currentY = startY + (fire_packet->dir * BULLET_SPEED * elapsed_ms);
 
-    gameScene->AddPlayerBullet(currentX, currentY, fire_packet->dir, fire_packet->type);
+    gameScene->AddEnemyBullet(currentX, currentY, fire_packet->dir, fire_packet->type);
 }
 
 void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet)

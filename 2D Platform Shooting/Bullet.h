@@ -17,8 +17,21 @@ private:
 
 	sf::RectangleShape shape;
 
+	// TODO: 불릿 ID 추가해서 제거할 때 참조해야함
+
 public:
 	// 생성할 때 방향과 발사한 위치를 받아야 한다(+ 속도 추가 09/08 민경원)
+	Bullet(bool direct, float x, float y, float speed) : direction(direct), speed(speed), damage(BulletDamage)
+	{
+		sf::Vector2f pos;
+		pos.x = x;
+		pos.y = y;
+		shape.setSize(sf::Vector2f(BulletWidth, BulletHeight));
+		shape.setOrigin(BulletWidth / 2, BulletHeight / 2);
+		shape.setPosition(pos);
+		shape.setFillColor(sf::Color::Yellow);
+	}
+	
 	Bullet(bool direct, sf::Vector2f pos, float speed) : direction(direct), speed(speed), damage(BulletDamage)
 	{
 		shape.setSize(sf::Vector2f(BulletWidth, BulletHeight));

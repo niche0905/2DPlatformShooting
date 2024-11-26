@@ -189,9 +189,9 @@ void GameScene::draw()
     window.display();
 }
 
-void GameScene::AddPlayerBullet(float x, float y, bool direction, uint32_t type)
+void GameScene::AddEnemyBullet(float x, float y, bool direction, uint32_t type)
 {
-    // 불릿 어떻게 넣을까
+    enemy_bullets.emplace_back(direction, x, y, GunLoader::Instance().GetGunTable()[type].speed);
 }
 
 
