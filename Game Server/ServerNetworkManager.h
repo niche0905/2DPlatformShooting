@@ -69,6 +69,12 @@ public:
 	template <class _Packet, class ...Args>
 	void SendPacket(SOCKET sock, Args... args) const;
 
+	template <class _Packet, class ...Args>
+	void SendPacket(const int client_id, Args... args) const
+	{
+		SendPacket<_Packet>(socketArr[client_id], std::forward<Args>(args)...);
+	}
+
 	// 추가된 함수
 
 	// 네트워크를 초기화한다.

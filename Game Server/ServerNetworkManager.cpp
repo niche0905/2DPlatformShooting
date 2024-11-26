@@ -151,13 +151,6 @@ void ServerNetworkManager::ProcessPackets()
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
 				world.p1.SetPos(packet->posX, packet->posY);
 				cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
-
-				SendPacket<myNP::SC_MOVE_PACKET>(socketArr[0],
-					0, packet->posX, packet->posY, 0
-				);
-				SendPacket<myNP::SC_MOVE_PACKET>(socketArr[1],
-					0, packet->posX, packet->posY, 0
-				);
 			}
 			break;
 
@@ -180,6 +173,14 @@ void ServerNetworkManager::ProcessPackets()
 			queue_.pop();
 		}
 	}
+
+
+	SendPacket<myNP::SC_MOVE_PACKET>(0,
+		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+	);
+	SendPacket<myNP::SC_MOVE_PACKET>(1,
+		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+	);
 }
 
 void ServerNetworkManager::CreateLobbyThread()
