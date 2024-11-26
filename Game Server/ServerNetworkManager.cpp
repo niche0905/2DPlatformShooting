@@ -160,9 +160,10 @@ void ServerNetworkManager::ProcessPackets()
 				myNP::CS_FIRE_PACKET* packet = reinterpret_cast<myNP::CS_FIRE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
 
-
-				// 상대방 소켓에 보내기 <- 접근을 어케함?
-				//doSend(socket, SC_FIRE_PACKET::MakePacket(packet->b_id, packet->posX, packet->posY, packet->dir, packet->type, packet->fire_t));
+				// TODO : 상대방 Player_id 또는 소켓을 알아야 함
+				SendPacket<myNP::SC_FIRE_PACKET>(0,
+					packet->b_id, packet->posX, packet->posY, packet->dir, packet->type, packet->fire_t
+				);
 			}
 				break;
 
