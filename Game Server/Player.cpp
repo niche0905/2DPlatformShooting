@@ -19,6 +19,16 @@ Player::Player(uint32_t p_id, float pos_x, float pos_y, bool dir)
 	GunInit();
 }
 
+uint32_t Player::GetPlayerID() const
+{
+	return player_id;
+}
+
+void Player::SetPlayerID(uint32_t p_id)
+{
+	player_id = p_id;
+}
+
 void Player::GunInit()
 {
 	gunId = BaseGunID;

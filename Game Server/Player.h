@@ -20,6 +20,9 @@ public:
 	Player(uint32_t p_id, bool dir);
 	Player(uint32_t p_id, float pos_x, float pos_y, bool dir);
 
+	uint32_t GetPlayerID() const;
+	void SetPlayerID(uint32_t p_id);
+
 	void GunInit();
 	void GunUpdate(uint8_t gun_id);
 
