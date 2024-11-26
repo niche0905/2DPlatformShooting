@@ -6,6 +6,8 @@
 using _SNM = ServerNetworkManager;
 using namespace myNP;
 
+World world;
+
 ServerNetworkManager::ServerNetworkManager()
 {
 }
@@ -137,24 +139,27 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 
 void ServerNetworkManager::ProcessPackets()
 {
-	cout << "HI From process Packet.\n";
 	for (auto& queue_ : processQueue) {
 		while (not queue_.empty()) {
 			auto& buffer{ queue_.front() };
 			PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
-			cout << "Processing packet " << packet_id << "\n";
 			switch (packet_id)
 			{
 			case PacketID::CS_MOVE:
 				// TODO: 실제 움직임 처리
+				cout << "MOVE PACKET\n";
 				break;
 
 			case PacketID::CS_FIRE:
+			{
 				// TODO : SC_FIRE_PAKCET 정리해야한다
 				myNP::CS_FIRE_PACKET* packet = reinterpret_cast<myNP::CS_FIRE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
+
+
 				// 상대방 소켓에 보내기 <- 접근을 어케함?
 				//doSend(socket, SC_FIRE_PACKET::MakePacket(packet->b_id, packet->posX, packet->posY, packet->dir, packet->type, packet->fire_t));
+			}
 				break;
 
 			default:
@@ -215,36 +220,30 @@ DWORD WINAPI workerRecv(LPVOID arg)
 {
 	auto client_socket{ *reinterpret_cast<SOCKET*>(arg) };
 
-
 	// recv
 	QueueType local_queue{};
 	int client_id{ SNMgr.GetNextId() };
-	cout << "Hi From Recv Thread " << client_id << "\n";
-
-
  
 	while (true) {
 
 		BufferType buffer{};
 		cout << "Waiting for Send...\n";
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
-			cout << "workerRecv() ERROR: Recv Failed.\n";
-			//if (not SNMgr.IsPlaying()) {
-			//	SNMgr.DecreaseNextID();
-			//}
-			//closesocket(client_socket);
-			//return 0;
+			// cout << "workerRecv() ERROR: Recv Failed.\n";
+			// if (not SNMgr.IsPlaying()) {
+			//	 SNMgr.DecreaseNextID();
+			// }
+			// closesocket(client_socket);
+			// return 0;
 			continue;
 		}
 		PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
 		
 		if (not SNMgr.IsPlaying() &&
 			PacketID::CS_MATCHMAKING == packet_id) {
-			cout << "[Client " << client_id << "] Set Recv event." << "\n";
 			SNMgr.SetRecvEvent(client_id);
 			cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 			SNMgr.WaitforProcessEvent(client_id);
-			cout << "[Client " << client_id << "] get Process event." << "\n";
 		}
 		
 
@@ -253,11 +252,9 @@ DWORD WINAPI workerRecv(LPVOID arg)
 			local_queue.push(buffer);
 			if (PacketID::CS_MOVE == packet_id) {
 				SNMgr.setProcessQueue(local_queue, client_id);
-				cout << "[Client " << client_id << "] Set Recv event." << "\n";
 				SNMgr.SetRecvEvent(client_id);
 				cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 				SNMgr.WaitforProcessEvent(client_id);
-				cout << "[Client " << client_id << "] get Process event." << "\n";
 			}
 		}
 	}

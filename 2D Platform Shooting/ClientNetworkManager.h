@@ -12,7 +12,7 @@ private:
 	// 스레드
 	HANDLE clientThread;
 	// 스레드 전달 큐
-	//std::queue<std::array<char, MAX_SIZE>> process_queue;
+	std::queue<std::array<char, MAX_SIZE>> process_queue;
 	// 클라이언트 ID
 	uint32_t ClientID;
 	// 이벤트
@@ -36,6 +36,8 @@ public:
 	//void PushBuffer(char buf[MAX_SIZE]);
 	// 패킷 전송
 	void SendPacket(char* buf, uint8_t packet_id);
+
+	void PushBuffer(char buf[MAX_SIZE]);
 
 	HANDLE GetRecvEvent() { return recvEvent; }
 	HANDLE GetProcessEvent() { return processEvent; }
