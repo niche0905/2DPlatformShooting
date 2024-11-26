@@ -234,11 +234,11 @@ void Player::update(long long deltaTime)
     if (timer.isSyncTime()) {
         // send move packet.
         // 임시로 0번. 플레이어 id 저장하기
-        auto buf = myNP::CS_MOVE_PACKET::MakePacket(0, shape.getPosition().x, shape.getPosition().y, direction);
-        network_mgr.SendPacket(
-            reinterpret_cast<char*>(&buf),
-            myNP::CS_MOVE
-        );
+        //auto buf = myNP::CS_MOVE_PACKET::MakePacket(0, pos.x, pos.y, direction);
+        //network_mgr.SendPacket(
+        //    reinterpret_cast<char*>(&buf),
+        //    myNP::CS_MOVE
+        //);
     }
 
 }

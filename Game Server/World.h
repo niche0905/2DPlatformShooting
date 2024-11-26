@@ -16,7 +16,7 @@ class Level;
 
 class World
 {
-private:
+public:
 	// vector가 적합한가? list로의 변환 가능성
 	//std::vector<Object> objects;	// 월드에 있는 객체들 (모든 것 플레이어, 총알, 아이템 등등)
 

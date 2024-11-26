@@ -34,6 +34,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
                 if (remainingPacketLen > 0) {
                     recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
                     if (recvLen > 0) {
+                        cout << "RECV DATA\n";
                         network_mgr.PushBuffer(buf);
                     }
                 }
@@ -206,20 +207,22 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 
 void ClientNetworkManager::Update()
 {
-    while (!process_queue.empty()) {
-        std::array<char, MAX_SIZE> packet = process_queue.front();
-        process_queue.pop();
+    //while (!process_queue.empty()) {
+    //    std::array<char, MAX_SIZE> packet = process_queue.front();
+    //    process_queue.pop();
 
-        // 뭘 업뎃해야하지?
-    }
+    //    // 뭘 업뎃해야하지?
+    //}
+
+    ProcessPacket();
 
     // 이벤트 재설정
-    ResetEvent(processEvent);
+    // ResetEvent(processEvent);
 }
 
 void ClientNetworkManager::ProcessPacket()
 {
-    WaitForSingleObject(processEvent, INFINITE);
+    // WaitForSingleObject(processEvent, INFINITE);
 
     while (!process_queue.empty()) {
         std::array<char, MAX_SIZE> buffer = process_queue.front();
@@ -260,7 +263,7 @@ void ClientNetworkManager::ProcessPacket()
         }
     }
 
-    ResetEvent(processEvent);
+    // ResetEvent(processEvent);
 }
 
 void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
