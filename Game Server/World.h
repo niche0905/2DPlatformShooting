@@ -30,6 +30,8 @@ public:
 
 	TimerManager* tm;		// TimerManager
 
+	// TODO : array로 포장 할 수 있게
+	//		  Bullet도 Player 안에 포함시키자
 	Player p1;
 	Player p2;
 
