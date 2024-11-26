@@ -55,6 +55,7 @@ Position Player::GunFire()
 	
 	// 총알을 다 썻다면 기본 총으로 초기화
 	if (--curMag <= 0) {
+		// TODO : 이때 GunUpdate를 불러야 할 것으로 보인다
 		GunInit();
 	}
 
