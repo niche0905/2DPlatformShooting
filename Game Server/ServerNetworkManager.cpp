@@ -163,6 +163,14 @@ void ServerNetworkManager::ProcessPackets()
 				myNP::CS_FIRE_PACKET* packet = reinterpret_cast<myNP::CS_FIRE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
 
+				// TODO : time gap 만큼 보간해서 위치 조정 해줘야 함
+				if (client_id == 0) {
+					world.b1.emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+				}
+				else {
+					world.b2.emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+				}
+
 				int other_player_id = 1 - client_id;
 				SendPacket<myNP::SC_FIRE_PACKET>(other_player_id,
 					packet->b_id, packet->posX, packet->posY, packet->dir, packet->type, packet->fire_t
