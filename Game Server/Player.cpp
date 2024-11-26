@@ -26,8 +26,13 @@ void Player::GunInit()
 void Player::GunUpdate(uint8_t gun_id)
 {
 	gunId = gun_id;
-	// TODO : gun_id를 통해 총 정보를 받는 자료구조 필요
-	//		  클라이언트와 같이 처리하면 될 것으로 보임
+	curMag = GunLoader::Instance().GetGunTable()[gun_id].mag;
+	// TODO : player_id 있어야 하고 소켓을 받아야 함 (양쪽 모두 보내 주어야 함)
+	
+	//myNP::SC_GUN_UPDATE_PACKET::MakePacket();
+	//SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(socketArr[0],
+	//	player_id, gun_id
+	//);
 }
 
 Position Player::GunFire()

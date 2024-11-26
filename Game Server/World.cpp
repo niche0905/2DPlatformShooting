@@ -78,21 +78,15 @@ void World::CollisionCheck()
 			p1.GunUpdate(GunInfo.getRandomGunId());
 			p2.GunUpdate(GunInfo.getRandomGunId());
 
-			// TODO : Gun Update 패킷 보내기 둘다 두번씩
-
 			it = items.erase(it);
 		}
 		else if (p1_collision) {
 			p1.GunUpdate(GunInfo.getRandomGunId());
 
-			// TODO : Gun Update 패킷 보내기 둘다 p1의 업데이트에 대해
-
 			it = items.erase(it);
 		}
 		else if (p2_collision) {
 			p2.GunUpdate(GunInfo.getRandomGunId());
-
-			// TODO : Gun Update 패킷 보내기 둘다 p2의 업데이트에 대해
 
 			it = items.erase(it);
 		}

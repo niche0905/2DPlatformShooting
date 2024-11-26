@@ -8,6 +8,8 @@ constexpr uint8_t BaseGunID = 0;
 class Player : public Object
 {
 private:
+	// TODO : player_id 저장 해야 함
+
 	bool directon;
 	int life;
 	uint8_t gunId;
