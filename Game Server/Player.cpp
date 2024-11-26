@@ -42,9 +42,9 @@ void Player::GunUpdate(uint8_t gun_id)
 	// TODO : player_id 있어야 하고 소켓을 받아야 함 (양쪽 모두 보내 주어야 함)
 	
 	//myNP::SC_GUN_UPDATE_PACKET::MakePacket();
-	//SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(socketArr[0],
-	//	player_id, gun_id
-	//);
+	SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(static_cast<int32_t>(player_id),
+		player_id, gun_id
+	);
 }
 
 Position Player::GunFire()
