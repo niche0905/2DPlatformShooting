@@ -12,7 +12,8 @@ private:
 	using MilliSec = std::chrono::milliseconds;
 
 private:
-	static constexpr int64_t syncStand = (1000 / 30);
+	// static constexpr int64_t syncStand = (1000 / 30);
+	static constexpr int64_t syncStand = 3000;
 
 private:
 	TimePoint startTime;	// 타이머 시작 시간 (동기화 시간을 구하기 위한)

@@ -85,6 +85,8 @@ void GameScene::handleInput()
 
 void GameScene::update(long long deltaTime)
 {
+    network_mgr.Update();
+
     // 모든 업데이트 해야할 항목을 업데이트
     player->update(deltaTime);
     dummy_enemy->update(deltaTime);
@@ -109,6 +111,8 @@ void GameScene::update(long long deltaTime)
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
     Scrolling(deltaTime);
+
+
 }
 
 //void GameScene::bulletHit()

@@ -14,6 +14,7 @@ private:
 	std::array<QueueType, 2>	processQueue{}; // 스레드 전달 큐 벡터
 	std::array<HANDLE, 2>		recvEvent{};
 	std::array<HANDLE, 2>		processEvent{}; // 스레드 동기화를 위한 이벤트
+	std::array<SOCKET, 2>		socketArr{};
 		
 	// 추가된 변수
 	SOCKET listenSocket{ NULL }; // 소켓
@@ -98,6 +99,10 @@ public:
 	void setProcessQueue(const QueueType& queue_, const int client_id) {
 		processQueue[client_id] = queue_;
 	}
+	void setSocketArr(SOCKET sock, const int client_id) {
+		socketArr[client_id] = sock;
+	}
+
 
 	// handle recv events
 	void SetRecvEvent(const int c_id) { SetEvent(recvEvent[c_id]); }

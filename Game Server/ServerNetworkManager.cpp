@@ -6,6 +6,8 @@
 using _SNM = ServerNetworkManager;
 using namespace myNP;
 
+World world;
+
 ServerNetworkManager::ServerNetworkManager()
 {
 }
@@ -115,7 +117,7 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 	BASE_PACKET* base{ reinterpret_cast<BASE_PACKET*>(buffer.data()) };
 	if (not (0 <= base->size and base->size <= MaxPacketSize) ||
 		not (0 < base->id and base->id <= PacketID::END)) {
-		cout << "SNM::doRecv(): Invaild Packet.\n";
+		// cout << "SNM::doRecv(): Invaild Packet.\n";
 		return false;
 	}
 
@@ -137,17 +139,27 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 
 void ServerNetworkManager::ProcessPackets()
 {
-	cout << "HI From process Packet.\n";
 	for (auto& queue_ : processQueue) {
 		while (not queue_.empty()) {
 			auto& buffer{ queue_.front() };
 			PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
-			cout << "Processing packet " << packet_id << "\n";
 			switch (packet_id)
 			{
 			case PacketID::CS_MOVE:
+			{
 				// TODO: 角力 框流烙 贸府
-				break;
+				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
+				world.p1.SetPos(packet->posX, packet->posY);
+				cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
+
+				SendPacket<myNP::SC_MOVE_PACKET>(socketArr[0],
+					0, packet->posX, packet->posY, 0
+				);
+				SendPacket<myNP::SC_MOVE_PACKET>(socketArr[1],
+					0, packet->posX, packet->posY, 0
+				);
+			}
+			break;
 
 			default:
 				break;
@@ -211,6 +223,7 @@ DWORD WINAPI workerRecv(LPVOID arg)
 	// recv
 	QueueType local_queue{};
 	int client_id{ SNMgr.GetNextId() };
+	SNMgr.setSocketArr(client_socket, client_id);
 	cout << "Hi From Recv Thread " << client_id << "\n";
 
 
@@ -218,9 +231,9 @@ DWORD WINAPI workerRecv(LPVOID arg)
 	while (true) {
 
 		BufferType buffer{};
-		cout << "Waiting for Send...\n";
+		// cout << "Waiting for Send...\n";
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
-			cout << "workerRecv() ERROR: Recv Failed.\n";
+			// cout << "workerRecv() ERROR: Recv Failed.\n";
 			//if (not SNMgr.IsPlaying()) {
 			//	SNMgr.DecreaseNextID();
 			//}
@@ -232,11 +245,11 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		
 		if (not SNMgr.IsPlaying() &&
 			PacketID::CS_MATCHMAKING == packet_id) {
-			cout << "[Client " << client_id << "] Set Recv event." << "\n";
+			// cout << "[Client " << client_id << "] Set Recv event." << "\n";
 			SNMgr.SetRecvEvent(client_id);
-			cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
+			// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 			SNMgr.WaitforProcessEvent(client_id);
-			cout << "[Client " << client_id << "] get Process event." << "\n";
+			// cout << "[Client " << client_id << "] get Process event." << "\n";
 		}
 		
 
@@ -245,11 +258,11 @@ DWORD WINAPI workerRecv(LPVOID arg)
 			local_queue.push(buffer);
 			if (PacketID::CS_MOVE == packet_id) {
 				SNMgr.setProcessQueue(local_queue, client_id);
-				cout << "[Client " << client_id << "] Set Recv event." << "\n";
+				// cout << "[Client " << client_id << "] Set Recv event." << "\n";
 				SNMgr.SetRecvEvent(client_id);
-				cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
+				// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 				SNMgr.WaitforProcessEvent(client_id);
-				cout << "[Client " << client_id << "] get Process event." << "\n";
+				// cout << "[Client " << client_id << "] get Process event." << "\n";
 			}
 		}
 	}
