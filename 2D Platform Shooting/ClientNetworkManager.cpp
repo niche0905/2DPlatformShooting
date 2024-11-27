@@ -117,59 +117,40 @@ void ClientNetworkManager::CreateRecvThread()
 
 DWORD WINAPI WorkerRecv(LPVOID arg)
 {
-    WSAEVENT events[1] = { network_mgr.GetRecvEvent() };
+    HANDLE event = { network_mgr.GetRecvEvent() };
     char buf[MAX_SIZE];
 
     while (true) {
         // 이벤트 대기
-        DWORD result = WSAWaitForMultipleEvents(1, events, FALSE, WSA_INFINITE, FALSE);
-        if (result == WSA_WAIT_FAILED) break;
+        DWORD result = WaitForSingleObject(event, WSA_INFINITE);
 
-        // 이벤트 확인
-        WSANETWORKEVENTS networkEvents;
-        if (WSAEnumNetworkEvents(network_mgr.GetSocket(), network_mgr.GetRecvEvent(), &networkEvents) == SOCKET_ERROR)
-            break;
+        // 고정 길이 recv()
+        int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
 
-        // 연결 종료 확인
-        if (networkEvents.lNetworkEvents & FD_CLOSE) {
-            break;
-        }
+        if (recvLen > 0) {
+            // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
+            auto remainingPacketLen = *(reinterpret_cast<int*>(buf)) - sizeof(myNP::BASE_PACKET);
 
-        // 데이터 수신
-        if (networkEvents.lNetworkEvents & FD_READ) {
-            // 고정 길이 recv()
-            int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(network_mgr.GetSocket()), MSG_WAITALL);
+            // 가변 길이 recv()
+            if (remainingPacketLen > 0) {
+                recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
+                if (recvLen > 0) {
+                    cout << "RECV DATA\n";
 
-            if (recvLen > 0) {
-                // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
-                int remainingPacketLen = *(reinterpret_cast<int*>(buf)) - network_mgr.GetSocket();
+                    // 버퍼를 Push
+                    network_mgr.PushBuffer(buf);
 
-                // 가변 길이 recv()
-                if (remainingPacketLen > 0) {
-                    recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
-                    if (recvLen > 0) {
-                        cout << "RECV DATA\n";
-
-                        // 버퍼를 Push
-                        network_mgr.PushBuffer(buf);
-
-                        // 패킷 타입 확인 및 처리
-                        uint8_t packetType = static_cast<uint8_t>(buf[1]); // 패킷 타입 확인
-                        switch (packetType) {
-                        case myNP::SC_MY_MOVE: {
-                            myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buf);
-                            move_packet->ntohByteOrder();
-                            // Move 패킷을 기준으로 패킷 처리
-                            network_mgr.ProcessPacket();
-                            break;
-                        }
-                        }
-                    }
+                    // 패킷 타입 확인 및 처리
+                    uint8_t packetType = static_cast<uint8_t>(buf[1]); // 패킷 타입 확인
+                    
+                        // Move 패킷을 기준으로 패킷 처리
+                    network_mgr.ProcessPacket();
+                  
                 }
             }
-            else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
-                break;
-            }
+        }
+        else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
+            break;
         }
     }
     return 0;
@@ -282,6 +263,8 @@ void ClientNetworkManager::ProcessPacket()
 // 상대 이동 처리
 void ClientNetworkManager::ProcessDummyMove(myNP::SC_MOVE_PACKET* move_packet)
 {
+    // 바이트 정렬
+    move_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     gameScene->GetDummyEnemy().setPosition(move_packet->posX, move_packet->posY);
 }
@@ -289,6 +272,8 @@ void ClientNetworkManager::ProcessDummyMove(myNP::SC_MOVE_PACKET* move_packet)
 // 매치메이킹 처리
 void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
 {
+    // 바이트 정렬
+    matchmaking_packet->ntohByteOrder();
     // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
     ClientID = matchmaking_packet->p_id;
     sceneManager.LoadGameScene(ClientID);
@@ -297,6 +282,8 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
 // 총알 처리
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 {
+    // 바이트 정렬
+    fire_packet->ntohByteOrder();
     // 패킷을 받으면 gunId를 확인한 후
     // 총알을 Scene에 추가하고
     // Id에 따라서 총알의 속도를 타임갭으로 보간
@@ -323,6 +310,8 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 // 목숨(부활) 처리
 void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet)
 {
+    // 바이트 정렬
+    life_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     
     // 본인이면
@@ -334,6 +323,8 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
 // 총 업데이트 처리
 void ClientNetworkManager::ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_packet)
 {
+    // 바이트 정렬
+    gun_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
     // 본인이면

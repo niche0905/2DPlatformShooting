@@ -108,6 +108,7 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 		MSG_WAITALL
 	) };
 
+
 	if (SOCKET_ERROR == retval) {
 		// err_display("recv()");
 		return false;
@@ -115,11 +116,11 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 
 	// BASE PACKET 오류 검사
 	BASE_PACKET* base{ reinterpret_cast<BASE_PACKET*>(buffer.data()) };
-	if (not (0 <= base->size and base->size <= MaxPacketSize) ||
-		not (0 < base->id and base->id <= PacketID::END)) {
-		// cout << "SNM::doRecv(): Invaild Packet.\n";
-		return false;
-	}
+	//if (not (0 <= base->size and base->size <= MaxPacketSize) ||
+	//	not (0 < base->id and base->id <= PacketID::END)) {
+	//	// cout << "SNM::doRecv(): Invaild Packet.\n";
+	//	return false;
+	//}
 
 	// 가변 길이 recv
 	retval = { ::recv(
@@ -190,9 +191,12 @@ void ServerNetworkManager::ProcessPackets()
 	SendPacket<myNP::SC_MOVE_PACKET>(0,
 		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
 	);
+	cout << "send 15 to 0\n";
+
 	SendPacket<myNP::SC_MOVE_PACKET>(1,
 		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
 	);
+	cout << "send 15 to 1\n";
 }
 
 void ServerNetworkManager::CreateLobbyThread()
@@ -256,6 +260,7 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 		BufferType buffer{};
 		// cout << "Waiting for Send...\n";
+
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
 			// cout << "workerRecv() ERROR: Recv Failed.\n";
 			//if (not SNMgr.IsPlaying()) {
@@ -281,7 +286,9 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		{
 			local_queue.push(buffer);
 			if (PacketID::CS_MOVE == packet_id) {
+
 				SNMgr.setProcessQueue(local_queue, client_id);
+				while (not local_queue.empty()) local_queue.pop();
 				// cout << "[Client " << client_id << "] Set Recv event." << "\n";
 				SNMgr.SetRecvEvent(client_id);
 				// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
@@ -302,28 +309,22 @@ DWORD WINAPI workerLobby(LPVOID arg)
 
 		// 게임 중이 아닐 경우
 		if (not SNMgr.IsPlaying()) {
-			std::cout << "workerLobby(): Playing: false\n";
-			std::cout << "workerLobby(): Waiting For Recv Events...\n";
 			SNMgr.WaitforRecvEvent();
 
 			SNMgr.setPlaying(true);
-			// 일단 필요가 없어보여서 제거했음. 추후 필요하다 싶으면 추가
-			// SNMgr.CreateUpdateThread();
-			
-			std::cout << "workerLobby(): set Process Events.\n";
+			for (int i = 0; i <= 1; ++i) {
+				SNMgr.SendPacket<myNP::SC_MATCHMAKING_PACKET>(i, true, i);
+				cout << "Send 7 to " << i << endl;
+			}
 			SNMgr.SetProcessEvent();
 		}
 
 		// 게임 중일 경우
 		else {
-			std::cout << "workerLobby(): Playing: true\n";
-			std::cout << "workerLobby(): Waiting For Recv Events...\n";
 			SNMgr.WaitforRecvEvent();
-			std::cout << "workerLobby(): Recved Events. Start Proccesing...\n";
 
 			SNMgr.ProcessPackets();
 
-			std::cout << "workerLobby(): set Process Events.\n";
 			SNMgr.SetProcessEvent();
 
 		}
