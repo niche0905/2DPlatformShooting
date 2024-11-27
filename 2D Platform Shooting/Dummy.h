@@ -70,6 +70,9 @@ public:
     // 더미 포지션 set
     void setPosition(float x, float y);
 
+    // 더미 총 set
+    void setDummyGun(uint32_t g_id) { gunId = g_id; }
+
     // Getter
     int getCurMag() const { return curMag; }
     int getGunID() const { return gunId; }

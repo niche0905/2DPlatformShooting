@@ -322,3 +322,14 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
     // 상대면
     else gameScene->GetDummyEnemy().reviveDummy();
 }
+
+// 총 업데이트 처리
+void ClientNetworkManager::ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_packet)
+{
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+
+    // 본인이면
+    if (ClientID == gun_packet->p_id) gameScene->GetPlayers().setPlayerGun(gun_packet->g_id);
+    // 상대면
+    else gameScene->GetDummyEnemy().setDummyGun(gun_packet->g_id);
+}

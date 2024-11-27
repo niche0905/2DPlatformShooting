@@ -103,6 +103,9 @@ public:
     // 플레이어 포지션 set
     void setPosition(float x, float y);
 
+    // 플레이어 총 set
+    void setPlayerGun(uint32_t g_id) { gunId = g_id; }
+
     // Getter
     int getCurMag() const { return curMag; }
     int getGunID() const { return gunId; }
