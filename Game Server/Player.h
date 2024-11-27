@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "Bullet.h"
 
 constexpr int BaseLife = 3;
 constexpr uint8_t BaseGunID = 0;
@@ -28,8 +29,8 @@ public:
 	uint32_t GetPlayerID() const;
 	void SetPlayerID(uint32_t p_id);
 
-	std::list<Bullet> GetBullets();
-	const std::list<Bullet> GetBullets() const;
+	std::list<Bullet>& GetBullets();
+	const std::list<Bullet>& GetBullets() const;
 
 	void GunInit();
 	void GunUpdate(uint8_t gun_id);
