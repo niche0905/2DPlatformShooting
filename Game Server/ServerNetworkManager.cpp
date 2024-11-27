@@ -166,10 +166,10 @@ void ServerNetworkManager::ProcessPackets()
 
 				// TODO : time gap 만큼 보간해서 위치 조정 해줘야 함
 				if (client_id == 0) {
-					world.b1.emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+					world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
 				}
 				else {
-					world.b2.emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+					world.p2.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
 				}
 
 				int other_player_id = 1 - client_id;
