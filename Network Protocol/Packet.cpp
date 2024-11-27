@@ -57,14 +57,14 @@ namespace myNP
 
 	SC_MOVE_PACKET SC_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)
 	{
-		return SC_MOVE_PACKET(htonl(player_id), htonf(x), htonf(y), direction);
+		return SC_MOVE_PACKET(player_id, x, y, direction);
 	}
 
 	void SC_MOVE_PACKET::ntohByteOrder()
 	{
-		p_id = ntohl(p_id);
-		posX = ntohf(posX);
-		posY = ntohf(posY);
+		//p_id = ntohl(p_id);
+		//posX = ntohf(posX);
+		//posY = ntohf(posY);
 	}
 
 	SC_PLAYER_DAMAGE_PACKET SC_PLAYER_DAMAGE_PACKET::MakePacket(float damaged)

@@ -241,18 +241,15 @@ void Player::update(long long deltaTime)
     image.scale(width * 2, height * 2);
     image.SetReversed(direction);
 
-
     // Timer Update
-    if (timer.isSyncTime()) {
-        // send move packet.
-        // 임시로 0번. 플레이어 id 저장하기
-        //auto buf = myNP::CS_MOVE_PACKET::MakePacket(0, pos.x, pos.y, direction);
-        //network_mgr.SendPacket(
-        //    reinterpret_cast<char*>(&buf),
-        //    myNP::CS_MOVE
-        //);
-
-        // TODO: 게임 중일때만 보내기
+    if (network_mgr.GetClientId() == playerId) {
+        if (timer.isSyncTime()) {
+            auto buf = myNP::CS_MOVE_PACKET::MakePacket(playerId, pos.x, pos.y, direction);
+            network_mgr.SendPacket(
+                reinterpret_cast<char*>(&buf),
+                myNP::CS_MOVE
+            );
+        }
     }
 
 }

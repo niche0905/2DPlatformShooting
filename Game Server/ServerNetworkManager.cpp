@@ -163,8 +163,13 @@ void ServerNetworkManager::ProcessPackets()
 				// TODO: 角力 框流烙 贸府
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
-				world.p1.SetPos(packet->posX, packet->posY);
-				cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
+				if (packet->id == 0) {
+					world.p1.SetPos(packet->posX, packet->posY);
+				}
+				else {
+					world.p2.SetPos(packet->posX, packet->posY);
+				}
+				
 			}
 			break;
 
@@ -199,14 +204,13 @@ void ServerNetworkManager::ProcessPackets()
 	}
 
 
-	//SendPacket<myNP::SC_MOVE_PACKET>(0,
-	//	0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	//);
+	SendPacket<myNP::SC_MOVE_PACKET>(0,
+		1, world.p2.GetPos().posX, world.p2.GetPos().posY, 0
+	);
 
-
-	/*SendPacket<myNP::SC_MOVE_PACKET>(1,
+	SendPacket<myNP::SC_MOVE_PACKET>(1,
 		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	);*/
+	);
 }
 
 void ServerNetworkManager::CreateLobbyThread()

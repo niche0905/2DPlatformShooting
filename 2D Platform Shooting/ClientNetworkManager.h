@@ -14,7 +14,11 @@ private:
 	// 스레드 전달 큐
 	std::queue<std::array<char, MAX_SIZE>> process_queue;
 	// 클라이언트 ID
-	uint32_t ClientID{static_cast<uint32_t>(-2)};
+	uint32_t ClientID{static_cast<uint32_t>(-1)};
+
+	// 현재 게임중인지
+	bool playing{false};
+
 	// 이벤트
 	HANDLE recvEvent;
 	HANDLE processEvent;
@@ -45,7 +49,7 @@ public:
 	uint32_t GetClientId() { return ClientID; }
 
 	void ProcessPacket();
-	void ProcessDummyMove(myNP::SC_MOVE_PACKET* move_packet);
+	void ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet);
 	void ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet);
 	void ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet);
 	void ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet);

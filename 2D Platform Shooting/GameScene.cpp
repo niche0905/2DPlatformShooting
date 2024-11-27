@@ -31,8 +31,6 @@ GameScene::GameScene() :
     UI[1].SetPosition(600, 0);
 
     InitText();
-
-    timer.Init();
 }
 
 void GameScene::InitView()
@@ -90,8 +88,9 @@ void GameScene::update(long long deltaTime)
     //network_mgr.Update();
 
     // 모든 업데이트 해야할 항목을 업데이트
-    player->update(deltaTime);
     player2->update(deltaTime);
+    player->update(deltaTime);
+    // player2->update(deltaTime);
 
     for (Item& item : items)
         item.update(deltaTime);
@@ -244,6 +243,17 @@ void GameScene::drawTexts()
     for (auto& obj : texts)
         window.draw(obj);
     window.setView(currentView);
+}
+
+Player& GameScene::GetOtherPlayer()
+{
+    if (network_mgr.GetClientId() == 0) {
+        return *player2;
+    }
+    else {
+        return *player;
+    }
+
 }
 
 //void Game::buildGun()

@@ -62,4 +62,6 @@ public:
 
     Player& GetPlayers() { return *player; }
     Player& GetDummyEnemy() { return *player2; }
+
+    Player& GetOtherPlayer();
 };
