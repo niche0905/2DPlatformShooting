@@ -165,6 +165,7 @@ void ServerNetworkManager::ProcessPackets()
 				packet->ntohByteOrder();
 
 				// TODO : time gap 만큼 보간해서 위치 조정 해줘야 함
+				//		  + Bullet을 직접 건들이는게 아닌 Player의 GunFire 함수를 이용하자
 				if (client_id == 0) {
 					world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
 				}

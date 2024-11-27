@@ -69,6 +69,10 @@ void Player::GunUpdate(uint8_t gun_id)
 	SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(static_cast<int32_t>(player_id),
 		player_id, gun_id
 	);
+	int32_t other_player_id = 1 - player_id;
+	SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(other_player_id,
+		player_id, gun_id
+	);
 }
 
 Position Player::GunFire()
@@ -79,8 +83,15 @@ Position Player::GunFire()
 	
 	// 총알을 다 썻다면 기본 총으로 초기화
 	if (--curMag <= 0) {
-		// TODO : 이때 GunUpdate를 불러야 할 것으로 보인다
 		GunInit();
+		// 서버도 초기화를 해주고 클라이언트에게 전송해준다
+		SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(static_cast<int32_t>(player_id),
+			player_id, BaseGunID
+		);
+		int32_t other_player_id = 1 - player_id;
+		SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(other_player_id,
+			player_id, BaseGunID
+		);
 	}
 
 	return fire_pos;
