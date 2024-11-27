@@ -7,6 +7,10 @@
 
 namespace myNP {
 
+	//---------------------------------------------------------
+	// 상수들
+	//---------------------------------------------------------
+
 	enum PacketID : uint8_t
 	{
 		// 0은 문제가 생기는 것을 확인하기 위해 비워둠
@@ -43,6 +47,8 @@ namespace myNP {
 	constexpr float GravityAcc = 9.810f;    // 중력 가속도
 	constexpr float GravityMul = 120.0f;    // 중력 가속도에 곱하는 수(게임성을 위해)
 	constexpr float PlatformUp = 10.0f;     // 플랫폼 위에 있다는 기준(충돌 처리 시 사용)
+
+	constexpr float DeadZone = 1000.0f;		// 사망 판정 y값
 
 
 	//---------------------------------------------------------
