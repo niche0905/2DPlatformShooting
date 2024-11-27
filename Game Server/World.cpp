@@ -23,22 +23,6 @@ void World::Update()
 
 	int64_t delta_time = tm->getDeltaTime();
 
-	// TODO : 총알들 업데이트 후 총알이 맵 밖으로 나가면 삭제 처리
-	for (auto it = b1.begin(); it != b1.end(); ) {
-		it->Update(delta_time);
-		//if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
-		//	it = bullets.erase(it);
-		//else
-		//	++it;
-	}
-
-	for (auto it = b2.begin(); it != b2.end(); ) {
-		it->Update(delta_time);
-		//if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
-		//	it = bullets.erase(it);
-		//else
-		//	++it;
-	}
 
 	for (Item& item : items)
 		item.Update(delta_time);
