@@ -35,7 +35,7 @@ void Object::SetElement(float pos_x, float pos_y, float width, float height, flo
 	pivotY = pivot_y;
 }
 
-void Object::Update()
+void Object::Update(int64_t delta_time)
 {
 	// 오버라이드 될 것
 	// 기본적으로 할 것은 없다

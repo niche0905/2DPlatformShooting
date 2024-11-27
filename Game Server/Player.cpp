@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Player.h"
+#include "Bullet.h"
 
 
 Player::Player(uint32_t p_id, bool dir)
@@ -17,6 +18,18 @@ Player::Player(uint32_t p_id, float pos_x, float pos_y, bool dir)
 	, life{ BaseLife }
 {
 	GunInit();
+}
+
+void Player::Update(int64_t delta_time)
+{
+	// TODO : 총알들 업데이트 후 총알이 맵 밖으로 나가면 삭제 처리
+	for (auto it = bullets.begin(); it != bullets.end(); ) {
+		it->Update(delta_time);
+		//if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
+		//	it = bullets.erase(it);
+		//else
+		//	++it;
+	}
 }
 
 uint32_t Player::GetPlayerID() const
