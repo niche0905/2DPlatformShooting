@@ -43,6 +43,16 @@ void Player::SetPlayerID(uint32_t p_id)
 	player_id = p_id;
 }
 
+std::list<Bullet> Player::GetBullets()
+{
+	return bullets;
+}
+
+const std::list<Bullet> Player::GetBullets() const
+{
+	return bullets;
+}
+
 void Player::GunInit()
 {
 	gunId = BaseGunID;
