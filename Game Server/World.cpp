@@ -49,15 +49,24 @@ void World::Update()
 void World::CollisionCheck()
 {
 	// TODO : 충돌 처리 후 데미지 패킷 전송 부분을 구현해야 한다
-	//		  + Getter를 사용해서 가져와야 한다
-	//for (auto it = b2.begin(); it != b2.end(); ) {
-	//	if (p1.Collision(*it)) {
-	//		// 데미지 패킷 전송
-	//		it = b2.erase(it);
-	//	}
-	//	else
-	//		++it;
-	//}
+	std::list<Bullet>& b1 = p1.GetBullets();
+	for (auto it = b1.begin(); it != b1.end(); ) {
+		if (p2.Collision(*it)) {
+			// TODO : 데미지 패킷 전송
+			it = b1.erase(it);
+		}
+		else
+			++it;
+	}
+	std::list<Bullet>& b2 = p2.GetBullets();
+	for (auto it = b2.begin(); it != b2.end(); ) {
+		if (p1.Collision(*it)) {
+			// TODO : 데미지 패킷 전송
+			it = b2.erase(it);
+		}
+		else
+			++it;
+	}
 
 	// TODO : 아이템을 먹고 랜덤으로 총기를 주어주는 로직을 가져오고
 	//		  Gun Update 전송 패킷을 구현하고 전송해야 함
