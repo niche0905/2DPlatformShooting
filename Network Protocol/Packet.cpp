@@ -47,12 +47,12 @@ namespace myNP
 
 	SC_MATCHMAKING_PACKET SC_MATCHMAKING_PACKET::MakePacket(bool success, uint32_t player_id)
 	{
-		return SC_MATCHMAKING_PACKET(success, htonl(player_id));
+		return SC_MATCHMAKING_PACKET(success, player_id);
 	}
 
 	void SC_MATCHMAKING_PACKET::ntohByteOrder()
 	{
-		p_id = ntohl(p_id);
+		// p_id = ntohl(p_id);
 	}
 
 	SC_MOVE_PACKET SC_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)

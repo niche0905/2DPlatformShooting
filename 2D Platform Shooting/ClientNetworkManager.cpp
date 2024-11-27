@@ -64,12 +64,12 @@ void ClientNetworkManager::Connect()
         return;
     }
 
-    result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
-    if (result == SOCKET_ERROR) {
-        closesocket(clientSocket);
-        WSACleanup();
-        return;
-    }
+    //result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
+    //if (result == SOCKET_ERROR) {
+    //    closesocket(clientSocket);
+    //    WSACleanup();
+    //    return;
+    //}
 }
 
 void ClientNetworkManager::CreateRecvThread()
@@ -117,39 +117,42 @@ void ClientNetworkManager::CreateRecvThread()
 
 DWORD WINAPI WorkerRecv(LPVOID arg)
 {
-    HANDLE event = { network_mgr.GetRecvEvent() };
+    // HANDLE event = { network_mgr.GetRecvEvent() };
     char buf[MAX_SIZE];
+    ZeroMemory(buf, MAX_SIZE);
 
     while (true) {
         // 이벤트 대기
-        DWORD result = WaitForSingleObject(event, WSA_INFINITE);
+        // DWORD result = WaitForSingleObject(event, WSA_INFINITE);
 
         // 고정 길이 recv()
         int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
+        cout << "read size: " << sizeof(myNP::BASE_PACKET) << endl;
 
-        if (recvLen > 0) {
-            // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
-            auto remainingPacketLen = *(reinterpret_cast<int*>(buf)) - sizeof(myNP::BASE_PACKET);
+        std::cout << (int)buf[0] << "," << (int)buf[1] << std::endl;
 
-            // 가변 길이 recv()
-            if (remainingPacketLen > 0) {
-                recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
-                if (recvLen > 0) {
-                    cout << "RECV DATA\n";
 
-                    // 버퍼를 Push
-                    network_mgr.PushBuffer(buf);
+        // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
+        myNP::BASE_PACKET* base{ reinterpret_cast<myNP::BASE_PACKET*>(buf) };
+        cout << static_cast<int>(buf[0]) << "," << static_cast<int>(buf[1]) << endl;
+        int remain_size = base->size - static_cast<uint8_t>(sizeof(myNP::BASE_PACKET));
+        cout << "remain size: " << remain_size << endl;
 
-                    // 패킷 타입 확인 및 처리
-                    uint8_t packetType = static_cast<uint8_t>(buf[1]); // 패킷 타입 확인
+        // 가변 길이 recv()
+        if (remain_size > 0) {
+            recvLen = recv(network_mgr.GetSocket(), buf + sizeof(myNP::BASE_PACKET), remain_size, MSG_WAITALL);
+            cout << "read size: " << remain_size << endl;
+
+            // 버퍼를 Push
+            network_mgr.PushBuffer(buf);
                     
-                        // Move 패킷을 기준으로 패킷 처리
-                    network_mgr.ProcessPacket();
+            // Move 패킷을 기준으로 패킷 처리
+            network_mgr.ProcessPacket();
                   
-                }
-            }
+            
         }
-        else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
+        
+        else if (recvLen == SOCKET_ERROR) {
             break;
         }
     }
@@ -168,38 +171,62 @@ void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 // 패킷 send
 void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 {
-    // 패킷 ID별 다른 처리
-    switch (packet_id)
-    {
-        case myNP::CS_MOVE:
-        {
-            int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MOVE_PACKET), 0);
-            if (sendLen == SOCKET_ERROR) {
-                closesocket(clientSocket);
-                clientSocket = INVALID_SOCKET;
-                WSACleanup();
-            }
-        }
-        case myNP::CS_MATCHMAKING:
-        {
-            int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MATCHMAKING_PACKET), 0);
-            if (sendLen == SOCKET_ERROR) {
-                closesocket(clientSocket);
-                clientSocket = INVALID_SOCKET;
-                WSACleanup();
-            }
-        }
-        case myNP::CS_FIRE:
-        {
-            int sendLen = send(clientSocket, buf, sizeof(myNP::CS_FIRE_PACKET), 0);
-            if (sendLen == SOCKET_ERROR) {
-                closesocket(clientSocket);
-                clientSocket = INVALID_SOCKET;
-                WSACleanup();
-            }
-        }
-
+    int sendLen = send(clientSocket, buf, sizeof(myNP::BASE_PACKET), 0);
+    if (sendLen == SOCKET_ERROR) {
+        closesocket(clientSocket);
+        clientSocket = INVALID_SOCKET;
+        WSACleanup();
     }
+
+    int plus_size = sizeof(myNP::BASE_PACKET);
+    int remain_size = static_cast<int>(buf[0]) - sizeof(myNP::BASE_PACKET);
+    cout << "Send size: " << plus_size << endl;
+
+    if (remain_size > 0) {
+        int sendLen = send(clientSocket, buf + plus_size, remain_size, 0);
+        if (sendLen == SOCKET_ERROR) {
+            closesocket(clientSocket);
+            clientSocket = INVALID_SOCKET;
+            WSACleanup();
+        }
+        cout << "Send Size: " << remain_size << endl;
+    }
+
+    // 패킷 ID별 다른 처리
+    //switch (packet_id)
+    //{
+    //    case myNP::CS_MOVE:
+    //    {
+    //        int sendLen = send(clientSocket, buf + plus_size, remain_size, 0);
+    //        if (sendLen == SOCKET_ERROR) {
+    //            closesocket(clientSocket);
+    //            clientSocket = INVALID_SOCKET;
+    //            WSACleanup();
+    //        }
+    //    }
+    //    break;
+    //    case myNP::CS_MATCHMAKING:
+    //    {
+    //        int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MATCHMAKING_PACKET), 0);
+    //        cout << "Send Size: " << sizeof(myNP::CS_MATCHMAKING_PACKET) << endl;
+    //        if (sendLen == SOCKET_ERROR) {
+    //            closesocket(clientSocket);
+    //            clientSocket = INVALID_SOCKET;
+    //            WSACleanup();
+    //        }
+    //    }
+    //    break;
+    //    case myNP::CS_FIRE:
+    //    {
+    //        int sendLen = send(clientSocket, buf, sizeof(myNP::CS_FIRE_PACKET), 0);
+    //        if (sendLen == SOCKET_ERROR) {
+    //            closesocket(clientSocket);
+    //            clientSocket = INVALID_SOCKET;
+    //            WSACleanup();
+    //        }
+    //    }
+    //    break;
+    //}
 }
 
 void ClientNetworkManager::ProcessPacket()
@@ -276,6 +303,7 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
     matchmaking_packet->ntohByteOrder();
     // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
     ClientID = matchmaking_packet->p_id;
+    cout << "Client ID: " << ClientID << endl;
     sceneManager.LoadGameScene(ClientID);
 }
 

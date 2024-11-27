@@ -154,6 +154,5 @@ inline bool ServerNetworkManager::doSend(SOCKET sock, _Packet packet) const
 		reinterpret_cast<const char*>(&packet),
 		sizeof(_Packet)
 	);
-
 	return doSend(sock, buf);
 }

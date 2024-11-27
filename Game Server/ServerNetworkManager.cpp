@@ -108,6 +108,8 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 		MSG_WAITALL
 	) };
 
+	cout << "read size: " << sizeof(BASE_PACKET) << endl;
+
 
 	if (SOCKET_ERROR == retval) {
 		// err_display("recv()");
@@ -123,12 +125,17 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 	//}
 
 	// 가변 길이 recv
+	auto remain_size = base->size - static_cast<PacketSizeType>(sizeof(BASE_PACKET));
+
+	if (0 == remain_size) { return true; }
+
 	retval = { ::recv(
 		sock,
 		buffer.data() + sizeof(BASE_PACKET),
-		base->size - static_cast<PacketSizeType>(sizeof(BASE_PACKET)),
+		remain_size,
 		MSG_WAITALL
 	) };
+	cout << "read size: " << remain_size << endl;
 
 	if (SOCKET_ERROR == retval) {
 		// err_display("recv()");
@@ -189,15 +196,15 @@ void ServerNetworkManager::ProcessPackets()
 	}
 
 
-	SendPacket<myNP::SC_MOVE_PACKET>(0,
-		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	);
-	cout << "send 15 to 0\n";
+	//SendPacket<myNP::SC_MOVE_PACKET>(0,
+	//	0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+	//);
+	//cout << "send 15 to 0\n";
 
-	SendPacket<myNP::SC_MOVE_PACKET>(1,
+	/*SendPacket<myNP::SC_MOVE_PACKET>(1,
 		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
 	);
-	cout << "send 15 to 1\n";
+	cout << "send 15 to 1\n";*/
 }
 
 void ServerNetworkManager::CreateLobbyThread()
@@ -220,17 +227,40 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 
 bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 {
-	// 가변 길이 send
+	// 고정 길이 send
 	auto retval{ ::send(
 		sock,
 		buffer.data(),
-		buffer[0],
+		sizeof(BASE_PACKET),
 		0
 	) };
 
+	std::cout << (int)buffer[0] << "," << (int)buffer[1] << std::endl;
+	
 	if (SOCKET_ERROR == retval) {
 		// err_display("send()");
 		return false;
+	}
+
+	cout << "Send Size: " << sizeof(BASE_PACKET) << endl;
+
+	// 가변 길이 send
+	int remain_size = static_cast<int>(buffer[0]) - sizeof(BASE_PACKET);
+
+	if (remain_size > 0) {
+		auto retval{ ::send(
+			sock,
+			buffer.data() + sizeof(BASE_PACKET),
+			remain_size,
+			0
+		) };
+
+		if (SOCKET_ERROR == retval) {
+			// err_display("send()");
+			return false;
+		}
+
+		cout << "Send Size: " << remain_size << endl;
 	}
 
 	return true;
@@ -275,11 +305,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		
 		if (not SNMgr.IsPlaying() &&
 			PacketID::CS_MATCHMAKING == packet_id) {
-			// cout << "[Client " << client_id << "] Set Recv event." << "\n";
 			SNMgr.SetRecvEvent(client_id);
-			// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 			SNMgr.WaitforProcessEvent(client_id);
-			// cout << "[Client " << client_id << "] get Process event." << "\n";
 		}
 		
 
@@ -290,11 +317,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 				SNMgr.setProcessQueue(local_queue, client_id);
 				while (not local_queue.empty()) local_queue.pop();
-				// cout << "[Client " << client_id << "] Set Recv event." << "\n";
 				SNMgr.SetRecvEvent(client_id);
-				// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 				SNMgr.WaitforProcessEvent(client_id);
-				// cout << "[Client " << client_id << "] get Process event." << "\n";
 			}
 		}
 	}
@@ -315,7 +339,6 @@ DWORD WINAPI workerLobby(LPVOID arg)
 			SNMgr.setPlaying(true);
 			for (int i = 0; i <= 1; ++i) {
 				SNMgr.SendPacket<myNP::SC_MATCHMAKING_PACKET>(i, true, i);
-				cout << "Send 7 to " << i << endl;
 			}
 			SNMgr.SetProcessEvent();
 		}
