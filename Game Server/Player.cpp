@@ -22,7 +22,8 @@ Player::Player(uint32_t p_id, float pos_x, float pos_y, bool dir)
 
 void Player::Update(int64_t delta_time)
 {
-	// TODO : 총알들 업데이트 후 총알이 맵 밖으로 나가면 삭제 처리
+	// TODO : Bullet에 isOutBounds 함수를 구현하고 
+	// Player에서 Level의 *를 가지고 left, right bound에 접근할 수 있어야 함
 	for (auto it = bullets.begin(); it != bullets.end(); ) {
 		it->Update(delta_time);
 		//if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
