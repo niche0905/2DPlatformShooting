@@ -43,6 +43,21 @@ void World::Update()
 	for (Item& item : items)
 		item.Update(delta_time);
 
+	// 플레이어 위치 검사
+	// TODO : array로 바꾸면 적용해야 함
+	if (p1.GetPos().posY > 1000.0f)	// TODO : 상수로 변경
+	{
+		// 모두에게 전송 (UI 업데이트를 위한)
+		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(0), 0);
+		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(1), 0);
+	}
+	if (p2.GetPos().posY > 1000.0f)	// TODO : 상수로 변경
+	{
+		// 모두에게 전송 (UI 업데이트를 위한)
+		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(0), 0);
+		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(1), 0);
+	}
+
 	// 충돌처리 구현
 	CollisionCheck();
 }
