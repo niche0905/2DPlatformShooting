@@ -23,7 +23,7 @@ GameScene::GameScene() :
     player2 = new Player{ 400.0f, 400.0f, &level, TextureID::PLAYER2, 1};
    
 
-    items.emplace_back(200.0f, -500.0f, &level);
+    // items.emplace_back(200.0f, -500.0f, &level);
     // 시작시 바로 플레어이 중앙으로 옮길지 말지
     //InitView();
 
@@ -104,11 +104,6 @@ void GameScene::update(long long deltaTime)
 
     auto timeDiff = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - makeTime);
 
-    if (timeDiff.count() > 10000) {
-        makeItem();
-        makeTime = nowTime;
-    }
-
     updateTexts();
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
@@ -144,12 +139,6 @@ void GameScene::update(long long deltaTime)
 //    }
 //}
 
-void GameScene::makeItem()
-{
-    float num = uid(RANDOM_ENGINE);
-    items.emplace_back(num, -500.0f, &level);
-}
-
 void GameScene::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한
@@ -179,6 +168,7 @@ void GameScene::draw()
 
     // 모든 객체 그리기
     level.draw(window);
+
     for (Item& item : items)
         item.draw(window);
 

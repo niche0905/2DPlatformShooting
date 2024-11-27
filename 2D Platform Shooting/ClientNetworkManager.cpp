@@ -127,21 +127,20 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         // 고정 길이 recv()
         int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
-        cout << "read size: " << sizeof(myNP::BASE_PACKET) << endl;
-
-        std::cout << (int)buf[0] << "," << (int)buf[1] << std::endl;
 
 
         // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
         myNP::BASE_PACKET* base{ reinterpret_cast<myNP::BASE_PACKET*>(buf) };
-        cout << static_cast<int>(buf[0]) << "," << static_cast<int>(buf[1]) << endl;
         int remain_size = base->size - static_cast<uint8_t>(sizeof(myNP::BASE_PACKET));
-        cout << "remain size: " << remain_size << endl;
+
+        // Here
+        cout << "Recv ";
+        myNP::printPacketType(base->id);
+
 
         // 가변 길이 recv()
         if (remain_size > 0) {
             recvLen = recv(network_mgr.GetSocket(), buf + sizeof(myNP::BASE_PACKET), remain_size, MSG_WAITALL);
-            cout << "read size: " << remain_size << endl;
 
             // 버퍼를 Push
             network_mgr.PushBuffer(buf);
@@ -180,7 +179,6 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 
     int plus_size = sizeof(myNP::BASE_PACKET);
     int remain_size = static_cast<int>(buf[0]) - sizeof(myNP::BASE_PACKET);
-    cout << "Send size: " << plus_size << endl;
 
     if (remain_size > 0) {
         int sendLen = send(clientSocket, buf + plus_size, remain_size, 0);
@@ -189,8 +187,11 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
             clientSocket = INVALID_SOCKET;
             WSACleanup();
         }
-        cout << "Send Size: " << remain_size << endl;
     }
+
+    // here
+    cout << "Send ";
+    myNP::printPacketType(packet_id);
 
     // 패킷 ID별 다른 처리
     //switch (packet_id)

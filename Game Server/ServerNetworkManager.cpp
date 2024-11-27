@@ -108,7 +108,6 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 		MSG_WAITALL
 	) };
 
-	cout << "read size: " << sizeof(BASE_PACKET) << endl;
 
 
 	if (SOCKET_ERROR == retval) {
@@ -118,6 +117,11 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 
 	// BASE PACKET 오류 검사
 	BASE_PACKET* base{ reinterpret_cast<BASE_PACKET*>(buffer.data()) };
+	
+	// here
+	cout << "Recv ";
+	myNP::printPacketType(base->id);
+
 	//if (not (0 <= base->size and base->size <= MaxPacketSize) ||
 	//	not (0 < base->id and base->id <= PacketID::END)) {
 	//	// cout << "SNM::doRecv(): Invaild Packet.\n";
@@ -135,7 +139,6 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 		remain_size,
 		MSG_WAITALL
 	) };
-	cout << "read size: " << remain_size << endl;
 
 	if (SOCKET_ERROR == retval) {
 		// err_display("recv()");
@@ -199,12 +202,11 @@ void ServerNetworkManager::ProcessPackets()
 	//SendPacket<myNP::SC_MOVE_PACKET>(0,
 	//	0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
 	//);
-	//cout << "send 15 to 0\n";
+
 
 	/*SendPacket<myNP::SC_MOVE_PACKET>(1,
 		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	);
-	cout << "send 15 to 1\n";*/
+	);*/
 }
 
 void ServerNetworkManager::CreateLobbyThread()
@@ -235,14 +237,12 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 		0
 	) };
 
-	std::cout << (int)buffer[0] << "," << (int)buffer[1] << std::endl;
 	
 	if (SOCKET_ERROR == retval) {
 		// err_display("send()");
 		return false;
 	}
 
-	cout << "Send Size: " << sizeof(BASE_PACKET) << endl;
 
 	// 가변 길이 send
 	int remain_size = static_cast<int>(buffer[0]) - sizeof(BASE_PACKET);
@@ -260,8 +260,11 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 			return false;
 		}
 
-		cout << "Send Size: " << remain_size << endl;
 	}
+
+	// Here
+	cout << "Send ";
+	myNP::printPacketType(buffer[0]);
 
 	return true;
 }

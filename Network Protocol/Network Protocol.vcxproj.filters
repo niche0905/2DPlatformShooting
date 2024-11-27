@@ -42,6 +42,9 @@
     <ClInclude Include="CoreGlobal.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -63,6 +66,9 @@
       <Filter>GameInfo\Platform</Filter>
     </ClCompile>
     <ClCompile Include="CoreGlobal.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>

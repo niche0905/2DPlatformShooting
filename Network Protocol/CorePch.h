@@ -4,6 +4,7 @@
 #include "GunLoader.h"
 #include "Platfoms.h"
 #include "TimerManager.h"
+#include "NetworkUtils.h"
 
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <winsock2.h>
