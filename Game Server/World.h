@@ -4,7 +4,6 @@
 #include "CorePch.h"
 #include "Object.h"
 #include "Player.h"
-#include "Bullet.h"
 #include "Item.h"
 #include "list"
 #include "Level.h"
@@ -35,8 +34,9 @@ public:
 	Player p1;
 	Player p2;
 
-	std::list<Bullet> b1;	// p1이 쏜 총알
-	std::list<Bullet> b2;	// p2이 쏜 총알
+	// 송승호 11/27 Player 내부로 이전
+	//std::list<Bullet> b1;	// p1이 쏜 총알
+	//std::list<Bullet> b2;	// p2이 쏜 총알
 
 	std::list<Item> items;	// item들 정보를 담고 있는 자료구조
 

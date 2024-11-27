@@ -4,6 +4,8 @@
 constexpr int BaseLife = 3;
 constexpr uint8_t BaseGunID = 0;
 
+class Bullet;
+
 
 class Player : public Object
 {
@@ -12,6 +14,7 @@ private:
 	bool directon;
 	int life;
 	uint8_t gunId;
+	std::list<Bullet> bullets;
 	int curMag;
 
 public:
