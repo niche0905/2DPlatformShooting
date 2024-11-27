@@ -260,9 +260,17 @@ void ClientNetworkManager::ProcessPacket()
         // Life 贸府
         case myNP::SC_LIFE_UPDATE:
         {
-            myNP::SC_LIFE_UPDATE_PACKET* lift_packet = reinterpret_cast<myNP::SC_LIFE_UPDATE_PACKET*>(buffer.data());
+            myNP::SC_LIFE_UPDATE_PACKET* life_packet = reinterpret_cast<myNP::SC_LIFE_UPDATE_PACKET*>(buffer.data());
 
-            ProcessLifeUpdate(lift_packet);
+            ProcessLifeUpdate(life_packet);
+            break;
+        }
+        // Gun 诀单捞飘 贸府
+        case myNP::SC_GUN_UPDATE:
+        {
+            myNP::SC_GUN_UPDATE_PACKET* gun_update_packet = reinterpret_cast<myNP::SC_GUN_UPDATE_PACKET*>(buffer.data());
+
+            ProcessGunUpdate(gun_update_packet);
             break;
         }
         }
