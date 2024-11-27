@@ -85,7 +85,7 @@ void GameScene::handleInput()
 
 void GameScene::update(long long deltaTime)
 {
-    network_mgr.Update();
+    //network_mgr.Update();
 
     // 모든 업데이트 해야할 항목을 업데이트
     player->update(deltaTime);

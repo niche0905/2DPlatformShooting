@@ -1,56 +1,6 @@
 #include "pch.h"
 #include "ClientNetworkManager.h"
 
-DWORD WINAPI WorkerRecv(LPVOID arg)
-{
-    WSAEVENT events[1] = { network_mgr.GetRecvEvent() };
-    char buf[MAX_SIZE];
-
-    while (true) {
-        // 이벤트 대기
-        DWORD result = WSAWaitForMultipleEvents(1, events, FALSE, WSA_INFINITE, FALSE);
-        if (result == WSA_WAIT_FAILED) break;
-
-        // 이벤트 확인
-        WSANETWORKEVENTS networkEvents;
-        if (WSAEnumNetworkEvents(network_mgr.GetSocket(), network_mgr.GetRecvEvent(), &networkEvents) == SOCKET_ERROR)
-            break;
-
-        // 연결 종료 확인
-        if (networkEvents.lNetworkEvents & FD_CLOSE) {
-            break;
-        }
-
-        // 데이터 수신
-        if (networkEvents.lNetworkEvents & FD_READ) {
-            // 고정 길이 recv()
-            int recvLen = recv(network_mgr.GetSocket(), buf, network_mgr.GetSocket(), MSG_WAITALL);
-
-            if (recvLen > 0) {
-                // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
-                int remainingPacketLen = *(reinterpret_cast<int*>(buf)) - network_mgr.GetSocket();
-
-                // 가변 길이 recv()
-                if (remainingPacketLen > 0) {
-                    recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
-                    if (recvLen > 0) {
-                        cout << "RECV DATA\n";
-                        network_mgr.PushBuffer(buf);
-                    }
-                }
-            }
-            else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
-                break;
-            }
-        }
-    }
-    return 0;
-}
-
-ClientNetworkManager::ClientNetworkManager() {}
-
-ClientNetworkManager::~ClientNetworkManager() { }
-
 void ClientNetworkManager::Init()
 {
     // 윈속 초기화
@@ -84,10 +34,13 @@ void ClientNetworkManager::Init()
     // 스레드 핸들 초기화
     clientThread = NULL;
 
+    // 씬 초기화
     currentScene = sceneManager.GetActiveScene();
     
+    // 커넥트
     Connect();
 
+    // Recv 스레드 생성
     CreateRecvThread();
 }
 
@@ -130,7 +83,8 @@ void ClientNetworkManager::CreateRecvThread()
 
     // 클라이언트 스레드 생성
     clientThread = CreateThread(NULL, 0, WorkerRecv, NULL, 0, NULL);
-    // 잘 생성됐나?
+
+    // 예외 처리
     if (clientThread == NULL)
     {
         if (clientSocket != INVALID_SOCKET)
@@ -161,6 +115,67 @@ void ClientNetworkManager::CreateRecvThread()
     }
 }
 
+DWORD WINAPI WorkerRecv(LPVOID arg)
+{
+    WSAEVENT events[1] = { network_mgr.GetRecvEvent() };
+    char buf[MAX_SIZE];
+
+    while (true) {
+        // 이벤트 대기
+        DWORD result = WSAWaitForMultipleEvents(1, events, FALSE, WSA_INFINITE, FALSE);
+        if (result == WSA_WAIT_FAILED) break;
+
+        // 이벤트 확인
+        WSANETWORKEVENTS networkEvents;
+        if (WSAEnumNetworkEvents(network_mgr.GetSocket(), network_mgr.GetRecvEvent(), &networkEvents) == SOCKET_ERROR)
+            break;
+
+        // 연결 종료 확인
+        if (networkEvents.lNetworkEvents & FD_CLOSE) {
+            break;
+        }
+
+        // 데이터 수신
+        if (networkEvents.lNetworkEvents & FD_READ) {
+            // 고정 길이 recv()
+            int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(network_mgr.GetSocket()), MSG_WAITALL);
+
+            if (recvLen > 0) {
+                // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
+                int remainingPacketLen = *(reinterpret_cast<int*>(buf)) - network_mgr.GetSocket();
+
+                // 가변 길이 recv()
+                if (remainingPacketLen > 0) {
+                    recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
+                    if (recvLen > 0) {
+                        cout << "RECV DATA\n";
+
+                        // 버퍼를 Push
+                        network_mgr.PushBuffer(buf);
+
+                        // 패킷 타입 확인 및 처리
+                        uint8_t packetType = static_cast<uint8_t>(buf[1]); // 패킷 타입 확인
+                        switch (packetType) {
+                        case myNP::SC_MY_MOVE: {
+                            myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buf);
+                            move_packet->ntohByteOrder();
+                            // Move 패킷을 기준으로 패킷 처리
+                            network_mgr.ProcessPacket();
+                            break;
+                        }
+                        }
+                    }
+                }
+            }
+            else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
+                break;
+            }
+        }
+    }
+    return 0;
+}
+
+// 받아온 버퍼를 큐에 push
 void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 {
     std::array<char, MAX_SIZE> newBuffer;
@@ -169,6 +184,7 @@ void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
     SetEvent(processEvent);
 }
 
+// 패킷 send
 void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 {
     // 패킷 ID별 다른 처리
@@ -205,21 +221,6 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
     }
 }
 
-void ClientNetworkManager::Update()
-{
-    //while (!process_queue.empty()) {
-    //    std::array<char, MAX_SIZE> packet = process_queue.front();
-    //    process_queue.pop();
-
-    //    // 뭘 업뎃해야하지?
-    //}
-
-    ProcessPacket();
-
-    // 이벤트 재설정
-    // ResetEvent(processEvent);
-}
-
 void ClientNetworkManager::ProcessPacket()
 {
     // WaitForSingleObject(processEvent, INFINITE);
@@ -232,13 +233,15 @@ void ClientNetworkManager::ProcessPacket()
         uint8_t packetType = static_cast<uint8_t>(buffer[1]);
 
         switch (packetType) {
+        // 이동 처리
         case myNP::SC_MY_MOVE:
         {
             myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
 
-            ProcessPlayerMove(move_packet);
+            ProcessDummyMove(move_packet);
             break;
         }
+        // 매치메이킹 처리
         case myNP::SC_MATCHMAKING:
         {
             myNP::SC_MATCHMAKING_PACKET* matchmaking_packet = reinterpret_cast<myNP::SC_MATCHMAKING_PACKET*>(buffer.data());
@@ -246,6 +249,7 @@ void ClientNetworkManager::ProcessPacket()
             ProcessMatchMaking(matchmaking_packet);
             break;
         }
+        // Fire 처리
         case myNP::SC_FIRE:
         {
             myNP::SC_FIRE_PACKET* fire_packet = reinterpret_cast<myNP::SC_FIRE_PACKET*>(buffer.data());
@@ -253,6 +257,7 @@ void ClientNetworkManager::ProcessPacket()
             ProcessFirebullet(fire_packet);
             break;
         }
+        // Life 처리
         case myNP::SC_LIFE_UPDATE:
         {
             myNP::SC_LIFE_UPDATE_PACKET* lift_packet = reinterpret_cast<myNP::SC_LIFE_UPDATE_PACKET*>(buffer.data());
@@ -266,12 +271,14 @@ void ClientNetworkManager::ProcessPacket()
     // ResetEvent(processEvent);
 }
 
-void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
+// 상대 이동 처리
+void ClientNetworkManager::ProcessDummyMove(myNP::SC_MOVE_PACKET* move_packet)
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     gameScene->GetDummyEnemy().setPosition(move_packet->posX, move_packet->posY);
 }
 
+// 매치메이킹 처리
 void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* matchmaking_packet)
 {
     // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
@@ -279,11 +286,12 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
     sceneManager.LoadGameScene(ClientID);
 }
 
-// 패킷을 받으면 gunId를 확인한 후
-// 총알을 Scene에 추가하고
-// Id에 따라서 총알의 속도를 타임갭으로 보간
+// 총알 처리
 void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
 {
+    // 패킷을 받으면 gunId를 확인한 후
+    // 총알을 Scene에 추가하고
+    // Id에 따라서 총알의 속도를 타임갭으로 보간
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
     // 시간 차이 계산 (ms 단위)
@@ -304,6 +312,7 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
     gameScene->AddEnemyBullet(currentX, currentY, fire_packet->dir, fire_packet->type);
 }
 
+// 목숨(부활) 처리
 void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet)
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
