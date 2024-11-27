@@ -14,7 +14,7 @@ private:
 	// 스레드 전달 큐
 	std::queue<std::array<char, MAX_SIZE>> process_queue;
 	// 클라이언트 ID
-	uint32_t ClientID;
+	uint32_t ClientID{static_cast<uint32_t>(-2)};
 	// 이벤트
 	HANDLE recvEvent;
 	HANDLE processEvent;
@@ -42,6 +42,7 @@ public:
 	HANDLE GetRecvEvent() { return recvEvent; }
 	HANDLE GetProcessEvent() { return processEvent; }
 	SOCKET GetSocket() { return clientSocket;  }
+	uint32_t GetClientId() { return ClientID; }
 
 	void ProcessPacket();
 	void ProcessDummyMove(myNP::SC_MOVE_PACKET* move_packet);

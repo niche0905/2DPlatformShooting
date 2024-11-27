@@ -304,7 +304,7 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
     // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
     ClientID = matchmaking_packet->p_id;
     cout << "Client ID: " << ClientID << endl;
-    sceneManager.LoadGameScene(ClientID);
+    // sceneManager.LoadGameScene(ClientID);
 }
 
 // 총알 처리
@@ -345,7 +345,7 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
     // 본인이면
     if(ClientID == life_packet->p_id) gameScene->GetPlayers().revivePlayer();
     // 상대면
-    else gameScene->GetDummyEnemy().reviveDummy();
+    else gameScene->GetDummyEnemy().revivePlayer();
 }
 
 // 총 업데이트 처리
@@ -358,5 +358,5 @@ void ClientNetworkManager::ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_pack
     // 본인이면
     if (ClientID == gun_packet->p_id) gameScene->GetPlayers().setPlayerGun(gun_packet->g_id);
     // 상대면
-    else gameScene->GetDummyEnemy().setDummyGun(gun_packet->g_id);
+    else gameScene->GetDummyEnemy().setPlayerGun(gun_packet->g_id);
 }

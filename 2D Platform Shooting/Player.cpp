@@ -5,7 +5,7 @@
 #include "Bullet.h"
 #include "Utilities.h"
 
-Player::Player(float x, float y, Level* level, int texture_id)
+Player::Player(float x, float y, Level* level, int texture_id, int player_id)
     : isActive(true)
     , direction(true)
     , width(100.0f)
@@ -20,6 +20,7 @@ Player::Player(float x, float y, Level* level, int texture_id)
     , rightKeyDown(false)
     , image(texture_id)
     , life(3)
+    , playerId(player_id)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);
@@ -85,6 +86,8 @@ Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyb
 
 void Player::handleInput(const sf::Event& event)
 {
+    if (playerId != network_mgr.GetClientId()) return;
+
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == upKeyBind) {
             // Space 키가 눌렸을 때 한 번만 실행되는 코드
@@ -153,38 +156,44 @@ void Player::update(long long deltaTime)
     if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
 
     // 좌우 키가 눌리고 있는지
-    leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
-    rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
-    fireKeyDown = sf::Keyboard::isKeyPressed(attackKeyBind);
 
-    if (fireKeyDown) {
-        auto nowTime = std::chrono::system_clock::now();
-        std::chrono::milliseconds deltaTime(int((60.0 / GunLoader::Instance().GetGunTable()[gunId].RPM) * 1000));
-        if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
-            fireBullet();
+    if (playerId == network_mgr.GetClientId()) {
+
+        leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
+        rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
+        fireKeyDown = sf::Keyboard::isKeyPressed(attackKeyBind);
+
+        if (fireKeyDown) {
+            auto nowTime = std::chrono::system_clock::now();
+            std::chrono::milliseconds deltaTime(int((60.0 / GunLoader::Instance().GetGunTable()[gunId].RPM) * 1000));
+            if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
+                fireBullet();
+        }
+
+        if (not (leftKeyDown and rightKeyDown)) {
+            if (leftKeyDown) {
+                direction = true;
+                if (-speed <= velocity.x and velocity.x <= speed)
+                    velocity.x = -speed;
+                else if (velocity.x > speed)
+                    velocity.x -= speed * (deltaTime / 1000000.0f);
+
+            }
+            else if (rightKeyDown) {
+                direction = false;
+                if (-speed <= velocity.x and velocity.x <= speed)
+                    velocity.x = speed;
+                else if (velocity.x < -speed)
+                    velocity.x += speed * (deltaTime / 1000000.0f);
+            }
+            else {
+                velocity.x = 0.0f;
+            }
+        }
+
     }
 
-    if (not (leftKeyDown and rightKeyDown)) {
-        if (leftKeyDown) {
-            direction = true;
-            if (-speed <= velocity.x and velocity.x <= speed)
-                velocity.x = -speed;
-            else if (velocity.x > speed)
-                velocity.x -= speed * (deltaTime / 1000000.0f);
-
-        }
-        else if (rightKeyDown) {
-            direction = false;
-            if (-speed <= velocity.x and velocity.x <= speed)
-                velocity.x = speed;
-            else if (velocity.x < -speed)
-                velocity.x += speed * (deltaTime / 1000000.0f);
-        }
-        else {
-            velocity.x = 0.0f;
-        }
-    }
-
+    // 입은 피해량 만큼 넉백하게
     if (OnAir) {
         velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
     }
@@ -193,13 +202,15 @@ void Player::update(long long deltaTime)
 
     // 입은 피해량 만큼 넉백하게
     sf::Vector2f powerOfDamage(damaged, 0.0f);
+
     // 속도만큼 움직임
     shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
 
     bool noOnePlatformCollide = true;
 
     // 하나라도 밟고있는 플랫폼이 있는지 체크
-    if (not sf::Keyboard::isKeyPressed(downKeyBind)) {
+    if (not sf::Keyboard::isKeyPressed(downKeyBind) ||
+        playerId != network_mgr.GetClientId()) {
         for (const auto& platform : level->platforms) {
             if (checkCollision(platform.getGlobalBounds())) {
                 OnAir = false;
@@ -216,6 +227,7 @@ void Player::update(long long deltaTime)
     if (noOnePlatformCollide) {
         OnAir = true;
     }
+
 
     // 임시
     if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)

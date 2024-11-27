@@ -294,12 +294,11 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
 			// cout << "workerRecv() ERROR: Recv Failed.\n";
-			//if (not SNMgr.IsPlaying()) {
-			//	SNMgr.DecreaseNextID();
-			//}
-			//closesocket(client_socket);
-			//return 0;
-			continue;
+			if (not SNMgr.IsPlaying()) {
+				SNMgr.DecreaseNextID();
+			}
+			closesocket(client_socket);
+			return 0;
 		}
 		PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
 		

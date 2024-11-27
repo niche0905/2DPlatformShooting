@@ -21,14 +21,14 @@ namespace myNP
 
 	CS_MOVE_PACKET CS_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)
 	{
-		return CS_MOVE_PACKET(htonl(player_id), htonf(x), htonf(y), direction);
+		return CS_MOVE_PACKET(player_id, x, y, direction);
 	}
 
 	void CS_MOVE_PACKET::ntohByteOrder()
 	{
-		p_id = ntohl(p_id);
-		posX = ntohf(posX);
-		posY = ntohf(posY);
+		//p_id = ntohl(p_id);
+		//posX = ntohf(posX);
+		//posY = ntohf(posY);
 	}
 
 	CS_FIRE_PACKET CS_FIRE_PACKET::MakePacket(uint32_t bullet_id, float x, float y, bool direction, uint32_t bullet_type, std::chrono::milliseconds fire_time)
