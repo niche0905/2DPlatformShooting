@@ -189,15 +189,15 @@ void ServerNetworkManager::ProcessPackets()
 	}
 
 
-	SendPacket<myNP::SC_MOVE_PACKET>(0,
-		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	);
-	cout << "send 15 to 0\n";
+	//SendPacket<myNP::SC_MOVE_PACKET>(0,
+	//	0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+	//);
+	//cout << "send 15 to 0\n";
 
-	SendPacket<myNP::SC_MOVE_PACKET>(1,
-		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	);
-	cout << "send 15 to 1\n";
+	//SendPacket<myNP::SC_MOVE_PACKET>(1,
+	//	0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+	//);
+	//cout << "send 15 to 1\n";
 }
 
 void ServerNetworkManager::CreateLobbyThread()
@@ -263,12 +263,12 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		// cout << "Waiting for Send...\n";
 
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
-			// cout << "workerRecv() ERROR: Recv Failed.\n";
-			//if (not SNMgr.IsPlaying()) {
-			//	SNMgr.DecreaseNextID();
-			//}
-			//closesocket(client_socket);
-			//return 0;
+			cout << "workerRecv() ERROR: Recv Failed.\n";
+			if (not SNMgr.IsPlaying()) {
+				SNMgr.DecreaseNextID();
+			}
+			closesocket(client_socket);
+			return 0;
 			continue;
 		}
 		PacketID packet_id{ static_cast<PacketID>(buffer[1]) };
@@ -315,7 +315,7 @@ DWORD WINAPI workerLobby(LPVOID arg)
 			SNMgr.setPlaying(true);
 			for (int i = 0; i <= 1; ++i) {
 				SNMgr.SendPacket<myNP::SC_MATCHMAKING_PACKET>(i, true, i);
-				cout << "Send 7 to " << i << endl;
+				//cout << "Send 7 to " << i << endl;
 			}
 			SNMgr.SetProcessEvent();
 		}
