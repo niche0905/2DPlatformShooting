@@ -310,9 +310,9 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
     life_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     
-    // 본인이면
-    if(ClientID == life_packet->p_id) gameScene->GetPlayer1().revivePlayer();
-    // TODO : 상대의 life를 깍는다 (UI로 보여줘야 하기 때문에)
+    // 0번 플레이어가 죽었으면
+    if(0 == life_packet->p_id) gameScene->GetPlayer1().revivePlayer();
+    // 1번 플레이어가 죽었으면
     else gameScene->GetPlayer2().revivePlayer();
 }
 

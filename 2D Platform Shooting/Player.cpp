@@ -296,6 +296,9 @@ sf::Vector2f Player::getPosition() const
 
 void Player::revivePlayer()
 {
+    // TODO : life를 깍는다 (UI로 보여줘야 하기 때문에)
+    //        만약 컨트롤 되는 플레이어라면 리스폰 시킨다
+    
     // 부활 시 처리해 할 행동들 추가하기
     isActive = true;    // 활성화 시키기
 
