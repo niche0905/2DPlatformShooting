@@ -57,10 +57,12 @@ void GameScene::run()
     while (window.isOpen()) {
         handleInput();
 
-        sf::Time dtSFTime = clock.restart();
-        long long deltaTime = dtSFTime.asMicroseconds();
+        timer.Update();
+        //sf::Time dtSFTime = clock.restart();
+        //long long deltaTime = dtSFTime.asMicroseconds();
 
-        update(deltaTime);
+        //update(deltaTime);
+        update(timer.getDeltaTime());
 
         draw();
     }

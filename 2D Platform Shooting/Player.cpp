@@ -146,8 +146,6 @@ void Player::fireBullet()
 
 void Player::update(long long deltaTime)
 {
-    timer.Update();
-
     updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
 
     if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
