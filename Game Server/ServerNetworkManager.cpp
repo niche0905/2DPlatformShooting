@@ -163,7 +163,7 @@ void ServerNetworkManager::ProcessPackets()
 				// TODO: 角力 框流烙 贸府
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
-				if (packet->id == 0) {
+				if (packet->p_id == 0) {
 					world.p1.SetPos(packet->posX, packet->posY);
 				}
 				else {
