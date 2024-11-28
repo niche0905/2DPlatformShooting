@@ -13,7 +13,7 @@ void TimerManager::Update()
 {
 	TimePoint now_time = Clock::now();
 
-	MilliSec elapsed = std::chrono::duration_cast<MilliSec>(now_time - oldTime);
+	MicroSec elapsed = std::chrono::duration_cast<MicroSec>(now_time - oldTime);
 
 	deltaTime = elapsed.count();
 
@@ -33,17 +33,17 @@ bool TimerManager::isSyncTime()
 	return false;
 }
 
-std::chrono::milliseconds TimerManager::epochToMillis()
+std::chrono::microseconds TimerManager::epochToMillis()
 {
-	MilliSec return_value = std::chrono::duration_cast<MilliSec>(oldTime.time_since_epoch());
+	MicroSec return_value = std::chrono::duration_cast<MicroSec>(oldTime.time_since_epoch());
 
 	return return_value;
 }
 
-std::chrono::milliseconds TimerManager::timeGap(std::chrono::milliseconds bullet_fire_t)
+std::chrono::microseconds TimerManager::timeGap(std::chrono::microseconds bullet_fire_t)
 {
-	MilliSec this_epoch_delta = epochToMillis();
-	MilliSec result = this_epoch_delta - bullet_fire_t;
+	MicroSec this_epoch_delta = epochToMillis();
+	MicroSec result = this_epoch_delta - bullet_fire_t;
 
 	return result;
 }

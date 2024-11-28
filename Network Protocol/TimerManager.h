@@ -9,7 +9,7 @@ private:
 	using Epoch = std::chrono::system_clock;
 	using TimePoint = std::chrono::time_point<Clock>;
 	using EpochPoint = std::chrono::time_point<Epoch>;
-	using MilliSec = std::chrono::milliseconds;
+	using MicroSec = std::chrono::microseconds;
 
 private:
 	// static constexpr int64_t syncStand = (1000 / 30);
@@ -25,8 +25,8 @@ public:
 	void Init();		// 초기화
 	void Update();		// Update
 	bool isSyncTime();	// 동기화 시간인지 알려줌 (지금이 타이밍인지)
-	std::chrono::milliseconds epochToMillis();		// epoch 시간으로 부터의 차이 (우리만의 epoch)
-	std::chrono::milliseconds timeGap(std::chrono::milliseconds bullet_fire_t);		// 총알이 발사 되었을 때와 시차 (ping 차이를 보간하기 위한)
+	std::chrono::microseconds epochToMillis();		// epoch 시간으로 부터의 차이 (우리만의 epoch)
+	std::chrono::microseconds timeGap(std::chrono::microseconds bullet_fire_t);		// 총알이 발사 되었을 때와 시차 (ping 차이를 보간하기 위한)
 
 	const int64_t getDeltaTime() const;
 
