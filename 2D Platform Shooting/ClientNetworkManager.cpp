@@ -63,13 +63,6 @@ void ClientNetworkManager::Connect()
         WSACleanup();
         return;
     }
-
-    result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
-    if (result == SOCKET_ERROR) {
-        closesocket(clientSocket);
-        WSACleanup();
-        return;
-    }
 }
 
 void ClientNetworkManager::CreateRecvThread()
@@ -117,12 +110,11 @@ void ClientNetworkManager::CreateRecvThread()
 
 DWORD WINAPI WorkerRecv(LPVOID arg)
 {
-    HANDLE event = { network_mgr.GetRecvEvent() };
     char buf[MAX_SIZE];
 
     while (true) {
         // 이벤트 대기
-        DWORD result = WaitForSingleObject(event, WSA_INFINITE);
+        //DWORD result = WaitForSingleObject(event, WSA_INFINITE);
 
         // 고정 길이 recv()
         int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
@@ -143,8 +135,12 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
                     // 패킷 타입 확인 및 처리
                     uint8_t packetType = static_cast<uint8_t>(buf[1]); // 패킷 타입 확인
                     
+                    if (packetType == myNP::SC_MY_MOVE) {
                         // Move 패킷을 기준으로 패킷 처리
-                    network_mgr.ProcessPacket();
+                        SetEvent(network_mgr.GetProcessEvent());
+
+                        WaitForSingleObject(network_mgr.GetRecvEvent(), WSA_INFINITE);
+                    }
                   
                 }
             }
