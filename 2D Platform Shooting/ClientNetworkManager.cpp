@@ -64,6 +64,10 @@ void ClientNetworkManager::Connect()
         return;
     }
 
+    DWORD opt_value = 1;
+    setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt_value, sizeof(opt_value));
+
+
     //result = WSAEventSelect(clientSocket, recvEvent, FD_READ | FD_CLOSE);
     //if (result == SOCKET_ERROR) {
     //    closesocket(clientSocket);

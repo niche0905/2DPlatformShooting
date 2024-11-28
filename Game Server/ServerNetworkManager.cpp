@@ -286,6 +286,9 @@ DWORD WINAPI workerRecv(LPVOID arg)
 {
 	auto client_socket{ *reinterpret_cast<SOCKET*>(arg) };
 
+	DWORD opt_value = 1;
+	setsockopt(client_socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt_value, sizeof(opt_value));
+
 	// recv
 	QueueType local_queue{};
 	int client_id{ SNMgr.GetNextId() };
