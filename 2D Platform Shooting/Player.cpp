@@ -44,8 +44,9 @@ Player::Player(float x, float y, Level* level, int texture_id)
     jumpChance = maxJumpChance;
 }
 
-Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey, int texture_id)
-    : isActive(true)
+Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey, int texture_id, int32_t p_id)
+    : playerID(p_id)
+    , isActive(true)
     , direction(true)
     , width(100.0f)
     , height(100.0f)

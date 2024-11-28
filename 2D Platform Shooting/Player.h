@@ -14,6 +14,8 @@ constexpr float AirFrictionScale = 3.0f;        // 데미지를 감소 시킬 때 공기 정
 
 class Player {
 private:
+    int32_t playerID{ -1 };
+
     bool isActive;      // 플레이어 활성화 비활성화를 나타내는 변수
 
     sf::RectangleShape shape;
@@ -62,7 +64,7 @@ public:
     Player(float x, float y, Level* level, int texture_id);
 
     // 생성할 위치와 level 정보를 받고 Key 바인딩을 위한 값들을 입력받는다
-    Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey, int texture_id);
+    Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyboard::Key downKey, sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key attackKey, int texture_id, int32_t p_id);
 
     // 플레이어의 Input을 처리한다
     void handleInput(const sf::Event& event);
