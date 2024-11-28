@@ -122,6 +122,10 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 	//	return false;
 	//}
 
+	// Logging
+	cout << "Recv ";
+	myNP::printPacketType(base->id);
+
 	// 가변 길이 recv
 	retval = { ::recv(
 		sock,
@@ -232,6 +236,10 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 		// err_display("send()");
 		return false;
 	}
+
+	// Logging
+	cout << "Send ";
+	myNP::printPacketType(buffer[0]);
 
 	return true;
 }
