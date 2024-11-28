@@ -5,8 +5,9 @@
 #include "Bullet.h"
 #include "Utilities.h"
 
-Player::Player(float x, float y, Level* level, int texture_id)
-    : isActive(true)
+Player::Player(float x, float y, Level* level, int texture_id, int32_t p_id)
+    : playerID(p_id)
+    , isActive(true)
     , direction(true)
     , width(100.0f)
     , height(100.0f)

@@ -271,8 +271,8 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
     // 바이트 정렬
     matchmaking_packet->ntohByteOrder();
     // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
-    ClientID = matchmaking_packet->p_id;
-    sceneManager.LoadGameScene(ClientID);
+    ClientID = static_cast<int32_t>(matchmaking_packet->p_id);
+    sceneManager.LoadGameScene();
 }
 
 // 총알 처리
@@ -311,9 +311,9 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     
     // 본인이면
-    if(ClientID == life_packet->p_id) gameScene->GetPlayers().revivePlayer();
-    // 상대면
-    else gameScene->GetDummyEnemy().reviveDummy();
+    if(ClientID == life_packet->p_id) gameScene->GetPlayer1().revivePlayer();
+    // TODO : 상대의 life를 깍는다 (UI로 보여줘야 하기 때문에)
+    else gameScene->GetPlayer2().revivePlayer();
 }
 
 // 총 업데이트 처리
@@ -324,7 +324,7 @@ void ClientNetworkManager::ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_pack
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
     // 본인이면
-    if (ClientID == gun_packet->p_id) gameScene->GetPlayers().setPlayerGun(gun_packet->g_id);
+    if (ClientID == gun_packet->p_id) gameScene->GetPlayer1().setPlayerGun(gun_packet->g_id);
     // 상대면
-    else gameScene->GetDummyEnemy().setDummyGun(gun_packet->g_id);
+    else gameScene->GetPlayer2().setPlayerGun(gun_packet->g_id);
 }

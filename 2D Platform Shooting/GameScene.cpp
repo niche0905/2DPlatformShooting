@@ -8,7 +8,7 @@
 
 std::uniform_real_distribution<float> uid{ 0.0, 800.0 };
 
-GameScene::GameScene(uint32_t p_id) :
+GameScene::GameScene() :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D CLIENT"),
     level{},
     view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)),
@@ -17,18 +17,8 @@ GameScene::GameScene(uint32_t p_id) :
 {
     makeTime = std::chrono::system_clock::now();
 
-    // 1p
-    if (!p_id)
-    {
-        player = new Player{ 100.0f, 400.0f, &level, TextureID::PLAYER1 };
-        dummy_enemy = new Dummy{ 400.0f, 400.0f, &level, TextureID::PLAYER2 };
-    }
-    // 2p
-    else
-    {
-        player = new Player{ 400.0f, 400.0f, &level, TextureID::PLAYER2 };
-        dummy_enemy = new Dummy{ 100.0f, 400.0f, &level, TextureID::PLAYER1 };
-    }
+    player1 = new Player{ 100.0f, 400.0f, &level, TextureID::PLAYER1, 0 };
+    player2 = new Player{ 400.0f, 400.0f, &level, TextureID::PLAYER2, 1 };
 
     items.emplace_back(200.0f, -500.0f, &level);
     // 시작시 바로 플레어이 중앙으로 옮길지 말지
@@ -44,7 +34,7 @@ GameScene::GameScene(uint32_t p_id) :
 
 void GameScene::InitView()
 {
-    sf::Vector2f newPosition = player->getPosition();
+    sf::Vector2f newPosition = player1->getPosition();
     newPosition.y -= CameraOffset;
 
     view.setCenter(newPosition);
@@ -81,7 +71,19 @@ void GameScene::handleInput()
             window.close();
         }
 
-        player->handleInput(event);
+        // TODO : 게임중이라면 매치메이킹 패킷 보낼 수 없게 하기
+        if (event.key.code == sf::Keyboard::R) {
+            auto buf = myNP::CS_MATCHMAKING_PACKET::MakePacket();
+            network_mgr.SendPacket(
+                reinterpret_cast<char*>(&buf),
+                myNP::CS_MATCHMAKING
+            );
+        }
+
+        // TODO : 아래 코드 때문에 2번 보낸다 고쳐야 함 ㅇㅇ
+        //        게임중일 때만 핸들 인풋 받게 하게 (플레이어가)
+        player1->handleInput(event);
+        player2->handleInput(event);
     }
 }
 
@@ -90,8 +92,8 @@ void GameScene::update(long long deltaTime)
     //network_mgr.Update();
 
     // 모든 업데이트 해야할 항목을 업데이트
-    player->update(deltaTime);
-    dummy_enemy->update(deltaTime);
+    player1->update(deltaTime);
+    player2->update(deltaTime);
 
     for (Item& item : items)
         item.update(deltaTime);
@@ -153,7 +155,10 @@ void GameScene::makeItem()
 void GameScene::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한
-    sf::Vector2f targetPosition = player->getPosition();
+    sf::Vector2f targetPosition = player1->getPosition();
+    if (network_mgr.GetClientID() == 1) {
+        targetPosition = player2->getPosition();
+    }
     // 지금 view의 위치를 알기위한
     sf::Vector2f currentPosition = view.getCenter();
     // view의 center를 약간 올리기 위해
@@ -178,8 +183,8 @@ void GameScene::draw()
     for (Item& item : items)
         item.draw(window);
 
-    player->draw(window);
-    dummy_enemy->draw(window);
+    player1->draw(window);
+    player2->draw(window);
 
     for (auto& obj : UI)
         obj.drawFixed(window);
@@ -225,22 +230,22 @@ void GameScene::InitText()
 
 void GameScene::updateTexts()
 {
-    texts[0].setString("Gun: " + GunLoader::Instance().GetGunTable()[player->getGunID()].name);
-    if (auto val = player->getCurMag(); -1 == val) {
+    texts[0].setString("Gun: " + GunLoader::Instance().GetGunTable()[player1->getGunID()].name);
+    if (auto val = player1->getCurMag(); -1 == val) {
         texts[1].setString("Remain: INF");
     }
     else {
         texts[1].setString("Remain: " + std::to_string(val));
     }
-    texts[2].setString("Life: " + std::to_string(player->getLife()));
-    texts[3].setString("Gun: " + GunLoader::Instance().GetGunTable()[dummy_enemy->getGunID()].name);
-    if (auto val = dummy_enemy->getCurMag(); -1 == val) {
+    texts[2].setString("Life: " + std::to_string(player1->getLife()));
+    texts[3].setString("Gun: " + GunLoader::Instance().GetGunTable()[player2->getGunID()].name);
+    if (auto val = player2->getCurMag(); -1 == val) {
         texts[4].setString("Remain: INF");
     }
     else {
         texts[4].setString("Remain: " + std::to_string(val));
     }
-    texts[5].setString("Life: " + std::to_string(dummy_enemy->getLife()));
+    texts[5].setString("Life: " + std::to_string(player2->getLife()));
 }
 
 void GameScene::drawTexts()
