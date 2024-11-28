@@ -95,27 +95,27 @@ void Player::handleInput(const sf::Event& event)
                 --jumpChance;
             }
         }
-        if (event.key.code == attackKeyBind) {
-            //auto nowTime = std::chrono::system_clock::now();
-            //// RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
-            //std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
-            //if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
-            //    fireBullet();
-        }
+        //if (event.key.code == attackKeyBind) {
+        //    //auto nowTime = std::chrono::system_clock::now();
+        //    //// RPM에 따라 발사속도 제한 600이 Gun의 RPM이어야 함 <- (수정함 09/23 송승호)
+        //    //std::chrono::milliseconds deltaTime(int((60.0 / g_guns[gunId].RPM) * 1000));
+        //    //if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime-lastFireTime)).count() >= deltaTime.count())
+        //    //    fireBullet();
+        //}
         if (event.key.code == sf::Keyboard::Q) {
             gunId = GunLoader::Instance().getRandomGunId();
         }
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
         }
-        if (event.key.code == sf::Keyboard::R) {
-            // revivePlayer();     // 임시로 키 바인딩으로 부활 호출
-            auto buf = myNP::CS_MATCHMAKING_PACKET::MakePacket();
-            network_mgr.SendPacket(
-                reinterpret_cast<char*>(&buf),
-                myNP::CS_MATCHMAKING
-            );
-        }
+        //if (event.key.code == sf::Keyboard::R) {
+        //    // revivePlayer();     // 임시로 키 바인딩으로 부활 호출
+        //    auto buf = myNP::CS_MATCHMAKING_PACKET::MakePacket();
+        //    network_mgr.SendPacket(
+        //        reinterpret_cast<char*>(&buf),
+        //        myNP::CS_MATCHMAKING
+        //    );
+        //}
     }
 }
 
