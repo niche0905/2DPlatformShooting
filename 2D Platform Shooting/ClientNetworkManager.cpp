@@ -149,10 +149,12 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
             // 버퍼를 Push
             network_mgr.PushBuffer(buf);
                     
-            // Move 패킷을 기준으로 패킷 처리
-            network_mgr.ProcessPacket();
-                  
-            
+            // 패킷 Move 인지 확인
+            if (buf[1] == (myNP::SC_MY_MOVE)) {
+                SetEvent(network_mgr.GetProcessEvent());
+
+                //WaitForSingleObject(network_mgr.GetRecvEvent(), INFINITE);
+            }
         }
         
         else if (recvLen == SOCKET_ERROR) {
