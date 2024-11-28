@@ -252,7 +252,6 @@ void ClientNetworkManager::ProcessPacket()
             myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
 
             ProcessPlayerMove(move_packet);
-            SetEvent(recvEvent);
 
             break;
         }
