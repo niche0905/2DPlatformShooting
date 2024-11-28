@@ -150,7 +150,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
             network_mgr.PushBuffer(buf);
                     
             // 패킷 Move 인지 확인
-            if (buf[1] == (myNP::SC_MY_MOVE)) {
+            if (buf[1] == myNP::SC_MY_MOVE) {
                 SetEvent(network_mgr.GetProcessEvent());
 
                 //WaitForSingleObject(network_mgr.GetRecvEvent(), INFINITE);
@@ -254,7 +254,7 @@ void ClientNetworkManager::ProcessPacket()
             myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
 
             ProcessPlayerMove(move_packet);
-            SetEvent(recvEvent);
+            //SetEvent(recvEvent);
 
             break;
         }
