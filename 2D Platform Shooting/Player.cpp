@@ -249,7 +249,7 @@ void Player::update(long long deltaTime)
                 reinterpret_cast<char*>(&buf),
                 myNP::CS_MOVE
             );
-            //SetEvent(network_mgr.GetRecvEvent());
+            SetEvent(network_mgr.GetRecvEvent());
 
             WaitForSingleObject(network_mgr.GetProcessEvent(), INFINITE);
             

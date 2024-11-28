@@ -151,9 +151,9 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
                     
             // 패킷 Move 인지 확인
             if (buf[1] == myNP::SC_MY_MOVE) {
+                WaitForSingleObject(network_mgr.GetRecvEvent(), INFINITE);
+             
                 SetEvent(network_mgr.GetProcessEvent());
-
-                //WaitForSingleObject(network_mgr.GetRecvEvent(), INFINITE);
             }
         }
         
