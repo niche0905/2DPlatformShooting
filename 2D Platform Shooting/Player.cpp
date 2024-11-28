@@ -168,7 +168,7 @@ void Player::update(long long deltaTime)
             if (-speed <= velocity.x and velocity.x <= speed)
                 velocity.x = -speed;
             else if (velocity.x > speed)
-                velocity.x -= speed * (deltaTime / 1000000.0f);
+                velocity.x -= speed * (deltaTime / myNP::microToSecond);
 
         }
         else if (rightKeyDown) {
@@ -176,7 +176,7 @@ void Player::update(long long deltaTime)
             if (-speed <= velocity.x and velocity.x <= speed)
                 velocity.x = speed;
             else if (velocity.x < -speed)
-                velocity.x += speed * (deltaTime / 1000000.0f);
+                velocity.x += speed * (deltaTime / myNP::microToSecond);
         }
         else {
             velocity.x = 0.0f;
@@ -184,7 +184,7 @@ void Player::update(long long deltaTime)
     }
 
     if (OnAir) {
-        velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
+        velocity.y += GravityAcc * GravityMul * (deltaTime / myNP::microToSecond);
     }
 
     damageControll(deltaTime);
@@ -192,7 +192,7 @@ void Player::update(long long deltaTime)
     // 입은 피해량 만큼 넉백하게
     sf::Vector2f powerOfDamage(damaged, 0.0f);
     // 속도만큼 움직임
-    shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
+    shape.move((velocity + powerOfDamage) * (deltaTime / myNP::microToSecond));
 
     bool noOnePlatformCollide = true;
 
@@ -324,11 +324,11 @@ void Player::damageControll(long long deltaTime)
 
     // 0에 가까워지도록
     if (damaged > 0.0f) {
-        damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged -= DamageScalingRatio * frictionScale * (deltaTime / myNP::microToSecond);
         damaged = std::max(0.0f, damaged);
     }
     else {
-        damaged += DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged += DamageScalingRatio * frictionScale * (deltaTime / myNP::microToSecond);
         damaged = std::min(0.0f, damaged);
     }
 }

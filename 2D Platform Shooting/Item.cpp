@@ -17,11 +17,11 @@ void Item::update(long long deltaTime)
     if (not isActive) return;
 
     if (OnAir) {
-        velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
+        velocity.y += GravityAcc * GravityMul * (deltaTime / myNP::microToSecond);
     }
 
     // 속도만큼 움직임
-    shape.move((velocity) * (deltaTime / 1000000.0f));
+    shape.move((velocity) * (deltaTime / myNP::microToSecond));
 
     bool noOnePlatformCollide = true;
 

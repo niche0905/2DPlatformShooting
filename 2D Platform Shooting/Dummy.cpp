@@ -61,11 +61,11 @@ void Dummy::damageControll(long long deltaTime)
 
     // 0에 가까워지도록
     if (damaged > 0.0f) {
-        damaged -= DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged -= DamageScalingRatio * frictionScale * (deltaTime / myNP::microToSecond);
         damaged = std::max(0.0f, damaged);
     }
     else {
-        damaged += DamageScalingRatio * frictionScale * (deltaTime / 1000000.0f);
+        damaged += DamageScalingRatio * frictionScale * (deltaTime / myNP::microToSecond);
         damaged = std::min(0.0f, damaged);
     }
 }
@@ -87,7 +87,7 @@ void Dummy::update(long long deltaTime)
 
     // 공중에 떠있는지 (점프 또는 플랫폼과 충돌 처리 후 정해짐)
     if (OnAir) {
-        velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
+        velocity.y += GravityAcc * GravityMul * (deltaTime / myNP::microToSecond);
     }
 
     damageControll(deltaTime);
@@ -95,7 +95,7 @@ void Dummy::update(long long deltaTime)
     // 입은 피해량 만큼 넉백하게
     sf::Vector2f powerOfDamage(damaged, 0.0f);
     // 속도만큼 움직임
-    shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
+    shape.move((velocity + powerOfDamage) * (deltaTime / myNP::microToSecond));
 
     // 밟고있는 플랫폼이 없는지 플래그
     bool noOnePlatformCollide = true;

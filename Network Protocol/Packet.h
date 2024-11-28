@@ -50,6 +50,8 @@ namespace myNP {
 
 	constexpr float DeadZone = 1000.0f;		// 사망 판정 y값
 
+	constexpr float microToSecond{ 1000000.0f };	// Update에서 사용하기 위한 나누는 상수
+
 
 	//---------------------------------------------------------
 	// 패킷들
