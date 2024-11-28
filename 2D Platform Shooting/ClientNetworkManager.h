@@ -27,6 +27,13 @@ private:
 	std::shared_ptr<Scene> currentScene;
 
 public:
+	// 임시. 나중에 private화 필요
+	// TODO:
+	bool send_move{ false };
+	bool recv_move{ false };
+	long long remain_delta{};
+
+
 	ClientNetworkManager() {};
 	~ClientNetworkManager() {};
 

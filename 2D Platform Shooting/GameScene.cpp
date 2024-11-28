@@ -45,15 +45,24 @@ void GameScene::InitView()
 void GameScene::run()
 {
     // 윈도우가 열려있다면 게임 루프를 반복한다
+    sf::Time dtSFTime = clock.restart();
     while (window.isOpen()) {
         handleInput();
 
-        sf::Time dtSFTime = clock.restart();
         long long deltaTime = dtSFTime.asMicroseconds();
 
         update(deltaTime);
 
         draw();
+
+        dtSFTime = clock.restart();
+        if (true == network_mgr.send_move) {
+            while (false == network_mgr.recv_move) { timer.Init(); }
+            network_mgr.recv_move = false;
+            network_mgr.send_move = false;
+            timer.Init();
+            clock.restart();
+        }
     }
 }
 

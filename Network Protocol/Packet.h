@@ -91,14 +91,16 @@ namespace myNP {
 		uint32_t p_id;
 		float posX, posY;
 		bool dir;
+		long long delta_time;
 
-		CS_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction)
+		CS_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction, long long delta)
 			: BASE_PACKET(sizeof(CS_MOVE_PACKET), PacketID::CS_MOVE)
 			, p_id(player_id)
 			, posX(x)
 			, posY(y)
-			, dir(direction) {}
-		static CS_MOVE_PACKET MakePacket(uint32_t player_id, float x, float y, bool direction);
+			, dir(direction)
+			, delta_time(delta) {}
+		static CS_MOVE_PACKET MakePacket(uint32_t player_id, float x, float y, bool direction, long long delta);
 		void ntohByteOrder();
 	};
 
@@ -155,14 +157,16 @@ namespace myNP {
 		uint32_t p_id;
 		float posX, posY;
 		bool dir;
+		long long delta_time;
 
-		SC_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction)
+		SC_MOVE_PACKET(uint32_t player_id, float x, float y, bool direction, long long delta)
 			: BASE_PACKET(sizeof(SC_MOVE_PACKET), PacketID::SC_MY_MOVE)
 			, p_id(player_id)
 			, posX(x)
 			, posY(y)
-			, dir(direction) {}
-		static SC_MOVE_PACKET MakePacket(uint32_t player_id, float x, float y, bool direction);
+			, dir(direction)
+			, delta_time(delta) {}
+		static SC_MOVE_PACKET MakePacket(uint32_t player_id, float x, float y, bool direction, long long delta);
 		void ntohByteOrder();
 	};
 

@@ -151,7 +151,9 @@ void Player::update(long long deltaTime)
 {
     timer.Update();
 
-    updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
+    long long final_delta = deltaTime + network_mgr.remain_delta;
+
+    updateBullets(final_delta);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
 
     if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
 
@@ -165,8 +167,8 @@ void Player::update(long long deltaTime)
 
         if (fireKeyDown) {
             auto nowTime = std::chrono::system_clock::now();
-            std::chrono::milliseconds deltaTime(int((60.0 / GunLoader::Instance().GetGunTable()[gunId].RPM) * 1000));
-            if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
+            std::chrono::milliseconds final_delta(int((60.0 / GunLoader::Instance().GetGunTable()[gunId].RPM) * 1000));
+            if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= final_delta.count())
                 fireBullet();
         }
 
@@ -176,7 +178,7 @@ void Player::update(long long deltaTime)
                 if (-speed <= velocity.x and velocity.x <= speed)
                     velocity.x = -speed;
                 else if (velocity.x > speed)
-                    velocity.x -= speed * (deltaTime / 1000000.0f);
+                    velocity.x -= speed * (final_delta / 1000000.0f);
 
             }
             else if (rightKeyDown) {
@@ -184,7 +186,7 @@ void Player::update(long long deltaTime)
                 if (-speed <= velocity.x and velocity.x <= speed)
                     velocity.x = speed;
                 else if (velocity.x < -speed)
-                    velocity.x += speed * (deltaTime / 1000000.0f);
+                    velocity.x += speed * (final_delta / 1000000.0f);
             }
             else {
                 velocity.x = 0.0f;
@@ -195,16 +197,16 @@ void Player::update(long long deltaTime)
 
     // 입은 피해량 만큼 넉백하게
     if (OnAir) {
-        velocity.y += GravityAcc * GravityMul * (deltaTime / 1000000.0f);
+        velocity.y += GravityAcc * GravityMul * (final_delta / 1000000.0f);
     }
 
-    damageControll(deltaTime);
+    damageControll(final_delta);
 
     // 입은 피해량 만큼 넉백하게
     sf::Vector2f powerOfDamage(damaged, 0.0f);
 
     // 속도만큼 움직임
-    shape.move((velocity + powerOfDamage) * (deltaTime / 1000000.0f));
+    shape.move((velocity + powerOfDamage) * (final_delta / 1000000.0f));
 
     bool noOnePlatformCollide = true;
 
@@ -244,11 +246,12 @@ void Player::update(long long deltaTime)
     // Timer Update
     if (network_mgr.GetClientId() == playerId) {
         if (timer.isSyncTime()) {
-            auto buf = myNP::CS_MOVE_PACKET::MakePacket(playerId, pos.x, pos.y, direction);
+            auto buf = myNP::CS_MOVE_PACKET::MakePacket(playerId, pos.x, pos.y, direction, deltaTime);
             network_mgr.SendPacket(
                 reinterpret_cast<char*>(&buf),
                 myNP::CS_MOVE
             );
+            network_mgr.send_move = true;
         }
     }
 

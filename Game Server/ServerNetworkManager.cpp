@@ -150,6 +150,9 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 
 void ServerNetworkManager::ProcessPackets()
 {
+	long long max_delta{};
+	long long deltas[2]{};
+
 	for (int i = 0; i <= 1; ++i) {
 		auto&	queue_ = processQueue[i];
 		int		client_id = i;
@@ -169,7 +172,10 @@ void ServerNetworkManager::ProcessPackets()
 				else {
 					world.p2.SetPos(packet->posX, packet->posY);
 				}
-				
+				if (packet->delta_time > max_delta) {
+					max_delta = packet->delta_time;
+				}
+				deltas[i] = packet->delta_time;
 			}
 			break;
 
@@ -205,11 +211,11 @@ void ServerNetworkManager::ProcessPackets()
 
 
 	SendPacket<myNP::SC_MOVE_PACKET>(0,
-		1, world.p2.GetPos().posX, world.p2.GetPos().posY, 0
+		1, world.p2.GetPos().posX, world.p2.GetPos().posY, 0, max_delta - deltas[1]
 	);
 
 	SendPacket<myNP::SC_MOVE_PACKET>(1,
-		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0, max_delta - deltas[0]
 	);
 }
 

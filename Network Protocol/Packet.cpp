@@ -19,9 +19,9 @@ namespace myNP
 
 	}
 
-	CS_MOVE_PACKET CS_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)
+	CS_MOVE_PACKET CS_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction, long long delta)
 	{
-		return CS_MOVE_PACKET(player_id, x, y, direction);
+		return CS_MOVE_PACKET(player_id, x, y, direction, delta);
 	}
 
 	void CS_MOVE_PACKET::ntohByteOrder()
@@ -55,9 +55,9 @@ namespace myNP
 		// p_id = ntohl(p_id);
 	}
 
-	SC_MOVE_PACKET SC_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)
+	SC_MOVE_PACKET SC_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction, long long delta)
 	{
-		return SC_MOVE_PACKET(player_id, x, y, direction);
+		return SC_MOVE_PACKET(player_id, x, y, direction, delta);
 	}
 
 	void SC_MOVE_PACKET::ntohByteOrder()
