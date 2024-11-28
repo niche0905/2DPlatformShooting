@@ -31,9 +31,9 @@ namespace myNP
 		posY = ntohf(posY);
 	}
 
-	CS_FIRE_PACKET CS_FIRE_PACKET::MakePacket(uint32_t bullet_id, float x, float y, bool direction, uint32_t bullet_type, std::chrono::milliseconds fire_time)
+	CS_FIRE_PACKET CS_FIRE_PACKET::MakePacket(uint32_t bullet_id, float x, float y, bool direction, uint32_t bullet_type, std::chrono::microseconds fire_time)
 	{
-		return CS_FIRE_PACKET(htonl(bullet_id), htonf(x), htonf(y), direction, htonl(bullet_type), std::chrono::milliseconds(htonll(fire_time.count())));
+		return CS_FIRE_PACKET(htonl(bullet_id), htonf(x), htonf(y), direction, htonl(bullet_type), std::chrono::microseconds(htonll(fire_time.count())));
 	}
 
 	void CS_FIRE_PACKET::ntohByteOrder()
@@ -42,7 +42,7 @@ namespace myNP
 		posX = ntohf(posX);
 		posY = ntohf(posY);
 		type = ntohl(type);
-		fire_t = std::chrono::milliseconds(ntohll(fire_t.count()));
+		fire_t = std::chrono::microseconds(ntohll(fire_t.count()));
 	}
 
 	SC_MATCHMAKING_PACKET SC_MATCHMAKING_PACKET::MakePacket(bool success, uint32_t player_id)
@@ -77,9 +77,9 @@ namespace myNP
 		damage = ntohf(damage);
 	}
 
-	SC_FIRE_PACKET SC_FIRE_PACKET::MakePacket(uint32_t bullet_id, float x, float y, bool direction, uint32_t bullet_type, std::chrono::milliseconds fire_time)
+	SC_FIRE_PACKET SC_FIRE_PACKET::MakePacket(uint32_t bullet_id, float x, float y, bool direction, uint32_t bullet_type, std::chrono::microseconds fire_time)
 	{
-		return SC_FIRE_PACKET(htonl(bullet_id), htonf(x), htonf(y), direction, htonl(bullet_type), std::chrono::milliseconds(htonll(fire_time.count())));
+		return SC_FIRE_PACKET(htonl(bullet_id), htonf(x), htonf(y), direction, htonl(bullet_type), std::chrono::microseconds(htonll(fire_time.count())));
 	}
 
 	void SC_FIRE_PACKET::ntohByteOrder()
@@ -88,7 +88,7 @@ namespace myNP
 		posX = ntohf(posX);
 		posY = ntohf(posY);
 		type = ntohl(type);
-		fire_t = std::chrono::milliseconds(ntohll(fire_t.count()));
+		fire_t = std::chrono::microseconds(ntohll(fire_t.count()));
 	}
 
 	SC_BULLET_REMOVE_PACKET SC_BULLET_REMOVE_PACKET::MakePacket(uint32_t player_id, uint32_t bullet_id)

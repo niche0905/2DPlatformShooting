@@ -107,17 +107,17 @@ namespace myNP {
 	//  float	posX, posY: 총알의 위치
 	//  bool	dir: 총알의 방향
 	//  uint32	type: 
-	//  milliseconds	fire_t: 발사 시간
+	//  microseconds	fire_t: 발사 시간
 	struct CS_FIRE_PACKET : public BASE_PACKET
 	{
 		uint32_t b_id;
 		float posX, posY;
 		bool dir;
 		uint32_t type;
-		std::chrono::milliseconds fire_t;
+		std::chrono::microseconds fire_t;
 
 		CS_FIRE_PACKET(uint32_t bullet_id, float x, float y, bool direction,
-			uint32_t bullet_type, std::chrono::milliseconds fire_time)
+			uint32_t bullet_type, std::chrono::microseconds fire_time)
 			: BASE_PACKET(sizeof(CS_FIRE_PACKET), PacketID::CS_FIRE)
 			, b_id(bullet_id)
 			, posX(x)
@@ -126,7 +126,7 @@ namespace myNP {
 			, type(bullet_type)
 			, fire_t(fire_time) {}
 		static CS_FIRE_PACKET MakePacket(uint32_t bullet_id, float x, float y, bool direction,
-			uint32_t bullet_type, std::chrono::milliseconds fire_time);
+			uint32_t bullet_type, std::chrono::microseconds fire_time);
 		void ntohByteOrder();
 	};
 
@@ -184,17 +184,17 @@ namespace myNP {
 	//  float	posX, posY: 총알의 위치
 	//  bool	dir: 총알의 방향
 	//  uint32	type: 총알의 타입
-	//  milliseconds	fire_t: 발사 시간
+	//  microseconds	fire_t: 발사 시간
 	struct SC_FIRE_PACKET : public BASE_PACKET
 	{
 		uint32_t b_id;
 		float posX, posY;
 		bool dir;
 		uint32_t type;
-		std::chrono::milliseconds fire_t;
+		std::chrono::microseconds fire_t;
 
 		SC_FIRE_PACKET(uint32_t bullet_id, float x, float y, bool direction,
-			uint32_t bullet_type, std::chrono::milliseconds fire_time)
+			uint32_t bullet_type, std::chrono::microseconds fire_time)
 			: BASE_PACKET(sizeof(SC_FIRE_PACKET), PacketID::SC_FIRE)
 			, b_id(bullet_id)
 			, posX(x)
@@ -203,7 +203,7 @@ namespace myNP {
 			, type(bullet_type)
 			, fire_t(fire_time) {}
 		static SC_FIRE_PACKET MakePacket(uint32_t bullet_id, float x, float y, bool direction,
-			uint32_t bullet_type, std::chrono::milliseconds fire_time);
+			uint32_t bullet_type, std::chrono::microseconds fire_time);
 		void ntohByteOrder();
 	};
 
