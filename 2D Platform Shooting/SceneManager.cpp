@@ -4,7 +4,7 @@
 SceneManager::SceneManager()
 {
 	// 게임이 실행될 때 가장 먼저 로드되는 씬
-	activeScene = LoadGameScene(0);
+	activeScene = LoadGameScene();
 }
 
 SceneManager::~SceneManager()
@@ -18,8 +18,8 @@ std::shared_ptr<Scene> SceneManager::LoadTitleScene()
 	return scene;
 }
 
-std::shared_ptr<Scene> SceneManager::LoadGameScene(uint32_t p_id)
+std::shared_ptr<Scene> SceneManager::LoadGameScene()
 {
-	std::shared_ptr<GameScene> scene = std::make_shared<GameScene>(p_id);
+	std::shared_ptr<GameScene> scene = std::make_shared<GameScene>();
 	return scene;
 }

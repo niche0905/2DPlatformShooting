@@ -13,7 +13,7 @@ public:
 	~SceneManager();
 
 	std::shared_ptr<Scene> LoadTitleScene();
-	std::shared_ptr<Scene> LoadGameScene(uint32_t p_id);
+	std::shared_ptr<Scene> LoadGameScene();
 
 	std::shared_ptr<Scene> GetActiveScene() const{ return activeScene; }
 };
