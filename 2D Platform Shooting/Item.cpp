@@ -35,8 +35,6 @@ void Item::update(long long deltaTime)
         }
     }
 
-
-
     // 플랫폼에 붙어있지 않다면 공중 판정
     if (noOnePlatformCollide) {
         OnAir = true;

@@ -14,6 +14,8 @@ private:
 
     Level* level;
 
+    uint32_t i_id;
+
 public:
     Item(float x, float y, Level* level);
 
@@ -26,4 +28,6 @@ public:
     sf::Vector2f getPosition() const;
 
     bool checkCollisionBullet(sf::FloatRect other);
+
+    uint32_t GetItemId() const { return i_id; }
 };
