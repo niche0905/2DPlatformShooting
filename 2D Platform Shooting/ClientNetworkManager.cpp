@@ -280,6 +280,20 @@ void ClientNetworkManager::ProcessPacket()
             ProcessGunUpdate(gun_update_packet);
             break;
         }
+        case myNP::SC_ITEM_CREATE:
+        {
+            myNP::SC_ITEM_CREATE_PACKET* item_create_packet = reinterpret_cast<myNP::SC_ITEM_CREATE_PACKET*>(buffer.data());
+
+            ProcessCreateItem(item_create_packet);
+            break;
+        }
+        case myNP::SC_ITEM_REMOVE:
+        {
+            myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet = reinterpret_cast<myNP::SC_ITEM_REMOVE_PACKET*>(buffer.data());
+
+            ProcessRemoveItem(item_remove_packet);
+            break;
+        }
         }
     }
 
@@ -364,4 +378,18 @@ void ClientNetworkManager::ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_pack
     if (ClientID == gun_packet->p_id) gameScene->GetPlayer1().setPlayerGun(gun_packet->g_id);
     // »ó´ë¸é
     else gameScene->GetPlayer2().setPlayerGun(gun_packet->g_id);
+}
+
+void ClientNetworkManager::ProcessCreateItem(myNP::SC_ITEM_CREATE_PACKET* item_create_packet)
+{
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+    
+    gameScene->makeItem(item_create_packet->posX);
+}
+
+void ClientNetworkManager::ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet)
+{
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+
+    gameScene->makeItem(item_remove_packet);
 }

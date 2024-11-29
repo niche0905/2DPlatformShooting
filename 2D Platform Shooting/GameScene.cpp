@@ -160,10 +160,9 @@ void GameScene::update(long long deltaTime)
 //    }
 //}
 
-void GameScene::makeItem()
+void GameScene::makeItem(float xPos)
 {
-    float num = uid(RANDOM_ENGINE);
-    items.emplace_back(num, -500.0f, &level);
+    items.emplace_back(xPos, -500.0f, &level);
 }
 
 void GameScene::Scrolling(long long deltaTime)
@@ -202,6 +201,9 @@ void GameScene::draw()
 
     for (auto& obj : UI)
         obj.drawFixed(window);
+
+    for (auto& bullet : enemy_bullets)
+        bullet.draw(window);
 
     // 문자 그리기
     drawTexts();
