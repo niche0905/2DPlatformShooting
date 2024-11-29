@@ -15,10 +15,7 @@ private:
 	std::queue<std::array<char, MAX_SIZE>> process_queue;
 	// 클라이언트 ID
 	uint32_t ClientID{static_cast<uint32_t>(-1)};
-
-	// 현재 게임중인지
-	bool playing{false};
-
+	
 	// 이벤트
 	HANDLE recvEvent;
 	HANDLE processEvent;
@@ -26,12 +23,12 @@ private:
 	// 현재 씬
 	std::shared_ptr<Scene> currentScene;
 
-public:
-	// 임시. 나중에 private화 필요
-	// TODO:
+	// 추가한 멤버 변수
 	bool send_move{ false };
-	bool recv_move{ false };
 	long long remain_delta{};
+	bool playing{ false };
+
+public:
 
 
 	ClientNetworkManager() {};
@@ -42,7 +39,7 @@ public:
 
 	// Recv() 스레드 생성
 	void CreateRecvThread();
-	// enQueue
+	// enQueueg
 	// 서버에서 데이터가 넘어오면 Event 처리 스레드에게 할 일을 넘기는 함수
 	//void PushBuffer(char buf[MAX_SIZE]);
 	// 패킷 전송
@@ -54,6 +51,8 @@ public:
 	HANDLE GetProcessEvent() { return processEvent; }
 	SOCKET GetSocket() { return clientSocket;  }
 	uint32_t GetClientId() { return ClientID; }
+	void setSendMove(const bool value) { send_move = value; }
+	bool getSendMove() const { return send_move; }
 
 	void ProcessPacket();
 	void ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet);

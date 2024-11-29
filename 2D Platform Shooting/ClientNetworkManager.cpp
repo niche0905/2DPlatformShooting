@@ -300,8 +300,8 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
     move_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     gameScene->GetOtherPlayer().setPosition(move_packet->posX, move_packet->posY);
-    network_mgr.recv_move = true;
-    network_mgr.remain_delta = move_packet->delta_time;
+    SetEvent(recvEvent);
+    remain_delta = move_packet->delta_time;
 }
 
 // 매치메이킹 처리

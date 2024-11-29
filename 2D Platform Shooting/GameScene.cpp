@@ -56,10 +56,10 @@ void GameScene::run()
         draw();
 
         dtSFTime = clock.restart();
-        if (true == network_mgr.send_move) {
-            while (false == network_mgr.recv_move) { timer.Init(); }
-            network_mgr.recv_move = false;
+        if (true == network_mgr.getSendMove()) {
+            WaitForSingleObject(network_mgr.GetRecvEvent(), INFINITE);
             network_mgr.send_move = false;
+            network_mgr.setSendMove(false);
             timer.Init();
             clock.restart();
         }
