@@ -205,14 +205,14 @@ void ServerNetworkManager::ProcessPackets()
 	}
 
 
-	//SendPacket<myNP::SC_MOVE_PACKET>(0,
-	//	0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	//);
+	SendPacket<myNP::SC_MOVE_PACKET>(0,
+		0, world.p2.GetPos().posX, world.p1.GetPos().posY, 0
+	);
 	//cout << "send 15 to 0\n";
 
-	//SendPacket<myNP::SC_MOVE_PACKET>(1,
-	//	0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
-	//);
+	SendPacket<myNP::SC_MOVE_PACKET>(1,
+		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+	);
 	//cout << "send 15 to 1\n";
 }
 
