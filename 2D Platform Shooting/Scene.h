@@ -5,10 +5,15 @@
 
 class Scene {
 private:
-    
+
+protected:
+    bool focus{ false };
+
 public:
     virtual void run() {};
     virtual void update(long long deltaTime) {};
     virtual void draw() {};
     virtual void handleInput() {};
+
+    bool GetFocus() { return focus; }
 };

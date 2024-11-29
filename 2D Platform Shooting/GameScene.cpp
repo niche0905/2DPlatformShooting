@@ -67,12 +67,12 @@ void GameScene::handleInput()
         if (event.type == sf::Event::Closed) {
             window.close();
         }
-        if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape) {
+        if (event.type == sf::Event::KeyPressed and window.hasFocus() and event.key.code == sf::Keyboard::Escape) {
             window.close();
         }
 
         // TODO : 게임중이라면 매치메이킹 패킷 보낼 수 없게 하기
-        if (event.key.code == sf::Keyboard::R and (not match)) {
+        if (event.type == sf::Event::KeyPressed and window.hasFocus() and event.key.code == sf::Keyboard::R and (not match)) {
             auto buf = myNP::CS_MATCHMAKING_PACKET::MakePacket();
             network_mgr.SendPacket(
                 reinterpret_cast<char*>(&buf),
@@ -90,8 +90,14 @@ void GameScene::handleInput()
 
         // TODO : 아래 코드 때문에 2번 보낸다 고쳐야 함 ㅇㅇ
         //        게임중일 때만 핸들 인풋 받게 하게 (플레이어가)
-        player1->handleInput(event);
-        player2->handleInput(event);
+        if (window.hasFocus()) {
+            focus = true;
+            player1->handleInput(event);
+            player2->handleInput(event);
+        }
+        else {
+            focus = false;
+        }
     }
 }
 

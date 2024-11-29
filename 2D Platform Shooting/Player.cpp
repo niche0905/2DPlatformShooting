@@ -4,6 +4,7 @@
 #include "Gun.h"
 #include "Bullet.h"
 #include "Utilities.h"
+#include "Scene.h"
 
 Player::Player(float x, float y, Level* level, int texture_id, int32_t p_id)
     : playerID(p_id)
@@ -172,32 +173,36 @@ void Player::update(long long deltaTime)
     leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
     rightKeyDown = sf::Keyboard::isKeyPressed(rightKeyBind);
     fireKeyDown = sf::Keyboard::isKeyPressed(attackKeyBind);
+    
+    bool focus = sceneManager.GetActiveScene()->GetFocus();
 
-    if (fireKeyDown) {
+    if (focus and fireKeyDown) {
         auto nowTime = std::chrono::system_clock::now();
         std::chrono::milliseconds deltaTime(int((60.0 / GunLoader::Instance().GetGunTable()[gunId].RPM) * 1000));
         if ((std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - lastFireTime)).count() >= deltaTime.count())
             fireBullet();
     }
 
-    if (not (leftKeyDown and rightKeyDown)) {
-        if (leftKeyDown) {
-            direction = true;
-            if (-speed <= velocity.x and velocity.x <= speed)
-                velocity.x = -speed;
-            else if (velocity.x > speed)
-                velocity.x -= speed * (deltaTime / myNP::microToSecond);
+    if (focus) {
+        if (not (leftKeyDown and rightKeyDown)) {
+            if (leftKeyDown) {
+                direction = true;
+                if (-speed <= velocity.x and velocity.x <= speed)
+                    velocity.x = -speed;
+                else if (velocity.x > speed)
+                    velocity.x -= speed * (deltaTime / myNP::microToSecond);
 
-        }
-        else if (rightKeyDown) {
-            direction = false;
-            if (-speed <= velocity.x and velocity.x <= speed)
-                velocity.x = speed;
-            else if (velocity.x < -speed)
-                velocity.x += speed * (deltaTime / myNP::microToSecond);
-        }
-        else {
-            velocity.x = 0.0f;
+            }
+            else if (rightKeyDown) {
+                direction = false;
+                if (-speed <= velocity.x and velocity.x <= speed)
+                    velocity.x = speed;
+                else if (velocity.x < -speed)
+                    velocity.x += speed * (deltaTime / myNP::microToSecond);
+            }
+            else {
+                velocity.x = 0.0f;
+            }
         }
     }
 
@@ -214,8 +219,9 @@ void Player::update(long long deltaTime)
 
     bool noOnePlatformCollide = true;
 
-    // 하나라도 밟고있는 플랫폼이 있는지 체크
-    if (not sf::Keyboard::isKeyPressed(downKeyBind)) {
+    bool downKeyDown = sf::Keyboard::isKeyPressed(downKeyBind);
+        // 하나라도 밟고있는 플랫폼이 있는지 체크
+    if (not (focus and downKeyDown)) {
         for (const auto& platform : level->platforms) {
             if (checkCollision(platform.getGlobalBounds())) {
                 OnAir = false;
