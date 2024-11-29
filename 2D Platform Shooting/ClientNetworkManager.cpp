@@ -178,6 +178,7 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
+            break;
         }
         case myNP::CS_MATCHMAKING:
         {
@@ -187,6 +188,7 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
+            break;
         }
         case myNP::CS_FIRE:
         {
@@ -196,8 +198,10 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
             }
+            break;
         }
     }
+    cout << "SEND DATA\n";
 }
 
 void ClientNetworkManager::ProcessPacket()
