@@ -12,8 +12,8 @@ private:
 	using MicroSec = std::chrono::microseconds;
 
 private:
-	//static constexpr int64_t syncStand = (1000000 / 30);		// 1000000 <= (int)myNP::microToSecond
-	static constexpr int64_t syncStand = (1000000 / 2);		// 1/2
+	static constexpr int64_t syncStand = (1000000 / 30);		// 1000000 <= (int)myNP::microToSecond
+	//static constexpr int64_t syncStand = (1000000 / 2);		// 1/2
 	//static constexpr int64_t syncStand = 1000000;
 
 private:

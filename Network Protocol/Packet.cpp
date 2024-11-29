@@ -21,14 +21,15 @@ namespace myNP
 
 	CS_MOVE_PACKET CS_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)
 	{
-		return CS_MOVE_PACKET(htonl(player_id), htonf(x), htonf(y), direction);
+		//return CS_MOVE_PACKET(htonl(player_id), htonf(x), htonf(y), direction);
+		return CS_MOVE_PACKET(htonl(player_id), x, y, direction);
 	}
 
 	void CS_MOVE_PACKET::ntohByteOrder()
 	{
 		p_id = ntohl(p_id);
-		posX = ntohf(posX);
-		posY = ntohf(posY);
+		//posX = ntohf(posX);
+		//posY = ntohf(posY);
 	}
 
 	CS_FIRE_PACKET CS_FIRE_PACKET::MakePacket(uint32_t bullet_id, float x, float y, bool direction, uint32_t bullet_type, std::chrono::microseconds fire_time)
@@ -57,14 +58,15 @@ namespace myNP
 
 	SC_MOVE_PACKET SC_MOVE_PACKET::MakePacket(uint32_t player_id, float x, float y, bool direction)
 	{
-		return SC_MOVE_PACKET(htonl(player_id), htonf(x), htonf(y), direction);
+		//return SC_MOVE_PACKET(htonl(player_id), htonf(x), htonf(y), direction);
+		return SC_MOVE_PACKET(htonl(player_id), x, y, direction);
 	}
 
 	void SC_MOVE_PACKET::ntohByteOrder()
 	{
 		p_id = ntohl(p_id);
-		posX = ntohf(posX);
-		posY = ntohf(posY);
+		//posX = ntohf(posX);
+		//posY = ntohf(posY);
 	}
 
 	SC_PLAYER_DAMAGE_PACKET SC_PLAYER_DAMAGE_PACKET::MakePacket(float damaged)
