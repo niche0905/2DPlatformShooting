@@ -102,14 +102,14 @@ void GameScene::update(long long deltaTime)
 
     //eatItem();
 
-    std::chrono::system_clock::time_point nowTime = std::chrono::system_clock::now();
+    /*std::chrono::system_clock::time_point nowTime = std::chrono::system_clock::now();
 
     auto timeDiff = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - makeTime);
 
     if (timeDiff.count() > 10000) {
         makeItem();
         makeTime = nowTime;
-    }
+    }*/
 
     updateTexts();
 
