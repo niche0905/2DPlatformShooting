@@ -384,12 +384,12 @@ void ClientNetworkManager::ProcessCreateItem(myNP::SC_ITEM_CREATE_PACKET* item_c
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     
-    gameScene->makeItem(item_create_packet->posX);
+    gameScene->MakeItem(item_create_packet->posX, item_create_packet->i_id);
 }
 
 void ClientNetworkManager::ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet)
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
-    gameScene->makeItem(item_remove_packet);
+    gameScene->RemoveItem(item_remove_packet->i_id);
 }
