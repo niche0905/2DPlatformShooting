@@ -15,14 +15,31 @@ World::World()
 	tm->Update();
 }
 
+void World::Init()
+{
+	itemMakingTime = std::chrono::system_clock::now();
+}
+
 void World::Update()
 {
 	// TODO : 플레이어 위치값 받은거 적용하기 -> Process Queue 에서 해야할 것 같은 내용
 
 	tm->Update();
-
 	int64_t delta_time = tm->getDeltaTime();
 
+	// 아이템 생성 로직 가져오기
+	std::chrono::system_clock::time_point nowTime = std::chrono::system_clock::now();
+	auto timeDiff = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - itemMakingTime);
+	// 현재 시간을 구하고 저번 Item을 생성한 시간과 10초 이상 차이가 나면 생성
+
+	// ItemSpawn은 bool으로 아이템 스폰에 성공했는지 반환 (성공 하든 안하든 시간은 갱신)
+	if (timeDiff.count() > 10000) {
+		ItemSpawn();
+		itemMakingTime = nowTime;
+	}
+
+	p1.Update(delta_time);
+	p2.Update(delta_time);
 
 	for (Item& item : items)
 		item.Update(delta_time);
@@ -105,4 +122,9 @@ void World::Process()
 void World::Recv()
 {
 
+}
+
+bool World::ItemSpawn()
+{
+	return false;
 }

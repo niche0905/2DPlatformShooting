@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include <vector>
+#include <chrono>
 #include "CorePch.h"
 #include "Object.h"
 #include "Player.h"
@@ -40,15 +41,19 @@ public:
 
 	std::list<Item> items;	// item들 정보를 담고 있는 자료구조
 
+	std::chrono::system_clock::time_point itemMakingTime;
+
 	Level level;	// 플랫폼들 (레벨)
 
 public:
 	World();
 
+	void Init();	// 초기화 해야할 항목을 초기화 하였으면 좋겠다 ex) time_point;
 	void Update();	// 인자로 deltaTime을 넘겨야 할 것으로 보인다
 	void CollisionCheck();	// World의 요소들을 충돌처리 함
 	void Process();	// 패킷을 처리하는 부분이 될 것 같다
 	void Recv();	// recv 스레드에서 받은 패킷들을 전달 받는 부분이 될 것으로 보인다
+	bool ItemSpawn();
 
 };
 

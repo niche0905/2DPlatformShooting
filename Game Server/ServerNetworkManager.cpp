@@ -372,6 +372,8 @@ DWORD WINAPI workerLobby(LPVOID arg)
 
 		// 게임 중일 경우
 		else {
+			world.Update();
+
 			SNMgr.WaitforRecvEvent();
 
 			SNMgr.ProcessPackets();
