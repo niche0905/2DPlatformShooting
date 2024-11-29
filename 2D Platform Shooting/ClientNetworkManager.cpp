@@ -123,22 +123,22 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         // 고정 길이 recv()
         int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
-        cout << recvLen << "\n";
+        //cout << recvLen << "\n";
 
         if (recvLen > 0) {
             // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
             auto remainingPacketLen = buf[0] - sizeof(myNP::BASE_PACKET);
 
-            cout << "RECV " << static_cast<int>(buf[1]) << ": ";
-            myNP::printPacketType(buf[1]);
+            //cout << "RECV " << static_cast<int>(buf[1]) << ": ";
+            //myNP::printPacketType(buf[1]);
 
             // 가변 길이 recv()
             if (remainingPacketLen > 0) {
                 while (true)
                 {
-                    cout << "Test1\n";
+                    //cout << "Test1\n";
                     recvLen = recv(network_mgr.GetSocket(), buf + sizeof(myNP::BASE_PACKET), remainingPacketLen, MSG_WAITALL);
-                    cout << recvLen << "\n";
+                    //cout << recvLen << "\n";
                     if (recvLen > 0) {
 
                         // 버퍼를 Push
@@ -146,14 +146,14 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
                         if (buf[1] == myNP::SC_MY_MOVE or buf[1] == myNP::SC_MATCHMAKING) {
                             // Move 패킷을 기준으로 패킷 처리
-                            cout << "Sync\n";
+                            //cout << "Sync\n";
 
                             SetEvent(network_mgr.GetProcessEvent());
 
                             WaitForSingleObject(network_mgr.GetRecvEvent(), WSA_INFINITE);
                         }
 
-                        cout << "RECV " << static_cast<int>(buf[1]) << ": ";
+                        cout << "RECV : ";
                         myNP::printPacketType(buf[1]);
 
                         break;
@@ -163,7 +163,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
             }
             else {
                 // 버퍼를 Push
-                cout << "Test2\n";
+                //cout << "Test2\n";
                 network_mgr.PushBuffer(buf);
             }
         }
@@ -292,6 +292,8 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
     // 바이트 정렬
     move_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+    cout << "받은 좌표\n";
+    cout << 1-ClientID << " " << move_packet->posX << ", " << move_packet->posY << "\n";
     gameScene->GetOtherPlayer().setPosition(move_packet->posX, move_packet->posY);
 }
 

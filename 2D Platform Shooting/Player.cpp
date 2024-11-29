@@ -159,7 +159,7 @@ void Player::fireBullet()
 
 void Player::update(long long deltaTime)
 {
-    static int move_send_number{};
+    //static int move_send_number{};
 
     updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
 
@@ -250,13 +250,17 @@ void Player::update(long long deltaTime)
     if (timer.isSyncTime()) {
         // send move packet.
         // 임시로 0번. 플레이어 id 저장하기
-        auto buf = myNP::CS_MOVE_PACKET::MakePacket(0, pos.x, pos.y, direction);
+
+        cout << "보내는 좌표\n";
+        cout << network_mgr.GetClientID() << " " << pos.x << ", " << pos.y << "\n";
+
+        auto buf = myNP::CS_MOVE_PACKET::MakePacket(playerID, pos.x, pos.y, direction);
         network_mgr.SendPacket(
             reinterpret_cast<char*>(&buf),
             myNP::CS_MOVE
         );
 
-        cout << ++move_send_number << endl;
+        //cout << ++move_send_number << endl;
 
         WaitForSingleObject(network_mgr.GetProcessEvent(), WSA_INFINITE);
 

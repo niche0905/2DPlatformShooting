@@ -164,12 +164,17 @@ void ServerNetworkManager::ProcessPackets()
 				// TODO: 실제 움직임 처리
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
+				cout << "받은 좌표\n";
+				cout << packet->p_id << " : " << packet->posX << ", " << packet->posY << "\n";
 				if (packet->p_id == 0) {
+					cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p1.SetPos(packet->posX, packet->posY);
 				}
-				else {
+				else if (packet->p_id == 1) {
+					cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p2.SetPos(packet->posX, packet->posY);
 				}
+
 				//cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
 			}
 			break;
@@ -204,9 +209,13 @@ void ServerNetworkManager::ProcessPackets()
 		}
 	}
 
+	
+	cout << "보내는 좌표\n";
+	cout << 0 << " " << world.p1.GetPos().posX << ", " << world.p1.GetPos().posY << "\n";
+	cout << 1 << " " << world.p2.GetPos().posX << ", " << world.p2.GetPos().posY << "\n";
 
 	SendPacket<myNP::SC_MOVE_PACKET>(0,
-		0, world.p2.GetPos().posX, world.p1.GetPos().posY, 0
+		0, world.p2.GetPos().posX, world.p2.GetPos().posY, 0
 	);
 	//cout << "send 15 to 0\n";
 
@@ -248,14 +257,14 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 		0
 	) };
 
-	std::cout << (int)buffer[0] << "," << (int)buffer[1] << std::endl;
+	//std::cout << (int)buffer[0] << "," << (int)buffer[1] << std::endl;
 
 	if (SOCKET_ERROR == retval) {
 		// err_display("send()");
 		return false;
 	}
 
-	cout << "Send Size: " << sizeof(BASE_PACKET) << " real : " << retval << endl;
+	//cout << "Send Size: " << sizeof(BASE_PACKET) << " real : " << retval << endl;
 	// 가변 길이 send
 	int remain_size = static_cast<int>(buffer[0]) - sizeof(BASE_PACKET);
 	if (remain_size > 0) {
@@ -269,7 +278,7 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 			// err_display("send()");
 			return false;
 		}
-		cout << "Send Size: " << remain_size << " real : " << retval << endl;
+		//cout << "Send Size: " << remain_size << " real : " << retval << endl;
 	}
 	return true;
 }
