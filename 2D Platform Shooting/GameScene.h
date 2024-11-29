@@ -69,4 +69,6 @@ public:
 
     Player& GetPlayer1() { return *player1; }
     Player& GetPlayer2() { return *player2; }
+    Player& GetControlPlayer();
+    Player& GetOtherPlayer();
 };

@@ -257,6 +257,26 @@ void GameScene::drawTexts()
     window.setView(currentView);
 }
 
+Player& GameScene::GetControlPlayer()
+{
+    if (network_mgr.GetClientID() == 0) {
+        return  *player1;
+    }
+    else {
+        return  *player2;
+    }
+}
+
+Player& GameScene::GetOtherPlayer()
+{
+    if (network_mgr.GetClientID() == 0) {
+        return  *player2;
+    }
+    else {
+        return  *player1;
+    }
+}
+
 //void Game::buildGun()
 //{
 //    loadGunFromFile(GunSavePath);
