@@ -194,7 +194,6 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
                 WSACleanup();
             }
         }
-
     }
 }
 
@@ -215,7 +214,7 @@ void ClientNetworkManager::ProcessPacket()
         {
             myNP::SC_MOVE_PACKET* move_packet = reinterpret_cast<myNP::SC_MOVE_PACKET*>(buffer.data());
 
-            ProcessDummyMove(move_packet);
+            ProcessPlayerMove(move_packet);
             break;
         }
         // 매치메이킹 처리
@@ -257,12 +256,12 @@ void ClientNetworkManager::ProcessPacket()
 }
 
 // 상대 이동 처리
-void ClientNetworkManager::ProcessDummyMove(myNP::SC_MOVE_PACKET* move_packet)
+void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
 {
     // 바이트 정렬
     move_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
-    gameScene->GetDummyEnemy().setPosition(move_packet->posX, move_packet->posY);
+    gameScene->GetOtherPlayer().setPosition(move_packet->posX, move_packet->posY);
 }
 
 // 매치메이킹 처리
@@ -272,7 +271,12 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
     matchmaking_packet->ntohByteOrder();
     // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
     ClientID = static_cast<int32_t>(matchmaking_packet->p_id);
-    sceneManager.LoadGameScene();
+    cout << "Client ID: " << ClientID << endl;
+    playing = true;
+    timer.Init();
+    // TODO : 매치메이킹을 만들면 아래처럼 Scene을 로드해야함
+    //        지금은 위치 세팅 해줘야 할 듯 싶음
+    //sceneManager.LoadGameScene();
 }
 
 // 총알 처리
