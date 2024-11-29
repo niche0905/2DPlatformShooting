@@ -159,6 +159,8 @@ void Player::fireBullet()
 
 void Player::update(long long deltaTime)
 {
+    static int move_send_number{};
+
     updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
 
     if (not isControl())
@@ -253,6 +255,8 @@ void Player::update(long long deltaTime)
             reinterpret_cast<char*>(&buf),
             myNP::CS_MOVE
         );
+
+        cout << ++move_send_number << endl;
 
         WaitForSingleObject(network_mgr.GetProcessEvent(), WSA_INFINITE);
 
