@@ -20,7 +20,7 @@ GameScene::GameScene() :
     player1 = new Player{ 100.0f, 400.0f, &level, TextureID::PLAYER1, 0 };
     player2 = new Player{ 400.0f, 400.0f, &level, TextureID::PLAYER2, 1 };
 
-    items.emplace_back(200.0f, -500.0f, &level);
+    //items.emplace_back(200.0f, -500.0f, &level);
     // 시작시 바로 플레어이 중앙으로 옮길지 말지
     //InitView();
 
@@ -163,7 +163,12 @@ void GameScene::update(long long deltaTime)
 void GameScene::makeItem()
 {
     float num = uid(RANDOM_ENGINE);
-    items.emplace_back(num, -500.0f, &level);
+    items.emplace_back(0, num, -500.0f, &level);
+}
+
+void GameScene::makeItem(uint32_t i_id, float x, float y)
+{
+    items.emplace_back(i_id, x, y, &level);
 }
 
 void GameScene::Scrolling(long long deltaTime)

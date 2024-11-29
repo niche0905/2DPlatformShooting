@@ -5,6 +5,8 @@ class Item {
 private:
     bool isActive;
 
+    uint32_t itemID;
+
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
@@ -15,7 +17,7 @@ private:
     Level* level;
 
 public:
-    Item(float x, float y, Level* level);
+    Item(uint32_t i_id, float x, float y, Level* level);
 
     void update(long long deltaTime);
 
