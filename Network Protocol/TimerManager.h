@@ -13,7 +13,8 @@ private:
 
 private:
 	//static constexpr int64_t syncStand = (1000000 / 30);		// 1000000 <= (int)myNP::microToSecond
-	static constexpr int64_t syncStand = 1000000;
+	static constexpr int64_t syncStand = (1000000 / 10);		// 1/10초 마다 보내게
+	//static constexpr int64_t syncStand = 1000000;
 
 private:
 	TimePoint startTime;	// 타이머 시작 시간 (동기화 시간을 구하기 위한)
