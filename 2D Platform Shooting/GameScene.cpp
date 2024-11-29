@@ -160,9 +160,18 @@ void GameScene::update(long long deltaTime)
 //    }
 //}
 
-void GameScene::makeItem(float xPos)
+void GameScene::MakeItem(float xPos, uint32_t i_id)
 {
+    // 원래는 아이템 id 넣어서 만들어야 함
+    //items.emplace_back(xPos, -500.0f, &level, i_id);
     items.emplace_back(xPos, -500.0f, &level);
+}
+
+void GameScene::RemoveItem(uint32_t i_id)
+{
+    items.remove_if([i_id](const Item& item) {
+        return item.GetItemId() == i_id;
+        });
 }
 
 void GameScene::Scrolling(long long deltaTime)
@@ -202,8 +211,8 @@ void GameScene::draw()
     for (auto& obj : UI)
         obj.drawFixed(window);
 
-    for (auto& bullet : enemy_bullets)
-        bullet.draw(window);
+    for (auto& enemy_bullet : enemy_bullets)
+        enemy_bullet.draw(window);
 
     // 문자 그리기
     drawTexts();
