@@ -52,5 +52,7 @@ public:
 	void ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet);
 	void ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_packet);
 	void ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_packet);
+	void ProcessCreateItem(myNP::SC_ITEM_CREATE_PACKET* item_create_packet);
+	void ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet);
 };
 

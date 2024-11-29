@@ -160,15 +160,22 @@ void GameScene::update(long long deltaTime)
 //    }
 //}
 
-void GameScene::makeItem()
+void GameScene::MakeItem()
 {
     float num = uid(RANDOM_ENGINE);
     items.emplace_back(0, num, -500.0f, &level);
 }
 
-void GameScene::makeItem(uint32_t i_id, float x, float y)
+void GameScene::MakeItem(uint32_t i_id, float x, float y)
 {
     items.emplace_back(i_id, x, y, &level);
+}
+
+void GameScene::RemoveItem(uint32_t i_id)
+{
+    items.remove_if([i_id](const Item& item) {
+        return item.GetItemId() == i_id;
+        });
 }
 
 void GameScene::Scrolling(long long deltaTime)
@@ -207,6 +214,9 @@ void GameScene::draw()
 
     for (auto& obj : UI)
         obj.drawFixed(window);
+
+    for (auto& enemy_bullet : enemy_bullets)
+        enemy_bullet.draw(window);
 
     // 문자 그리기
     drawTexts();
