@@ -275,6 +275,8 @@ void Player::updateBullets(long long deltaTime)
 }
 
 void Player::draw(sf::RenderWindow& window) {
+    //std::cout << "Player draw\n";
+
     if (not isActive) return;
 
     for (const Bullet& bullet : bullets) {

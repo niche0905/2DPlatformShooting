@@ -43,6 +43,9 @@ void Image::SetReversed(const bool value)
 void Image::draw(sf::RenderWindow& window)
 {
 	sprite.setTexture(texture);
+
+	//std::cout << "Image draw\n";
+
 	if (reversed) {
 		sf::FloatRect bounds = sprite.getLocalBounds();
 		sprite.setOrigin(bounds.width / 2.f, bounds.height);
