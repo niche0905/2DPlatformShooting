@@ -165,12 +165,14 @@ void ServerNetworkManager::ProcessPackets()
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
 				cout << "받은 좌표\n";
-				cout << packet->p_id << " : " << packet->posX << ", " << packet->posY << "\n";
-				if (packet->p_id == 0) {
+				cout << packet->p_id << " " << (client_id==packet->p_id) << " : " << packet->posX << ", " << packet->posY << "\n";
+				//cout << "받은 좌표\n";
+				//cout << packet->p_id << " : " << ntohf(packet->posX) << ", " << ntohf(packet->posY) << "\n";
+				if (client_id == 0) {
 					cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p1.SetPos(packet->posX, packet->posY);
 				}
-				else if (packet->p_id == 1) {
+				else if (client_id == 1) {
 					cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p2.SetPos(packet->posX, packet->posY);
 				}
@@ -190,7 +192,7 @@ void ServerNetworkManager::ProcessPackets()
 				if (client_id == 0) {
 					world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
 				}
-				else {
+				else if (client_id == 1) {
 					world.p2.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
 				}
 
