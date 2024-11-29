@@ -46,7 +46,7 @@ void Object::SetPos(float pos_x, float pos_y)
 {
 	posX = pos_x;
 	posY = pos_y;
-	cout << posX << ", " << posY << "\n";
+	//cout << posX << ", " << posY << "\n";
 }
 
 void Object::SetPivot(float pivot_x, float pivot_y)

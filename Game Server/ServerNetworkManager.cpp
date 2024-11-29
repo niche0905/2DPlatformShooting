@@ -126,8 +126,8 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 	//}
 
 	// Logging
-	cout << "Recv ";
-	myNP::printPacketType(base->id);
+	//cout << "Recv ";
+	//myNP::printPacketType(base->id);
 
 	int remain_size = (base->size - static_cast<PacketSizeType>(sizeof(BASE_PACKET)));
 	if (remain_size <= 0)
@@ -164,16 +164,16 @@ void ServerNetworkManager::ProcessPackets()
 				// TODO: ½ÇÁ¦ ¿òÁ÷ÀÓ Ã³¸®
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
 				packet->ntohByteOrder();
-				cout << "¹ÞÀº ÁÂÇ¥\n";
-				cout << packet->p_id << " " << (client_id==packet->p_id) << " : " << packet->posX << ", " << packet->posY << "\n";
+				//cout << "¹ÞÀº ÁÂÇ¥\n";
+				//cout << packet->p_id << " " << (client_id==packet->p_id) << " : " << packet->posX << ", " << packet->posY << "\n";
 				//cout << "¹ÞÀº ÁÂÇ¥\n";
 				//cout << packet->p_id << " : " << ntohf(packet->posX) << ", " << ntohf(packet->posY) << "\n";
 				if (client_id == 0) {
-					cout << "¼³Á¤ÇÏ´Â ÁÂÇ¥ " << packet->p_id << "\n";
+					//cout << "¼³Á¤ÇÏ´Â ÁÂÇ¥ " << packet->p_id << "\n";
 					world.p1.SetPos(packet->posX, packet->posY);
 				}
 				else if (client_id == 1) {
-					cout << "¼³Á¤ÇÏ´Â ÁÂÇ¥ " << packet->p_id << "\n";
+					//cout << "¼³Á¤ÇÏ´Â ÁÂÇ¥ " << packet->p_id << "\n";
 					world.p2.SetPos(packet->posX, packet->posY);
 				}
 
@@ -212,9 +212,9 @@ void ServerNetworkManager::ProcessPackets()
 	}
 
 	
-	cout << "º¸³»´Â ÁÂÇ¥\n";
-	cout << 0 << " " << world.p1.GetPos().posX << ", " << world.p1.GetPos().posY << "\n";
-	cout << 1 << " " << world.p2.GetPos().posX << ", " << world.p2.GetPos().posY << "\n";
+	//cout << "º¸³»´Â ÁÂÇ¥\n";
+	//cout << 0 << " " << world.p1.GetPos().posX << ", " << world.p1.GetPos().posY << "\n";
+	//cout << 1 << " " << world.p2.GetPos().posX << ", " << world.p2.GetPos().posY << "\n";
 
 	SendPacket<myNP::SC_MOVE_PACKET>(0,
 		0, world.p2.GetPos().posX, world.p2.GetPos().posY, 0
@@ -248,8 +248,8 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 {
 	// Logging
-	cout << "Send ";
-	myNP::printPacketType(buffer[1]);
+	//cout << "Send ";
+	//myNP::printPacketType(buffer[1]);
 
 	// °íÁ¤ ±æÀÌ send
 	auto retval{ ::send(

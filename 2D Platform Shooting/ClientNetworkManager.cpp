@@ -153,8 +153,8 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
                             WaitForSingleObject(network_mgr.GetRecvEvent(), WSA_INFINITE);
                         }
 
-                        cout << "RECV : ";
-                        myNP::printPacketType(buf[1]);
+                        //cout << "RECV : ";
+                        //myNP::printPacketType(buf[1]);
 
                         break;
                     }
@@ -188,7 +188,7 @@ void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 {
     // 패킷 ID별 다른 처리
-    cout << "SEND : ";
+    //cout << "SEND : ";
     switch (packet_id)
     {
         case myNP::CS_MOVE:
@@ -225,7 +225,7 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
             break;
         }
     }
-    myNP::printPacketType(packet_id);
+    //myNP::printPacketType(packet_id);
 }
 
 void ClientNetworkManager::ProcessPacket()
@@ -292,8 +292,8 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
     // 바이트 정렬
     move_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
-    cout << "받은 좌표\n";
-    cout << 1-ClientID << " " << move_packet->posX << ", " << move_packet->posY << "\n";
+    //cout << "받은 좌표\n";
+    //cout << 1-ClientID << " " << move_packet->posX << ", " << move_packet->posY << "\n";
     gameScene->GetOtherPlayer().setPosition(move_packet->posX, move_packet->posY);
 }
 

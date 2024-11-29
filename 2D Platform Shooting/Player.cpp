@@ -257,8 +257,8 @@ void Player::update(long long deltaTime)
         // send move packet.
         // 임시로 0번. 플레이어 id 저장하기
 
-        cout << "보내는 좌표\n";
-        cout << network_mgr.GetClientID() << " " << pos.x << ", " << pos.y << "\n";
+        //cout << "보내는 좌표\n";
+        //cout << network_mgr.GetClientID() << " " << pos.x << ", " << pos.y << "\n";
 
         auto buf = myNP::CS_MOVE_PACKET::MakePacket(playerID, pos.x, pos.y, direction);
         network_mgr.SendPacket(
