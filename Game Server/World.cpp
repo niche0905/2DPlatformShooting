@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "World.h"
 #include "Platform.h"
+#include "Item.h"
+
+std::uniform_real_distribution<float> item_spawn_point{ 0.0, 600.0 };
 
 
 World::World()
@@ -126,5 +129,13 @@ void World::Recv()
 
 bool World::ItemSpawn()
 {
-	return false;
+	if (items.size() >= 3)
+		return false;
+
+	float x_pos = item_spawn_point(RANDOM_ENGINE);
+	Item item{ x_pos, itemSpawnHeight };
+	uint32_t item_id = item.GetItemID();
+	items.push_back(item);
+	SNMgr.SendPacket<myNP::SC_ITEM_CREATE_PACKET>(static_cast<int32_t>(0), item_id, x_pos, itemSpawnHeight);
+	SNMgr.SendPacket<myNP::SC_ITEM_CREATE_PACKET>(static_cast<int32_t>(1), item_id, x_pos, itemSpawnHeight);
 }

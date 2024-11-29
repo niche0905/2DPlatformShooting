@@ -1,11 +1,16 @@
 #pragma once
 #include "MovingObject.h"
 
+constexpr float itemSpawnHeight{ -800.0f };
+
 
 class Item : public MovingObject
 {
 private:
-	float dropSpeed; // <- ³Ê ¾ø¾îµµ µÊ ¤·¤·
+	static uint32_t nextID;
+
+private:
+	uint32_t itemID;
 	bool OnAir;
 
 public:
@@ -14,6 +19,8 @@ public:
 	Item(float x, float y);
 
 	void Update(int64_t delta_time);
+
+	uint32_t GetItemID() const;
 
 };
 
