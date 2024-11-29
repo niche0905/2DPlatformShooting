@@ -3,7 +3,13 @@
 #include "Level.h"
 #include "Utilities.h"
 
-Item::Item(uint32_t i_id, float x, float y, Level* level) : isActive(true), itemID{i_id}, width(35.0f), height(50.0f), OnAir(true), level(level)
+Item::Item(uint32_t i_id, float x, float y, Level* level) 
+    : isActive(true), 
+    itemID{i_id}, 
+    width(35.0f), 
+    height(50.0f), 
+    OnAir(true), 
+    level(level)
 {
     // 피봇은 가운대 아래
     shape.setOrigin(width / 2, height);

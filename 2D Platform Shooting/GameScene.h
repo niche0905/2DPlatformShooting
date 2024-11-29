@@ -52,13 +52,13 @@ public:
     //void eatItem();
 
     // 아이템 생성
-    void MakeItem(float xPos, uint32_t i_id);
+    void MakeItem();
+
+    // 아이템 생성 (item create 패킷을 받아서 하는 것)
+    void MakeItem(uint32_t i_id, float x, float y);
 
     // 아이템 삭제
     void RemoveItem(uint32_t i_id);
-
-    // 아이템 생성 (item create 패킷을 받아서 하는 것)
-    void makeItem(uint32_t i_id, float x, float y);
 
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
