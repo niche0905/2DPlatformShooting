@@ -131,25 +131,35 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
             // 가변 길이 recv()
             if (remainingPacketLen > 0) {
-                recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
-                if (recvLen > 0) {
+                while (true)
+                {
+                    cout << "Test1\n";
+                    recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
+                    cout << recvLen << "\n";
+                    if (recvLen > 0) {
 
-                    // 버퍼를 Push
-                    network_mgr.PushBuffer(buf);
+                        // 버퍼를 Push
+                        network_mgr.PushBuffer(buf);
 
-                    if (buf[1] == myNP::SC_MY_MOVE or buf[1] == myNP::SC_MATCHMAKING) {
-                        // Move 패킷을 기준으로 패킷 처리
-                        SetEvent(network_mgr.GetProcessEvent());
+                        if (buf[1] == myNP::SC_MY_MOVE or buf[1] == myNP::SC_MATCHMAKING) {
+                            // Move 패킷을 기준으로 패킷 처리
+                            cout << "Sync\n";
 
-                        cout << "test\n";
+                            SetEvent(network_mgr.GetProcessEvent());
 
-                        WaitForSingleObject(network_mgr.GetRecvEvent(), WSA_INFINITE);
+                            WaitForSingleObject(network_mgr.GetRecvEvent(), WSA_INFINITE);
+                        }
+
+                        cout << "RECV " << static_cast<int>(buf[1]) << ": ";
+                        myNP::printPacketType(buf[1]);
+
+                        break;
                     }
-                  
                 }
             }
             else {
                 // 버퍼를 Push
+                cout << "Test2\n";
                 network_mgr.PushBuffer(buf);
             }
         }

@@ -79,6 +79,13 @@ void GameScene::handleInput()
                 myNP::CS_MATCHMAKING
             );
             match = true;
+
+            cout << "Match gogo\n";
+            WaitForSingleObject(network_mgr.GetProcessEvent(), WSA_INFINITE);
+
+            network_mgr.ProcessPacket();
+
+            SetEvent(network_mgr.GetRecvEvent());
         }
 
         // TODO : 아래 코드 때문에 2번 보낸다 고쳐야 함 ㅇㅇ
