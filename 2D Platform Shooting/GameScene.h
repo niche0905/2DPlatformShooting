@@ -8,7 +8,7 @@
 
 class GameScene : public Scene {
     sf::RenderWindow window;
-    sf::Clock clock;
+    //sf::Clock clock;
 
     Level level;
 
