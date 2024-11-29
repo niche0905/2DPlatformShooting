@@ -9,6 +9,7 @@
 class GameScene : public Scene {
     sf::RenderWindow window;
     //sf::Clock clock;
+    bool match{ false };
 
     Level level;
 

@@ -72,12 +72,13 @@ void GameScene::handleInput()
         }
 
         // TODO : 게임중이라면 매치메이킹 패킷 보낼 수 없게 하기
-        if (event.key.code == sf::Keyboard::R) {
+        if (event.key.code == sf::Keyboard::R and (not match)) {
             auto buf = myNP::CS_MATCHMAKING_PACKET::MakePacket();
             network_mgr.SendPacket(
                 reinterpret_cast<char*>(&buf),
                 myNP::CS_MATCHMAKING
             );
+            match = true;
         }
 
         // TODO : 아래 코드 때문에 2번 보낸다 고쳐야 함 ㅇㅇ
