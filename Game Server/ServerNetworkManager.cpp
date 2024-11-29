@@ -87,6 +87,9 @@ void ServerNetworkManager::Accept()
 			// err_display("accept()");
 			continue;
 		}
+
+		DWORD opt_value = 1;
+		setsockopt(client_socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt_value, sizeof(opt_value));
 			
 		if (playing) {
 			closesocket(client_socket);

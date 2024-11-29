@@ -63,6 +63,9 @@ void ClientNetworkManager::Connect()
         WSACleanup();
         return;
     }
+
+    DWORD opt_value = 1;
+    setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt_value, sizeof(opt_value));
 }
 
 void ClientNetworkManager::CreateRecvThread()
