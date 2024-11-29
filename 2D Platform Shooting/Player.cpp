@@ -85,6 +85,11 @@ Player::Player(float x, float y, Level* level, sf::Keyboard::Key upKey, sf::Keyb
     jumpChance = maxJumpChance;
 }
 
+bool Player::isControl() const
+{
+    return (network_mgr.GetClientID() == playerID);
+}
+
 void Player::handleInput(const sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed) {
@@ -123,6 +128,9 @@ void Player::handleInput(const sf::Event& event)
 
 void Player::fireBullet()
 {
+    if (not isControl())
+        return;
+
     bulletId++;
     if (curMag > 0) {
         if (--curMag == 0) {
