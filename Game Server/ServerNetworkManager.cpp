@@ -240,19 +240,37 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 	cout << "Send ";
 	myNP::printPacketType(buffer[1]);
 
-	// 가변 길이 send
+	// 고정 길이 send
 	auto retval{ ::send(
 		sock,
 		buffer.data(),
-		buffer[0],
+		sizeof(BASE_PACKET),
 		0
 	) };
+
+	std::cout << (int)buffer[0] << "," << (int)buffer[1] << std::endl;
 
 	if (SOCKET_ERROR == retval) {
 		// err_display("send()");
 		return false;
 	}
 
+	cout << "Send Size: " << sizeof(BASE_PACKET) << " real : " << retval << endl;
+	// 가변 길이 send
+	int remain_size = static_cast<int>(buffer[0]) - sizeof(BASE_PACKET);
+	if (remain_size > 0) {
+		auto retval{ ::send(
+			sock,
+			buffer.data() + sizeof(BASE_PACKET),
+			remain_size,
+			0
+		) };
+		if (SOCKET_ERROR == retval) {
+			// err_display("send()");
+			return false;
+		}
+		cout << "Send Size: " << remain_size << " real : " << retval << endl;
+	}
 	return true;
 }
 

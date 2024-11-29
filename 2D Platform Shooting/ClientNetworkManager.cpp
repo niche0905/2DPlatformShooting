@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ClientNetworkManager.h"
+#include <thread>
+#include <chrono>
 
 void ClientNetworkManager::Init()
 {
@@ -121,6 +123,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         // 고정 길이 recv()
         int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
+        cout << recvLen << "\n";
 
         if (recvLen > 0) {
             // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
@@ -134,7 +137,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
                 while (true)
                 {
                     cout << "Test1\n";
-                    recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
+                    recvLen = recv(network_mgr.GetSocket(), buf + sizeof(myNP::BASE_PACKET), remainingPacketLen, MSG_WAITALL);
                     cout << recvLen << "\n";
                     if (recvLen > 0) {
 
@@ -155,6 +158,7 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
                         break;
                     }
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
             }
             else {
