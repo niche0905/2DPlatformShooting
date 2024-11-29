@@ -168,12 +168,14 @@ void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 {
     // 패킷 ID별 다른 처리
+    cout << "SEND : ";
     switch (packet_id)
     {
         case myNP::CS_MOVE:
         {
             int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MOVE_PACKET), 0);
             if (sendLen == SOCKET_ERROR) {
+                cout << "Send Failed Error\n";
                 closesocket(clientSocket);
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
@@ -184,6 +186,7 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
         {
             int sendLen = send(clientSocket, buf, sizeof(myNP::CS_MATCHMAKING_PACKET), 0);
             if (sendLen == SOCKET_ERROR) {
+                cout << "Send Failed Error\n";
                 closesocket(clientSocket);
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
@@ -194,6 +197,7 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
         {
             int sendLen = send(clientSocket, buf, sizeof(myNP::CS_FIRE_PACKET), 0);
             if (sendLen == SOCKET_ERROR) {
+                cout << "Send Failed Error\n";
                 closesocket(clientSocket);
                 clientSocket = INVALID_SOCKET;
                 WSACleanup();
@@ -201,7 +205,7 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
             break;
         }
     }
-    cout << "SEND DATA\n";
+    myNP::printPacketType(packet_id);
 }
 
 void ClientNetworkManager::ProcessPacket()

@@ -129,11 +129,15 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 	cout << "Recv ";
 	myNP::printPacketType(base->id);
 
+	int remain_size = (base->size - static_cast<PacketSizeType>(sizeof(BASE_PACKET)));
+	if (remain_size <= 0)
+		return true;
+
 	// 가변 길이 recv
 	retval = { ::recv(
 		sock,
 		buffer.data() + sizeof(BASE_PACKET),
-		base->size - static_cast<PacketSizeType>(sizeof(BASE_PACKET)),
+		remain_size,
 		MSG_WAITALL
 	) };
 
@@ -247,7 +251,7 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 
 	// Logging
 	cout << "Send ";
-	myNP::printPacketType(buffer[0]);
+	myNP::printPacketType(buffer[1]);
 
 	return true;
 }
@@ -328,6 +332,7 @@ DWORD WINAPI workerLobby(LPVOID arg)
 		if (not SNMgr.IsPlaying()) {
 			SNMgr.WaitforRecvEvent();
 
+			cout << "Playing = true" << endl;
 			SNMgr.setPlaying(true);
 			for (int i = 0; i <= 1; ++i) {
 				SNMgr.SendPacket<myNP::SC_MATCHMAKING_PACKET>(i, true, i);
