@@ -283,6 +283,7 @@ void Player::draw(sf::RenderWindow& window) {
         bullet.draw(window);
     }
 
+    window.draw(shape); // 이미지가 출력이 안되어서 임시
     image.draw(window);
 }
 
