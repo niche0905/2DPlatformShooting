@@ -92,6 +92,9 @@ bool Player::isControl() const
 
 void Player::handleInput(const sf::Event& event)
 {
+    if (not isControl())
+        return;
+
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == upKeyBind) {
             // Space 키가 눌렸을 때 한 번만 실행되는 코드
