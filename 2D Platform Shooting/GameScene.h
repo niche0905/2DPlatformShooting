@@ -46,13 +46,16 @@ public:
     virtual void update(long long deltaTime);
 
     // 총알 충돌 처리 (본인을 제외한 Player)
-    void bulletHit();
+    //void bulletHit();
 
     // 아이템 충돌 처리
-    void eatItem();
+    //void eatItem();
 
     // 아이템 생성
-    void makeItem(float xPos);
+    void MakeItem(float xPos, uint32_t i_id);
+
+    // 아이템 삭제
+    void RemoveItem(uint32_t i_id);
 
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
