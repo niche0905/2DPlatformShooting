@@ -124,31 +124,37 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
 
         if (recvLen > 0) {
             // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
-            auto remainingPacketLen = *(reinterpret_cast<int*>(buf)) - sizeof(myNP::BASE_PACKET);
+            auto remainingPacketLen = buf[0] - sizeof(myNP::BASE_PACKET);
+
+            cout << "RECV " << static_cast<int>(buf[1]) << ": ";
+            myNP::printPacketType(buf[1]);
 
             // 가변 길이 recv()
             if (remainingPacketLen > 0) {
                 recvLen = recv(network_mgr.GetSocket(), buf + network_mgr.GetSocket(), remainingPacketLen, MSG_WAITALL);
                 if (recvLen > 0) {
-                    cout << "RECV DATA\n";
 
                     // 버퍼를 Push
                     network_mgr.PushBuffer(buf);
 
-                    // 패킷 타입 확인 및 처리
-                    uint8_t packetType = static_cast<uint8_t>(buf[1]); // 패킷 타입 확인
-                    
-                    if (packetType == myNP::SC_MY_MOVE) {
+                    if (buf[1] == myNP::SC_MY_MOVE or buf[1] == myNP::SC_MATCHMAKING) {
                         // Move 패킷을 기준으로 패킷 처리
                         SetEvent(network_mgr.GetProcessEvent());
+
+                        cout << "test\n";
 
                         WaitForSingleObject(network_mgr.GetRecvEvent(), WSA_INFINITE);
                     }
                   
                 }
             }
+            else {
+                // 버퍼를 Push
+                network_mgr.PushBuffer(buf);
+            }
         }
         else if (recvLen == 0 || recvLen == SOCKET_ERROR) {
+            cout << "Recv Failed Error\n";
             break;
         }
     }

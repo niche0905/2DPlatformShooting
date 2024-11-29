@@ -236,6 +236,10 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 
 bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 {
+	// Logging
+	cout << "Send ";
+	myNP::printPacketType(buffer[1]);
+
 	// 가변 길이 send
 	auto retval{ ::send(
 		sock,
@@ -248,10 +252,6 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 		// err_display("send()");
 		return false;
 	}
-
-	// Logging
-	cout << "Send ";
-	myNP::printPacketType(buffer[1]);
 
 	return true;
 }
