@@ -3,6 +3,7 @@
 #include <thread>
 #include <chrono>
 
+// 초기화
 void ClientNetworkManager::Init()
 {
     // 윈속 초기화
@@ -46,6 +47,7 @@ void ClientNetworkManager::Init()
     CreateRecvThread();
 }
 
+// Connect
 void ClientNetworkManager::Connect()
 {
     struct sockaddr_in serveraddr;
@@ -70,6 +72,7 @@ void ClientNetworkManager::Connect()
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt_value, sizeof(opt_value));
 }
 
+// Recv 스레드 생성
 void ClientNetworkManager::CreateRecvThread()
 {
     // 클라이언트 스레드 초기화
@@ -113,6 +116,7 @@ void ClientNetworkManager::CreateRecvThread()
     }
 }
 
+// Recv 스레드
 DWORD WINAPI WorkerRecv(LPVOID arg)
 {
     char buf[MAX_SIZE];
@@ -228,6 +232,7 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
     //myNP::printPacketType(packet_id);
 }
 
+// 패킷별 처리
 void ClientNetworkManager::ProcessPacket()
 {
     // WaitForSingleObject(processEvent, INFINITE);
@@ -380,6 +385,7 @@ void ClientNetworkManager::ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_pack
     else gameScene->GetPlayer2().setPlayerGun(gun_packet->g_id);
 }
 
+// 아이템 생성 처리
 void ClientNetworkManager::ProcessCreateItem(myNP::SC_ITEM_CREATE_PACKET* item_create_packet)
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
@@ -387,6 +393,7 @@ void ClientNetworkManager::ProcessCreateItem(myNP::SC_ITEM_CREATE_PACKET* item_c
     gameScene->MakeItem(item_create_packet->i_id, item_create_packet->posX, item_create_packet->posY);
 }
 
+// 아이템 삭제 처리
 void ClientNetworkManager::ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet)
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
