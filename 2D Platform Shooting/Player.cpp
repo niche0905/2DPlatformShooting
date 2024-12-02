@@ -327,14 +327,16 @@ sf::Vector2f Player::getPosition() const
 
 void Player::revivePlayer()
 {
-    // 부활 시 처리해 할 행동들 추가하기
-    isActive = true;
+    if (playerID == network_mgr.GetClientID()) {
+        // 부활 시 처리해 할 행동들 추가하기
+        isActive = true;
 
-    // 맵 중앙 공중에 스폰
-    shape.setPosition((level->leftBound+level->rightBound) / 2.0f, -1000.0f);  // -1000.0f 는 수정해야 할수도
+        // 맵 중앙 공중에 스폰
+        shape.setPosition((level->leftBound + level->rightBound) / 2.0f, -1000.0f);  // -1000.0f 는 수정해야 할수도
 
+        damaged = 0;
+    }
     life -= 1;
-    damaged = 0;
 }
 
 bool Player::checkCollisionBullet(sf::FloatRect other)
