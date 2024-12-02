@@ -60,6 +60,9 @@ public:
     // 아이템 삭제
     void RemoveItem(uint32_t i_id);
 
+    // 총알 삭제
+    void RemoveBullet(uint32_t b_id);
+
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
 
@@ -67,7 +70,7 @@ public:
     virtual void draw();
 
     // 씬에 Bullet 추가
-    void AddEnemyBullet(float x, float y, bool direction, uint32_t type);
+    void AddEnemyBullet(float x, float y, bool direction, uint32_t type, uint32_t b_id);
 
     // 문자 객체 초기화
     void InitText();

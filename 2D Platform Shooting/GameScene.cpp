@@ -178,6 +178,13 @@ void GameScene::RemoveItem(uint32_t i_id)
         });
 }
 
+void GameScene::RemoveBullet(uint32_t b_id)
+{
+    enemy_bullets.remove_if([b_id](const Bullet& bullet) {
+        return bullet.GetBulletId() == b_id;
+        });
+}
+
 void GameScene::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한
@@ -225,7 +232,7 @@ void GameScene::draw()
     window.display();
 }
 
-void GameScene::AddEnemyBullet(float x, float y, bool direction, uint32_t type)
+void GameScene::AddEnemyBullet(float x, float y, bool direction, uint32_t type, uint32_t b_id)
 {
     enemy_bullets.emplace_back(direction, x, y, GunLoader::Instance().GetGunTable()[type].speed);
 }
