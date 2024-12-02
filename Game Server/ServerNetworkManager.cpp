@@ -190,10 +190,12 @@ void ServerNetworkManager::ProcessPackets()
 				// TODO : time gap 만큼 보간해서 위치 조정 해줘야 함
 				//		  + Bullet을 직접 건들이는게 아닌 Player의 GunFire 함수를 이용하자
 				if (client_id == 0) {
-					world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+					// TODO : p1.fire 함수를 불러야 함 ㅇㅇ
+					//world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
 				}
 				else if (client_id == 1) {
-					world.p2.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+					// TODO : p2.fire 함수를 불러야 함 ㅇㅇ
+					//world.p2.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
 				}
 
 				int other_player_id = 1 - client_id;
