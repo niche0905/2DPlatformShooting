@@ -448,5 +448,5 @@ void ClientNetworkManager::ProcessGameover(myNP::SC_GAMEOVER_PACKET* gameover_pa
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     
-    // TODO: 게임 종료는 어떻게 처리? 엔딩씬? UI?
+    gameScene->Gameover();
 }

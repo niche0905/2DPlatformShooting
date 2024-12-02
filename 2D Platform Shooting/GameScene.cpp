@@ -191,6 +191,13 @@ void GameScene::PlayerDamage(float damage, int32_t ClientID)
     else player2->takeDamage(player2->getDirection(), damage);
 }
 
+void GameScene::Gameover()
+{
+    // 게임 종료
+    // 게임 종료 UI 띄우기
+    // 그 후에 다시 Title UI 띄우기
+}
+
 void GameScene::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한

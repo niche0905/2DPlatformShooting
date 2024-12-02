@@ -328,7 +328,7 @@ sf::Vector2f Player::getPosition() const
 void Player::revivePlayer()
 {
     if (playerID == network_mgr.GetClientID()) {
-        // 부활 시 처리해 할 행동들 추가하기
+        
         isActive = true;
 
         // 맵 중앙 공중에 스폰
@@ -336,6 +336,7 @@ void Player::revivePlayer()
 
         damaged = 0;
     }
+    // TODO: 승호야 이거 다른 클라에서 업뎃 안되는거 확인좀
     life -= 1;
 }
 

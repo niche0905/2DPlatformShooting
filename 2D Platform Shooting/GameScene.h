@@ -66,6 +66,9 @@ public:
     // 플레이어 데미지
     void PlayerDamage(float damage, int32_t ClientID);
 
+    // 게임 종료
+    void Gameover();
+
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
 
