@@ -28,7 +28,7 @@ void TitleScene::draw()
     // 윈도우 하늘색으로 리셋
     window.clear(BackgroundColor);
 
-    // TODO: 일단 여기에 그림을 그려보자
+    // 윈도우 그리기
     Background.draw(window);
 
     // 새로 그린 화면으로 바꾸기

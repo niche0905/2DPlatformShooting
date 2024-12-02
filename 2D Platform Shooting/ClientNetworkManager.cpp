@@ -309,6 +309,14 @@ void ClientNetworkManager::ProcessPacket()
             ProcessRemoveBullet(bullet_remove_packet);
             break;
         }
+        // 플레이어 Damage 처리
+        case myNP::SC_PLAYER_DAMAGE:
+        {
+            myNP::SC_PLAYER_DAMAGE_PACKET* player_damage_packet = reinterpret_cast<myNP::SC_PLAYER_DAMAGE_PACKET*>(buffer.data());
+
+            ProcessPlayerDamage(player_damage_packet);
+            break;
+        }
         }
     }
 
@@ -417,4 +425,12 @@ void ClientNetworkManager::ProcessRemoveBullet(myNP::SC_BULLET_REMOVE_PACKET* bu
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
     gameScene->RemoveBullet(bullet_remove_packet->b_id);
+}
+
+// 플레이어 Damage 처리
+void ClientNetworkManager::ProcessPlayerDamage(myNP::SC_PLAYER_DAMAGE_PACKET* player_damage_packet)
+{
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+
+    // TODO: 플레이어는 데미지를 받으면 어떤 처리?
 }
