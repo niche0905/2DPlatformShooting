@@ -17,7 +17,7 @@ private:
 
 	sf::RectangleShape shape;
 
-	// TODO: 불릿 ID 추가해서 제거할 때 참조해야함
+	uint32_t bulletID;
 
 public:
 	// 생성할 때 방향과 발사한 위치를 받아야 한다(+ 속도 추가 09/08 민경원)
@@ -67,5 +67,6 @@ public:
 	// 데미지를 알려준다.
 	float getDamage() const;
 
+	uint32_t GetBulletId() const { return bulletID; }
 };
 
