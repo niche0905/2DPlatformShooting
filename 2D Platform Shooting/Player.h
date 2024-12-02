@@ -114,4 +114,5 @@ public:
     int getCurMag() const { return curMag; }
     int getGunID() const { return gunId; }
     int getLife() const { return life; }
+    int getDirection() const { return direction; }
 };
