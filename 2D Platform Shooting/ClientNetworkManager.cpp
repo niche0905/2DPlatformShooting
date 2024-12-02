@@ -285,6 +285,7 @@ void ClientNetworkManager::ProcessPacket()
             ProcessGunUpdate(gun_update_packet);
             break;
         }
+        // Item 积己 贸府
         case myNP::SC_ITEM_CREATE:
         {
             myNP::SC_ITEM_CREATE_PACKET* item_create_packet = reinterpret_cast<myNP::SC_ITEM_CREATE_PACKET*>(buffer.data());
@@ -292,11 +293,20 @@ void ClientNetworkManager::ProcessPacket()
             ProcessCreateItem(item_create_packet);
             break;
         }
+        // Item 昏力 贸府
         case myNP::SC_ITEM_REMOVE:
         {
             myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet = reinterpret_cast<myNP::SC_ITEM_REMOVE_PACKET*>(buffer.data());
 
             ProcessRemoveItem(item_remove_packet);
+            break;
+        }
+        // 利 Bullet 昏力 贸府
+        case myNP::SC_BULLET_REMOVE:
+        {
+            myNP::SC_BULLET_REMOVE_PACKET* bullet_remove_packet = reinterpret_cast<myNP::SC_BULLET_REMOVE_PACKET*>(buffer.data());
+
+            ProcessRemoveBullet(bullet_remove_packet);
             break;
         }
         }
@@ -356,7 +366,7 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
     float currentX = startX + (fire_packet->dir * BULLET_SPEED * elapsed_ms);
     float currentY = startY + (fire_packet->dir * BULLET_SPEED * elapsed_ms);
 
-    gameScene->AddEnemyBullet(currentX, currentY, fire_packet->dir, fire_packet->type);
+    gameScene->AddEnemyBullet(currentX, currentY, fire_packet->dir, fire_packet->type, fire_packet->b_id);
 }
 
 // 格见(何劝) 贸府
@@ -399,4 +409,12 @@ void ClientNetworkManager::ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_r
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
     gameScene->RemoveItem(item_remove_packet->i_id);
+}
+
+// 醚舅 昏力 贸府
+void ClientNetworkManager::ProcessRemoveBullet(myNP::SC_BULLET_REMOVE_PACKET* bullet_remove_packet)
+{
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+
+    gameScene->RemoveBullet(bullet_remove_packet->b_id);
 }

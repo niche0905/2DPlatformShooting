@@ -52,5 +52,6 @@ public:
 	void ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_packet);
 	void ProcessCreateItem(myNP::SC_ITEM_CREATE_PACKET* item_create_packet);
 	void ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet);
+	void ProcessRemoveBullet(myNP::SC_BULLET_REMOVE_PACKET* bullet_remove_packet);
 };
 
