@@ -185,6 +185,12 @@ void GameScene::RemoveBullet(uint32_t b_id)
         });
 }
 
+void GameScene::PlayerDamage(float damage, int32_t ClientID)
+{
+    if (ClientID == 0) player1->takeDamage(player1->getDirection(), damage);
+    else player2->takeDamage(player2->getDirection(), damage);
+}
+
 void GameScene::Scrolling(long long deltaTime)
 {
     // 타겟( == 플레이어) 위치를 알기위한

@@ -63,6 +63,9 @@ public:
     // 총알 삭제
     void RemoveBullet(uint32_t b_id);
 
+    // 플레이어 데미지
+    void PlayerDamage(float damage, int32_t ClientID);
+
     // 스크롤링을 위한 view 설정 함수
     void Scrolling(long long deltaTime);
 
