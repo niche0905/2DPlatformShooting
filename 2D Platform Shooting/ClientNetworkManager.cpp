@@ -317,6 +317,14 @@ void ClientNetworkManager::ProcessPacket()
             ProcessPlayerDamage(player_damage_packet);
             break;
         }
+        // 게임 종료 처리
+        case myNP::SC_GAMEOVER:
+        {
+            myNP::SC_GAMEOVER_PACKET* gameover_packet = reinterpret_cast<myNP::SC_GAMEOVER_PACKET*>(buffer.data());
+
+            ProcessGameover(gameover_packet);
+            break;
+        }
         }
     }
 
@@ -432,5 +440,13 @@ void ClientNetworkManager::ProcessPlayerDamage(myNP::SC_PLAYER_DAMAGE_PACKET* pl
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
-    // TODO: 플레이어는 데미지를 받으면 어떤 처리?
+    gameScene->PlayerDamage(player_damage_packet->damage, ClientID);
+}
+
+// 게임 종료 처리
+void ClientNetworkManager::ProcessGameover(myNP::SC_GAMEOVER_PACKET* gameover_packet)
+{
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+    
+    // TODO: 게임 종료는 어떻게 처리? 엔딩씬? UI?
 }

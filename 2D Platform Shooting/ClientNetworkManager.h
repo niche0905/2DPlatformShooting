@@ -54,5 +54,6 @@ public:
 	void ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_remove_packet);
 	void ProcessRemoveBullet(myNP::SC_BULLET_REMOVE_PACKET* bullet_remove_packet);
 	void ProcessPlayerDamage(myNP::SC_PLAYER_DAMAGE_PACKET* player_damage_packet);
+	void ProcessGameover(myNP::SC_GAMEOVER_PACKET* gameover_packet);
 };
 
