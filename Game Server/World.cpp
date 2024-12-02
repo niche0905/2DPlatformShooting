@@ -68,11 +68,25 @@ void World::Update()
 
 void World::CollisionCheck()
 {
-	// TODO : 충돌 처리 후 데미지 패킷 전송 부분을 구현해야 한다
 	std::list<Bullet>& b1 = p1.GetBullets();
 	for (auto it = b1.begin(); it != b1.end(); ) {
 		if (p2.Collision(*it)) {
-			// TODO : 데미지 패킷 전송
+			uint32_t bullet_id = (*it).GetBulletID();
+			uint8_t bullet_type = (*it).GetBulletType();
+			bool bullet_dir = (*it).GetDirection();
+
+			float damage = GunLoader::Instance().GetGunTable()[bullet_type].damage;
+			// 방향에 따른 데미지 처리
+			if (bullet_dir) {
+				damage = -damage;
+			}
+
+			// P2의 p_id는 1
+			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(1), damage);
+
+			// P1의 p_id는 0
+			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(0), 0, bullet_id);
+			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(1), 0, bullet_id);
 			it = b1.erase(it);
 		}
 		else
@@ -81,7 +95,22 @@ void World::CollisionCheck()
 	std::list<Bullet>& b2 = p2.GetBullets();
 	for (auto it = b2.begin(); it != b2.end(); ) {
 		if (p1.Collision(*it)) {
-			// TODO : 데미지 패킷 전송
+			uint32_t bullet_id = (*it).GetBulletID();
+			uint8_t bullet_type = (*it).GetBulletType();
+			bool bullet_dir = (*it).GetDirection();
+
+			float damage = GunLoader::Instance().GetGunTable()[bullet_type].damage;
+			// 방향에 따른 데미지 처리
+			if (bullet_dir) {
+				damage = -damage;
+			}
+
+			// P1의 p_id는 0
+			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(0), damage);
+
+			// P2의 p_id는 1
+			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(0), 1, bullet_id);
+			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(1), 1, bullet_id);
 			it = b2.erase(it);
 		}
 		else
@@ -92,34 +121,25 @@ void World::CollisionCheck()
 		bool p1_collision = p1.Collision(*it);
 		bool p2_collision = p2.Collision(*it);
 
-		if (p1_collision and p2_collision) {
-			p1.GunUpdate(GunInfo.getRandomGunId());
-			p2.GunUpdate(GunInfo.getRandomGunId());
+		uint32_t item_id = (*it).GetItemID();
 
-			uint32_t item_id = (*it).GetItemID();
-			it = items.erase(it);
-
-			// 아이템이 사라졌으니 (서버에서 소모되었음) 클라이언트에서 Remove 해주어라 <- 반복되는 코드들 모듈화가 필요해 보임
+		if (p1_collision or p2_collision) {
+			// 이 코드로 압축 가능
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(1), item_id);
-		}
-		else if (p1_collision) {
-			p1.GunUpdate(GunInfo.getRandomGunId());
 
-			uint32_t item_id = (*it).GetItemID();
 			it = items.erase(it);
 
-			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);
-			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(1), item_id);
-		}
-		else if (p2_collision) {
-			p2.GunUpdate(GunInfo.getRandomGunId());
-
-			uint32_t item_id = (*it).GetItemID();
-			it = items.erase(it);
-
-			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);
-			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(1), item_id);
+			if (p1_collision and p2_collision) {
+				p1.GunUpdate(GunInfo.getRandomGunId());
+				p2.GunUpdate(GunInfo.getRandomGunId());
+			}
+			else if (p1_collision) {
+				p1.GunUpdate(GunInfo.getRandomGunId());
+			}
+			else if (p2_collision) {
+				p2.GunUpdate(GunInfo.getRandomGunId());
+			}
 		}
 		else {
 			++it;
