@@ -42,9 +42,9 @@ void Image::SetReversed(const bool value)
 
 void Image::draw(sf::RenderWindow& window)
 {
-	sprite.setTexture(texture);
+	if (false == show) { return; }
 
-	//std::cout << "Image draw\n";
+	sprite.setTexture(texture);
 
 	if (reversed) {
 		sf::FloatRect bounds = sprite.getLocalBounds();
@@ -60,6 +60,8 @@ void Image::draw(sf::RenderWindow& window)
 
 void Image::drawFixed(sf::RenderWindow& window)
 {
+	if (false == show) { return; }
+
 	sprite.setTexture(texture);
 	sf::View fixed = window.getView();
 	window.setView(window.getDefaultView());

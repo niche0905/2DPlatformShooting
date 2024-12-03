@@ -13,7 +13,10 @@ GameScene::GameScene() :
     level{},
     view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)),
     Background{ TextureID::BACKGROUND, 3200, 3200 },
-    UI{ {TextureID::UI1, 200, 150}, {TextureID::UI2, 200, 150}}
+    UI{ {TextureID::UI1, 200, 150},
+        {TextureID::UI2, 200, 150}},
+    resultImage{ {TextureID::P1WIN, WINDOW_WIDTH, WINDOW_HEIGHT},
+                {TextureID::P2WIN, WINDOW_WIDTH, WINDOW_HEIGHT} }
 {
     makeTime = std::chrono::system_clock::now();
 
@@ -26,6 +29,9 @@ GameScene::GameScene() :
 
     Background.SetPosition(-1200, -1200);
     UI[1].SetPosition(600, 0);
+    for (auto& img : resultImage) {
+        img.SetShow(false);
+    }
 
     InitText();
 
@@ -120,23 +126,20 @@ void GameScene::update(long long deltaTime)
     player1->update(deltaTime);
     player2->update(deltaTime);
 
+    // REMOVE:
+    // 임시로 확인할 수 있게 함.
+    if (0 == player1->getLife()) {
+        resultImage[1].SetShow(true);
+    }
+
+    if (0 == player2->getLife()) {
+        resultImage[0].SetShow(true);
+    }
+
     for (Item& item : items)
         item.update(deltaTime);
 
     updateEnemyBullets(deltaTime);
-
-    //bulletHit();
-
-    //eatItem();
-
-    /*std::chrono::system_clock::time_point nowTime = std::chrono::system_clock::now();
-
-    auto timeDiff = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime - makeTime);
-
-    if (timeDiff.count() > 10000) {
-        makeItem();
-        makeTime = nowTime;
-    }*/
 
     updateTexts();
 
@@ -207,8 +210,19 @@ void GameScene::PlayerDamage(float damage, int32_t ClientID)
 void GameScene::Gameover()
 {
     // 게임 종료
+   
     // 게임 종료 UI 띄우기
+
+    if (0 == player1->getLife()) {
+        resultImage[1].SetShow(true);
+    }
+
+    if (0 == player2->getLife()) {
+        resultImage[0].SetShow(true);
+    }
+
     // 그 후에 다시 Title UI 띄우기
+
 }
 
 void GameScene::Scrolling(long long deltaTime)
@@ -248,8 +262,13 @@ void GameScene::draw()
     for (auto& obj : UI)
         obj.drawFixed(window);
 
+    for (auto& obj : resultImage)
+        obj.drawFixed(window);
+
     for (auto& enemy_bullet : enemy_bullets)
         enemy_bullet.draw(window);
+
+
 
     // 문자 그리기
     drawTexts();
