@@ -373,7 +373,7 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
     //int elapsed_ms = time_gap.count();
 
     //// 총알의 초기 위치 설정
-    //float startX = ;
+    //float startX = fire_packet->posX;
     //float startY = fire_packet->posY;
 
     //// 총알 속도 (단위: 픽셀/ms)
