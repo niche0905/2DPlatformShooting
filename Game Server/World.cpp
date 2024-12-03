@@ -26,6 +26,8 @@ void World::Init()
 void World::Update()
 {
 	// TODO : 플레이어 위치값 받은거 적용하기 -> Process Queue 에서 해야할 것 같은 내용
+	if (not SNMgr.IsPlaying())
+		return;
 
 	tm->Update();
 	int64_t delta_time = tm->getDeltaTime();
@@ -120,6 +122,9 @@ void World::CollisionCheck()
 		uint32_t item_id = (*it).GetItemID();
 
 		if (p1_collision or p2_collision) {
+			// Logging
+			cout << "Item Collision\n";
+
 			// 이 코드로 압축 가능
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(1), item_id);
