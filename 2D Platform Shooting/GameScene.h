@@ -23,6 +23,7 @@ class GameScene : public Scene {
 
     Image Background;
     Image UI[2];
+    Image titleImage;
     Image resultImage[2];
     sf::Font font;
     sf::Text texts[6];
@@ -85,6 +86,8 @@ public:
     void InitText();
     void updateTexts();
     void drawTexts();
+
+    void SetTitleFalse() { titleImage.SetShow(false); }
 
     Player& GetPlayer1() { return *player1; }
     Player& GetPlayer2() { return *player2; }
