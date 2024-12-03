@@ -429,7 +429,7 @@ void ClientNetworkManager::ProcessGunUpdate(myNP::SC_GUN_UPDATE_PACKET* gun_pack
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
     // 본인이면
-    if (ClientID == gun_packet->p_id) gameScene->GetPlayer1().setPlayerGun(gun_packet->g_id);
+    if (0 == gun_packet->p_id) gameScene->GetPlayer1().setPlayerGun(gun_packet->g_id);
     // 상대면
     else gameScene->GetPlayer2().setPlayerGun(gun_packet->g_id);
 }
