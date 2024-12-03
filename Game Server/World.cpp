@@ -119,7 +119,7 @@ void World::CollisionCheck()
 
 		if (p1_collision or p2_collision) {
 			// Logging
-			cout << "Item Collision\n";
+			//cout << "Item Collision\n";
 
 			// 이 코드로 압축 가능
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);

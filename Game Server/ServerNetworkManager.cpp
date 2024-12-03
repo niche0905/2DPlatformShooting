@@ -367,6 +367,8 @@ DWORD WINAPI workerLobby(LPVOID arg)
 				SNMgr.SendPacket<myNP::SC_MATCHMAKING_PACKET>(i, true, i);
 				//cout << "Send 7 to " << i << endl;
 			}
+			world.p1.SetPlayerID(0);
+			world.p2.SetPlayerID(1);
 			SNMgr.SetProcessEvent();
 		}
 

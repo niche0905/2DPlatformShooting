@@ -328,7 +328,6 @@ sf::Vector2f Player::getPosition() const
 void Player::revivePlayer()
 {
     if (playerID == network_mgr.GetClientID()) {
-        
         isActive = true;
 
         // ¸Ê Áß¾Ó °øÁß¿¡ ½ºÆù
