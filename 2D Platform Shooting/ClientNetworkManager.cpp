@@ -373,8 +373,8 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
     int elapsed_ms = time_gap.count() / myNP::microToSecond;
 
     //// 총알의 초기 위치 설정
-    //float startX = fire_packet->posX;
-    //float startY = fire_packet->posY;
+    float startX = fire_packet->posX;
+    float startY = fire_packet->posY;
 
     // 총알 속도 (단위: 픽셀/ms)
     const float BULLET_SPEED = GunLoader::Instance().GetGunTable()[fire_packet->type].speed;
@@ -397,9 +397,15 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
     
     // 0번 플레이어가 죽었으면
-    if(0 == life_packet->p_id) gameScene->GetPlayer1().revivePlayer();
+    if (0 == life_packet->p_id) {
+        std::cout << "1클라 사망\n";
+        gameScene->GetPlayer1().revivePlayer();
+    }
     // 1번 플레이어가 죽었으면
-    else gameScene->GetPlayer2().revivePlayer();
+    else if (1 == life_packet->p_id) {
+        std::cout << "2클라 사망\n";
+        gameScene->GetPlayer2().revivePlayer();
+    }
 }
 
 // 총 업데이트 처리

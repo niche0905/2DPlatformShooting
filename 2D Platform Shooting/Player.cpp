@@ -244,12 +244,12 @@ void Player::update(long long deltaTime)
         OnAir = true;
     }
 
-    // 임시
-    if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
-    {
-        isActive = false;
-        revivePlayer();
-    }
+    //// 임시
+    //if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
+    //{
+    //    isActive = false;
+    //    revivePlayer();
+    //}
 
 
     // Timer Update
@@ -336,7 +336,6 @@ void Player::revivePlayer()
 
         damaged = 0;
     }
-    // TODO: 승호야 이거 다른 클라에서 업뎃 안되는거 확인좀
     life -= 1;
 }
 

@@ -96,3 +96,26 @@ Position Player::GunFire()
 
 	return fire_pos;
 }
+
+void Player::Revive()
+{
+	if (isActive)
+		return;
+
+	float y_pos = GetPos().posY;
+	if (y_pos <= myNP::DeadZone)
+		isActive = true;
+}
+
+void Player::Dead()
+{
+	if (not isActive)
+		return;
+
+	life -= 1;
+	isActive = false;
+
+	// 모두에게 전송 (UI 업데이트를 위한)
+	SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(0), player_id);
+	SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(1), player_id);
+}

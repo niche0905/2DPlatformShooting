@@ -18,6 +18,8 @@ private:
 	std::list<Bullet> bullets;
 	int curMag;
 
+	bool isActive = true;
+
 public:
 	Player() = default;
 
@@ -40,6 +42,7 @@ public:
 
 	Position GunFire();
 
-
+	void Revive();
+	void Dead();
 };
 

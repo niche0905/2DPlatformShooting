@@ -53,15 +53,11 @@ void World::Update()
 	// TODO : array로 바꾸면 적용해야 함
 	if (p1.GetPos().posY > myNP::DeadZone)
 	{
-		// 모두에게 전송 (UI 업데이트를 위한)
-		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(0), 0);
-		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(1), 0);
+		p1.Dead();
 	}
 	if (p2.GetPos().posY > myNP::DeadZone)
 	{
-		// 모두에게 전송 (UI 업데이트를 위한)
-		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(0), 0);
-		SNMgr.SendPacket<myNP::SC_LIFE_UPDATE_PACKET>(static_cast<int32_t>(1), 0);
+		p2.Dead();
 	}
 
 	// 충돌처리 구현

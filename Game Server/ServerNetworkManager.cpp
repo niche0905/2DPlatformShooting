@@ -172,11 +172,13 @@ void ServerNetworkManager::ProcessPackets()
 					//cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p1.SetPos(packet->posX, packet->posY);
 					world.p1.SetDirection(packet->dir);
+					world.p1.Revive();
 				}
 				else if (client_id == 1) {
 					//cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p2.SetPos(packet->posX, packet->posY);
 					world.p2.SetDirection(packet->dir);
+					world.p2.Revive();
 				}
 
 				//cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
