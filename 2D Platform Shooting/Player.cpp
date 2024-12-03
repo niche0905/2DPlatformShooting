@@ -162,6 +162,11 @@ void Player::update(long long deltaTime)
 {
     //static int move_send_number{};
 
+    auto& pos = shape.getPosition();
+    image.SetPosition(pos.x, pos.y + 25.f);
+    image.scale(width * 2, height * 2);
+    image.SetReversed(direction);
+
     updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
 
     if (not isControl())
@@ -246,11 +251,6 @@ void Player::update(long long deltaTime)
         revivePlayer();
     }
 
-    auto& pos = shape.getPosition();
-    image.SetPosition(pos.x, pos.y + 25.f);
-    image.scale(width * 2, height * 2);
-    image.SetReversed(direction);
-
 
     // Timer Update
     if (timer.isSyncTime()) {
@@ -297,7 +297,7 @@ void Player::draw(sf::RenderWindow& window) {
         bullet.draw(window);
     }
 
-    window.draw(shape); // 이미지가 출력이 안되어서 임시
+    // window.draw(shape); // 이미지가 출력이 안되어서 임시
     image.draw(window);
 }
 
