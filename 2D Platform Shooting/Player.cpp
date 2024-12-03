@@ -151,11 +151,11 @@ void Player::fireBullet()
     bullets.push_back(Bullet(direction, position, GunLoader::Instance().GetGunTable()[gunId].speed, GunLoader::Instance().GetGunTable()[gunId].damage));
 
     // FirePacket º¸³»±â
-    /*auto buf = myNP::CS_FIRE_PACKET::MakePacket(bulletId, position.x, position.y, direction, gunId, timer.epochToMillis());
+    auto buf = myNP::CS_FIRE_PACKET::MakePacket(bulletId, position.x, position.y, direction, gunId, timer.epochToMillis());
     network_mgr.SendPacket(
         reinterpret_cast<char*>(&buf),
         myNP::CS_FIRE
-    );*/
+    );
 }
 
 void Player::update(long long deltaTime)
