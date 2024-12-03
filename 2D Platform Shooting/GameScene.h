@@ -14,7 +14,6 @@ class GameScene : public Scene {
     Level level;
 
     Player* player1;
-    
     Player* player2;
 
     std::list<Item> items;
@@ -24,6 +23,7 @@ class GameScene : public Scene {
 
     Image Background;
     Image UI[2];
+    Image resultImage[2];
     sf::Font font;
     sf::Text texts[6];
 

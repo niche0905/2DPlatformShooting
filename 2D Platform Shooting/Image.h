@@ -13,6 +13,8 @@ enum TextureID
 	BACKGROUND,
 	UI1,
 	UI2,
+	P1WIN,
+	P2WIN,
 	END
 };
 
@@ -23,7 +25,9 @@ constexpr const char* IMAGE_FILENAME[]
 	"Char2\\idle_0.png",
 	"Background.jpg",
 	"ui1.png",
-	"ui2.png"
+	"ui2.png",
+	"p1win.png",
+	"p2win.png"
 };
 
 class Image
@@ -31,7 +35,8 @@ class Image
 private:
 	sf::Texture texture;
 	sf::Sprite sprite;
-	bool reversed{false};
+	bool reversed{ false };
+	bool show{ true };
 
 public:
 	Image() = delete;
@@ -42,7 +47,10 @@ public:
 	void SetPosition(const float x, const float y);
 	void SetPosition(const sf::Vector2f& vec);
 	void SetReversed(const bool value);
+	void SetShow(const bool value) { show = value; }
 	void draw(sf::RenderWindow& window);
 	void drawFixed(sf::RenderWindow& window);
+
+
 };
 
