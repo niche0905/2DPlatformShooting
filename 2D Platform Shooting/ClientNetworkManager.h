@@ -24,8 +24,11 @@ private:
 	// 현재 씬
 	std::shared_ptr<Scene> currentScene;
 
+	// 사용할 주소
+	std::array<char, INET_ADDRSTRLEN> addr{};
+
 public:
-	ClientNetworkManager() {};
+	ClientNetworkManager();
 	~ClientNetworkManager() {};
 
 	void Init();
