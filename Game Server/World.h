@@ -43,7 +43,7 @@ public:
 
 	std::chrono::system_clock::time_point itemMakingTime;
 
-	Level level;	// ÇÃ·§Æûµé (·¹º§)
+	Level* level;	// ÇÃ·§Æûµé (·¹º§)
 
 public:
 	World();
