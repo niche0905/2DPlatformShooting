@@ -13,6 +13,7 @@ enum TextureID
 	BACKGROUND,
 	UI1,
 	UI2,
+	TITLE,
 	P1WIN,
 	P2WIN,
 	END
@@ -26,6 +27,7 @@ constexpr const char* IMAGE_FILENAME[]
 	"Background.jpg",
 	"ui1.png",
 	"ui2.png",
+	"Title.png",
 	"p1win.png",
 	"p2win.png"
 };
