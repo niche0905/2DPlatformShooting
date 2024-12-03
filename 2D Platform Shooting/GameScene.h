@@ -51,6 +51,9 @@ public:
     // 아이템 충돌 처리
     //void eatItem();
 
+    // 적의 총알 업데이트
+    void updateEnemyBullets(long long deltaTime);
+
     // 아이템 생성
     void MakeItem();
 

@@ -101,6 +101,23 @@ void GameScene::handleInput()
     }
 }
 
+void GameScene::updateEnemyBullets(long long deltaTime)
+{
+    // 씬에는 레벨이 없음, 그래서 범위 벗어나도 못지움
+    /*for (auto it = enemy_bullets.begin(); it != enemy_bullets.end(); ) {
+        it->update(deltaTime);
+        if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
+            it = enemy_bullets.erase(it);
+        else
+            ++it;
+    }*/
+
+    for (auto it = enemy_bullets.begin(); it != enemy_bullets.end(); ) {
+        it->update(deltaTime);
+        ++it;
+    }
+}
+
 void GameScene::update(long long deltaTime)
 {
     //network_mgr.Update();
@@ -111,6 +128,8 @@ void GameScene::update(long long deltaTime)
 
     for (Item& item : items)
         item.update(deltaTime);
+
+    updateEnemyBullets(deltaTime);
 
     //bulletHit();
 
