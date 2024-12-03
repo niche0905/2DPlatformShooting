@@ -17,7 +17,7 @@ struct BoundingBox
 
 class Object
 {
-private:
+protected:
 	float posX, posY;		// 오브젝트 위치값
 	float width, height;	// 오브젝트 넓이, 높이
 	float pivotX, pivotY;	// 오브젝트 피봇값 0.0 ~ 1.0

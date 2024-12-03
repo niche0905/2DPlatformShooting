@@ -19,11 +19,21 @@ void Level::load()
 		leftBound = leftBound > SP.posX ? SP.posX : leftBound;
 		rightBound = rightBound < SP.posX + SP.width ? SP.posX + SP.width : rightBound;
 
-		platforms.emplace_back(SP.posX, SP.posY, SP.width, SP.height);
+		// Test
+		platforms.emplace_back(SP.posX, SP.posY, SP.width, 1000.0f);
 	}
 }
 
-bool Level::Collsion(const Object& other)
+bool Level::Collsion(Object& other)
 {
+	for (Platform& platform : platforms) {
+		if (platform.Collision(other)) {
+			// Logging
+			cout << "Block\n";
+			other.SetPos(other.GetPos().posX, platform.GetBB().top);
+			return true;
+		}
+	}
+
 	return false;
 }

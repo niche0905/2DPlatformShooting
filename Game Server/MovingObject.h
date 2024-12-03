@@ -4,7 +4,7 @@
 
 class MovingObject : public Object
 {
-private:
+protected:
 	float velX, velY;
 
 public:

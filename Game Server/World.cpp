@@ -10,7 +10,8 @@ World::World()
 {
 	tm = new TimerManager();
 
-	level.load();
+	level = new Level();
+	level->load();
 
 	//objects.clear();
 	//objects.reserve(n);
@@ -20,6 +21,7 @@ World::World()
 
 void World::Init()
 {
+	tm->Update();
 	itemMakingTime = std::chrono::system_clock::now();
 }
 
@@ -119,7 +121,7 @@ void World::CollisionCheck()
 
 		if (p1_collision or p2_collision) {
 			// Logging
-			//cout << "Item Collision\n";
+			cout << "Item Collision\n";
 
 			// 이 코드로 압축 가능
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);
@@ -159,8 +161,11 @@ bool World::ItemSpawn()
 	if (items.size() >= 3)
 		return false;
 
+	// Logging
+	cout << "Item Spawn\n";
+
 	float x_pos = item_spawn_point(RANDOM_ENGINE);
-	Item item{ x_pos, itemSpawnHeight };
+	Item item{ x_pos, itemSpawnHeight, level };
 	uint32_t item_id = item.GetItemID();
 	items.push_back(item);
 	SNMgr.SendPacket<myNP::SC_ITEM_CREATE_PACKET>(static_cast<int32_t>(0), item_id, x_pos, itemSpawnHeight);
