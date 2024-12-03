@@ -1,5 +1,6 @@
 #pragma once
 #include "MovingObject.h"
+#include "Level.h"
 
 constexpr float itemSpawnHeight{ -800.0f };
 
@@ -13,10 +14,12 @@ private:
 	uint32_t itemID;
 	bool OnAir;
 
+	Level* level;
+
 public:
 	Item() = default;
 
-	Item(float x, float y);
+	Item(float x, float y, Level* level);
 
 	void Update(int64_t delta_time);
 

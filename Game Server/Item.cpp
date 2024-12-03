@@ -4,8 +4,9 @@
 
 uint32_t Item::nextID = 0;
 
-Item::Item(float x, float y)
+Item::Item(float x, float y, Level* level)
 	: MovingObject{ x, y, myNP::ItemWidth, myNP::ItemHeight, 0.5f, 1.0f }
+	, level{ level }
 	, itemID{ ++nextID }
 	, OnAir{ true }
 {
@@ -14,8 +15,22 @@ Item::Item(float x, float y)
 
 void Item::Update(int64_t delta_time)
 {
-	// TODO : 플랫폼이 나오면 플랫폼과 충돌처리
-	// 바닥에 안착할 수 있게 설정
+	if (OnAir) {
+		velY += GravityAcc * GravityMul * (delta_time / myNP::microToSecond);
+	}
+
+	// 속도만큼 움직임
+	MovingObject::Update(delta_time);
+
+	// 하나라도 밟고있는 플랫폼이 있는지 체크
+	bool blocking = level->Collsion(*this);
+	if (blocking) {
+		OnAir = false;
+		velY = 0.0f;
+	}
+	else {
+		OnAir = true;
+	}
 }
 
 uint32_t Item::GetItemID() const
