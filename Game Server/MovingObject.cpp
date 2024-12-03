@@ -21,6 +21,10 @@ MovingObject::MovingObject(float pos_x, float pos_y, float width, float height, 
 void MovingObject::Update(int64_t delta_time)
 {
 	// TODO : deltaTime 만큼 velocity 만큼 이동하여야 함
+	double time_elapsed = delta_time / myNP::microToSecond;
+
+	posX += velX * time_elapsed;
+	posY += velY * time_elapsed;
 }
 
 Velocity MovingObject::GetVelocity() const
