@@ -21,6 +21,7 @@ World::World()
 
 void World::Init()
 {
+	tm->Update();
 	itemMakingTime = std::chrono::system_clock::now();
 }
 

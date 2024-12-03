@@ -19,7 +19,8 @@ void Level::load()
 		leftBound = leftBound > SP.posX ? SP.posX : leftBound;
 		rightBound = rightBound < SP.posX + SP.width ? SP.posX + SP.width : rightBound;
 
-		platforms.emplace_back(SP.posX, SP.posY, SP.width, SP.height);
+		// Test
+		platforms.emplace_back(SP.posX, SP.posY, SP.width, 1000.0f);
 	}
 }
 
