@@ -26,6 +26,8 @@ void World::Init()
 void World::Update()
 {
 	// TODO : 플레이어 위치값 받은거 적용하기 -> Process Queue 에서 해야할 것 같은 내용
+	if (not SNMgr.IsPlaying())
+		return;
 
 	tm->Update();
 	int64_t delta_time = tm->getDeltaTime();
@@ -76,13 +78,9 @@ void World::CollisionCheck()
 			bool bullet_dir = (*it).GetDirection();
 
 			float damage = GunLoader::Instance().GetGunTable()[bullet_type].damage;
-			// 방향에 따른 데미지 처리
-			if (bullet_dir) {
-				damage = -damage;
-			}
 
 			// P2의 p_id는 1
-			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(1), damage);
+			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(1), damage, bullet_dir);
 
 			// P1의 p_id는 0
 			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(0), 0, bullet_id);
@@ -106,7 +104,7 @@ void World::CollisionCheck()
 			}
 
 			// P1의 p_id는 0
-			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(0), damage);
+			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(0), damage, bullet_dir);
 
 			// P2의 p_id는 1
 			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(0), 1, bullet_id);
@@ -124,6 +122,9 @@ void World::CollisionCheck()
 		uint32_t item_id = (*it).GetItemID();
 
 		if (p1_collision or p2_collision) {
+			// Logging
+			cout << "Item Collision\n";
+
 			// 이 코드로 압축 가능
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(1), item_id);
