@@ -340,6 +340,7 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
     //cout << "받은 좌표\n";
     //cout << 1-ClientID << " " << move_packet->posX << ", " << move_packet->posY << "\n";
     gameScene->GetOtherPlayer().setPosition(move_packet->posX, move_packet->posY);
+    gameScene->GetOtherPlayer().SetDirection(move_packet->dir);
 }
 
 // 매치메이킹 처리

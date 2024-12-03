@@ -171,10 +171,12 @@ void ServerNetworkManager::ProcessPackets()
 				if (client_id == 0) {
 					//cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p1.SetPos(packet->posX, packet->posY);
+					world.p1.SetDirection(packet->dir);
 				}
 				else if (client_id == 1) {
 					//cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p2.SetPos(packet->posX, packet->posY);
+					world.p2.SetDirection(packet->dir);
 				}
 
 				//cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
@@ -213,20 +215,14 @@ void ServerNetworkManager::ProcessPackets()
 		}
 	}
 
-	
-	//cout << "보내는 좌표\n";
-	//cout << 0 << " " << world.p1.GetPos().posX << ", " << world.p1.GetPos().posY << "\n";
-	//cout << 1 << " " << world.p2.GetPos().posX << ", " << world.p2.GetPos().posY << "\n";
 
 	SendPacket<myNP::SC_MOVE_PACKET>(0,
-		0, world.p2.GetPos().posX, world.p2.GetPos().posY, 0
+		0, world.p2.GetPos().posX, world.p2.GetPos().posY, world.p2.getDirection()
 	);
-	//cout << "send 15 to 0\n";
 
 	SendPacket<myNP::SC_MOVE_PACKET>(1,
-		0, world.p1.GetPos().posX, world.p1.GetPos().posY, 0
+		0, world.p1.GetPos().posX, world.p1.GetPos().posY, world.p1.getDirection()
 	);
-	//cout << "send 15 to 1\n";
 }
 
 void ServerNetworkManager::CreateLobbyThread()

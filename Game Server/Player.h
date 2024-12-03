@@ -28,14 +28,18 @@ public:
 
 	uint32_t GetPlayerID() const;
 	void SetPlayerID(uint32_t p_id);
-
+	
 	std::list<Bullet>& GetBullets();
 	const std::list<Bullet>& GetBullets() const;
+
+	bool getDirection() const { return directon; }
+	void SetDirection(const bool value) { directon = value; }
 
 	void GunInit();
 	void GunUpdate(uint8_t gun_id);
 
 	Position GunFire();
+
 
 };
 
