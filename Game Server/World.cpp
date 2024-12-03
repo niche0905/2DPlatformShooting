@@ -76,13 +76,9 @@ void World::CollisionCheck()
 			bool bullet_dir = (*it).GetDirection();
 
 			float damage = GunLoader::Instance().GetGunTable()[bullet_type].damage;
-			// 방향에 따른 데미지 처리
-			if (bullet_dir) {
-				damage = -damage;
-			}
 
 			// P2의 p_id는 1
-			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(1), damage);
+			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(1), damage, bullet_dir);
 
 			// P1의 p_id는 0
 			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(0), 0, bullet_id);
@@ -106,7 +102,7 @@ void World::CollisionCheck()
 			}
 
 			// P1의 p_id는 0
-			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(0), damage);
+			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(0), damage, bullet_dir);
 
 			// P2의 p_id는 1
 			SNMgr.SendPacket<myNP::SC_BULLET_REMOVE_PACKET>(static_cast<int32_t>(0), 1, bullet_id);

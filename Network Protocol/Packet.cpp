@@ -71,10 +71,10 @@ namespace myNP
 		//posY = ntohf(posY);
 	}
 
-	SC_PLAYER_DAMAGE_PACKET SC_PLAYER_DAMAGE_PACKET::MakePacket(float damaged)
+	SC_PLAYER_DAMAGE_PACKET SC_PLAYER_DAMAGE_PACKET::MakePacket(float damaged, bool direction)
 	{
-		//return SC_PLAYER_DAMAGE_PACKET(htonf(damaged));
-		return SC_PLAYER_DAMAGE_PACKET(damaged);
+		//return SC_PLAYER_DAMAGE_PACKET(htonf(damaged), direction);
+		return SC_PLAYER_DAMAGE_PACKET(damaged, direction);
 	}
 
 	void SC_PLAYER_DAMAGE_PACKET::ntohByteOrder()

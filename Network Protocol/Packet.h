@@ -173,11 +173,13 @@ namespace myNP {
 	struct SC_PLAYER_DAMAGE_PACKET : public BASE_PACKET
 	{
 		float damage;
+		bool dir;
 
-		SC_PLAYER_DAMAGE_PACKET(float damaged)
+		SC_PLAYER_DAMAGE_PACKET(float damaged, bool direction)
 			: BASE_PACKET(sizeof(SC_PLAYER_DAMAGE_PACKET), PacketID::SC_PLAYER_DAMAGE)
-			, damage(damaged) {}
-		static SC_PLAYER_DAMAGE_PACKET MakePacket(float damaged);
+			, damage(damaged)
+			, dir(direction) {}
+		static SC_PLAYER_DAMAGE_PACKET MakePacket(float damaged, bool direction);
 		void ntohByteOrder();
 	};
 
