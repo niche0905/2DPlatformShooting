@@ -27,6 +27,8 @@ bool Level::Collsion(Object& other)
 {
 	for (Platform& platform : platforms) {
 		if (platform.Collision(other)) {
+			// Logging
+			cout << "Block\n";
 			other.SetPos(other.GetPos().posX, platform.GetBB().top);
 			return true;
 		}

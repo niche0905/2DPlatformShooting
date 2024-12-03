@@ -160,6 +160,9 @@ bool World::ItemSpawn()
 	if (items.size() >= 3)
 		return false;
 
+	// Logging
+	cout << "Item Spawn\n";
+
 	float x_pos = item_spawn_point(RANDOM_ENGINE);
 	Item item{ x_pos, itemSpawnHeight, level };
 	uint32_t item_id = item.GetItemID();
