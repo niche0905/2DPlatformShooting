@@ -3,9 +3,18 @@
 #include <thread>
 #include <chrono>
 
+ClientNetworkManager::ClientNetworkManager()
+{
+    std::cin.get(addr.data(), addr.size());
+    if ('m' == tolower(addr[0])) {
+        strncpy_s(addr.data(), addr.size() - 1, "127.0.0.1", addr.size() - 1);
+    }
+}
+
 // 초기화
 void ClientNetworkManager::Init()
 {
+
     // 윈속 초기화
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) return;
@@ -55,7 +64,7 @@ void ClientNetworkManager::Connect()
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(SERVER_PORT);
 
-    if (inet_pton(AF_INET, "127.0.0.1", &serveraddr.sin_addr) != 1) {
+    if (inet_pton(AF_INET, addr.data(), &serveraddr.sin_addr) != 1) {
         closesocket(clientSocket);
         WSACleanup();
         return;
