@@ -15,6 +15,7 @@ GameScene::GameScene() :
     Background{ TextureID::BACKGROUND, 3200, 3200 },
     UI{ {TextureID::UI1, 200, 150},
         {TextureID::UI2, 200, 150}},
+    titleImage{TextureID::TITLE, WINDOW_WIDTH , WINDOW_HEIGHT},
     resultImage{ {TextureID::P1WIN, WINDOW_WIDTH, WINDOW_HEIGHT},
                 {TextureID::P2WIN, WINDOW_WIDTH, WINDOW_HEIGHT} }
 {
@@ -261,6 +262,8 @@ void GameScene::draw()
 
     for (auto& obj : UI)
         obj.drawFixed(window);
+
+    titleImage.drawFixed(window);
 
     for (auto& obj : resultImage)
         obj.drawFixed(window);

@@ -357,6 +357,10 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
 {
     // 바이트 정렬
     matchmaking_packet->ntohByteOrder();
+
+    std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
+    gameScene->SetTitleFalse();
+
     // 매치메이킹을 할시 ClientNetworkManager의 ID에 p_id 넣기
     ClientID = static_cast<int32_t>(matchmaking_packet->p_id);
     cout << "Client ID: " << ClientID << endl;
