@@ -23,7 +23,14 @@ void Level::load()
 	}
 }
 
-bool Level::Collsion(const Object& other)
+bool Level::Collsion(Object& other)
 {
+	for (Platform& platform : platforms) {
+		if (platform.Collision(other)) {
+			other.SetPos(other.GetPos().posX, platform.GetBB().top);
+			return true;
+		}
+	}
+
 	return false;
 }

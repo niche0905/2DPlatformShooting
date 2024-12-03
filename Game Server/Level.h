@@ -16,7 +16,7 @@ public:
 
 	void load();
 
-	bool Collsion(const Object& other);
+	bool Collsion(Object& other);
 
 };
 
