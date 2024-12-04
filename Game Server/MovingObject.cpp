@@ -7,7 +7,6 @@ MovingObject::MovingObject()
 	, velX(0.0f)
 	, velY(0.0f)
 {
-
 }
 
 MovingObject::MovingObject(float pos_x, float pos_y, float width, float height, float pivot_x, float pivot_y)
@@ -15,7 +14,6 @@ MovingObject::MovingObject(float pos_x, float pos_y, float width, float height, 
 	, velX(0.0f)
 	, velY(0.0f)
 {
-
 }
 
 void MovingObject::Update(int64_t delta_time)

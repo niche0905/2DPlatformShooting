@@ -18,7 +18,6 @@ ServerNetworkManager::~ServerNetworkManager()
 		closesocket(listenSocket);
 	}
 
-
 	WSACleanup();
 }
 
@@ -31,7 +30,6 @@ void ServerNetworkManager::Init()
 
 void ServerNetworkManager::NetworkInit()
 {
-	
 	// 윈속 초기화
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -78,7 +76,6 @@ void ServerNetworkManager::EventInit()
 void ServerNetworkManager::Accept()
 {
 	while (true) {
-
 		// accept()
 		sockaddr_in clientaddr{};
 		int addrlen{ sizeof(clientaddr) };
@@ -111,7 +108,6 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 		MSG_WAITALL
 	) };
 
-
 	if (SOCKET_ERROR == retval) {
 		// err_display("recv()");
 		return false;
@@ -119,16 +115,8 @@ bool ServerNetworkManager::DoRecv(SOCKET sock, BufferType& buffer) const
 
 	// BASE PACKET 오류 검사
 	BASE_PACKET* base{ reinterpret_cast<BASE_PACKET*>(buffer.data()) };
-	//if (not (0 <= base->size and base->size <= MaxPacketSize) ||
-	//	not (0 < base->id and base->id <= PacketID::END)) {
-	//	// cout << "SNM::doRecv(): Invaild Packet.\n";
-	//	return false;
-	//}
-
+	
 	// Logging
-	//cout << "Recv ";
-	//myNP::printPacketType(base->id);
-
 	int remain_size = (base->size - static_cast<PacketSizeType>(sizeof(BASE_PACKET)));
 	if (remain_size <= 0)
 		return true;
@@ -163,25 +151,16 @@ void ServerNetworkManager::ProcessPackets()
 			{
 				// TODO: 실제 움직임 처리
 				auto packet = reinterpret_cast<CS_MOVE_PACKET*>(buffer.data());
-				packet->ntohByteOrder();
-				//cout << "받은 좌표\n";
-				//cout << packet->p_id << " " << (client_id==packet->p_id) << " : " << packet->posX << ", " << packet->posY << "\n";
-				//cout << "받은 좌표\n";
-				//cout << packet->p_id << " : " << ntohf(packet->posX) << ", " << ntohf(packet->posY) << "\n";
 				if (client_id == 0) {
-					//cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p1.SetPos(packet->posX, packet->posY);
 					world.p1.SetDirection(packet->dir);
 					world.p1.Revive();
 				}
 				else if (client_id == 1) {
-					//cout << "설정하는 좌표 " << packet->p_id << "\n";
 					world.p2.SetPos(packet->posX, packet->posY);
 					world.p2.SetDirection(packet->dir);
 					world.p2.Revive();
 				}
-
-				//cout << "MOVE PACKET " << packet->posX << "," << packet->posY << "\n";
 			}
 			break;
 
@@ -248,9 +227,7 @@ void ServerNetworkManager::CreateRecvThread(SOCKET socket) const
 bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 {
 	// Logging
-	//cout << "Send ";
-	//myNP::printPacketType(buffer[1]);
-
+	// 
 	// 고정 길이 send
 	auto retval{ ::send(
 		sock,
@@ -259,14 +236,11 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 		0
 	) };
 
-	//std::cout << (int)buffer[0] << "," << (int)buffer[1] << std::endl;
-
 	if (SOCKET_ERROR == retval) {
 		// err_display("send()");
 		return false;
 	}
 
-	//cout << "Send Size: " << sizeof(BASE_PACKET) << " real : " << retval << endl;
 	// 가변 길이 send
 	int remain_size = static_cast<int>(buffer[0]) - sizeof(BASE_PACKET);
 	if (remain_size > 0) {
@@ -280,7 +254,6 @@ bool ServerNetworkManager::doSend(SOCKET sock, const BufferType& buffer) const
 			// err_display("send()");
 			return false;
 		}
-		//cout << "Send Size: " << remain_size << " real : " << retval << endl;
 	}
 	return true;
 }
@@ -304,13 +277,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 	SNMgr.setSocketArr(client_socket, client_id);
 	cout << "Hi From Recv Thread " << client_id << "\n";
 
-
- 
 	while (true) {
-
 		BufferType buffer{};
-		// cout << "Waiting for Send...\n";
-
 		if (not SNMgr.DoRecv(client_socket, buffer)) {
 			cout << "workerRecv() ERROR: Recv Failed.\n";
 			if (not SNMgr.IsPlaying()) {
@@ -324,37 +292,28 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		
 		if (not SNMgr.IsPlaying() &&
 			PacketID::CS_MATCHMAKING == packet_id) {
-			// cout << "[Client " << client_id << "] Set Recv event." << "\n";
+			// 이벤트 설정 및 대기
 			SNMgr.SetRecvEvent(client_id);
-			// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 			SNMgr.WaitforProcessEvent(client_id);
-			// cout << "[Client " << client_id << "] get Process event." << "\n";
 		}
 		
-
 		if (SNMgr.IsPlaying())
 		{
 			local_queue.push(buffer);
 			if (PacketID::CS_MOVE == packet_id) {
-
 				SNMgr.setProcessQueue(local_queue, client_id);
 				while (not local_queue.empty()) local_queue.pop();
-				// cout << "[Client " << client_id << "] Set Recv event." << "\n";
+				// 이벤트 설정 및 대기
 				SNMgr.SetRecvEvent(client_id);
-				// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 				SNMgr.WaitforProcessEvent(client_id);
-				// cout << "[Client " << client_id << "] get Process event." << "\n";
 			}
 		}
 	}
-		
 	return 0;
 }
 
 DWORD WINAPI workerLobby(LPVOID arg)
 {
-	//World world; <- 테스트 용 지워도 됨
-
 	while (true) {
 
 		// 게임 중이 아닐 경우
@@ -365,7 +324,6 @@ DWORD WINAPI workerLobby(LPVOID arg)
 			SNMgr.setPlaying(true);
 			for (int i = 0; i <= 1; ++i) {
 				SNMgr.SendPacket<myNP::SC_MATCHMAKING_PACKET>(i, true, i);
-				//cout << "Send 7 to " << i << endl;
 			}
 			world.Init();
 			world.p1.SetPlayerID(0);
@@ -376,13 +334,9 @@ DWORD WINAPI workerLobby(LPVOID arg)
 		// 게임 중일 경우
 		else {
 			world.Update();
-
 			SNMgr.WaitforRecvEvent();
-
 			SNMgr.ProcessPackets();
-
 			SNMgr.SetProcessEvent();
-
 		}
 	}
 }

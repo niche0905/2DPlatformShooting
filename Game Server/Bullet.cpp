@@ -8,7 +8,6 @@ Bullet::Bullet(uint32_t bullet_id, uint8_t bullet_type, bool dir)
 	, b_type{ bullet_type }
 	, direction{ dir }
 {
-	//SetVelocity(0.0f, 0.0f); b_type에 맞게 속도 설정
 }
 
 Bullet::Bullet(float x, float y, uint32_t bullet_id, uint8_t bullet_type, bool dir)
@@ -17,15 +16,12 @@ Bullet::Bullet(float x, float y, uint32_t bullet_id, uint8_t bullet_type, bool d
 	, b_type{ bullet_type }
 	, direction{ dir }
 {
-	//SetVelocity(0.0f, 0.0f); b_type에 맞게 속도 설정
 }
 
 void Bullet::Update(int64_t delta_time)
 {
 	// TODO : deltaTime 만큼 이동
 	//		  여기서도 gun_id (b_type) 으로 사용
-
-	
 }
 
 uint32_t Bullet::GetBulletID() const

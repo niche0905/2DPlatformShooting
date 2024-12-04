@@ -6,7 +6,6 @@ Level::Level()
 	: leftBound{ 10000.0f }
 	, rightBound{ -10000.0f }
 {
-
 }
 
 void Level::load()
