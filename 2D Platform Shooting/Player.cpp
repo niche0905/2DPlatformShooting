@@ -369,3 +369,9 @@ void Player::setPosition(float x, float y)
 
     shape.setPosition(vec);
 }
+
+void Player::setPlayerGun(uint32_t g_id)
+{
+    gunId = g_id;
+    curMag = GunLoader::Instance().GetGunTable()[gunId].mag;
+}

@@ -84,13 +84,11 @@ Position Player::GunFire(uint32_t b_id, float x, float y, uint8_t bullet_type, b
 	Position fire_pos = GetPos();
 
 	// 월드에 불렛 추가하기
-	std::cout << "총알 생성. 현재 탄창수: " << curMag << '\n';
 	bullets.emplace_back(x, y, b_id, bullet_type, dir);
 
 
 	// 총알을 다 썻다면 기본 총으로 초기화
 	if (--curMag <= 0 && gunId != 0u) {
-		std::cout << "총 다씀..\n";
 		GunInit();
 		// 서버도 초기화를 해주고 클라이언트에게 전송해준다
 		SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(static_cast<int32_t>(player_id),

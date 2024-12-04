@@ -111,7 +111,7 @@ public:
     // Setter
     void setPosition(float x, float y);
     void SetDirection(const bool value) { direction = value; }
-    void setPlayerGun(uint32_t g_id) { gunId = g_id; }
+    void setPlayerGun(uint32_t g_id);
 
     // Getter
     int getCurMag() const { return curMag; }
