@@ -38,8 +38,8 @@ namespace myNP {
 	constexpr float BulletWidth{ 20.0f };	// 총알 넓이
 	constexpr float BulletHeight{ 6.0f };	// 총알 크기
 
-	constexpr float PlayerWidth{ 50.0f };	// 플레이어 넓이
-	constexpr float PlayerHeight{ 50.0f };	// 플레이어 넓이
+	constexpr float PlayerWidth{ 100.0f };	// 플레이어 넓이
+	constexpr float PlayerHeight{ 100.0f };	// 플레이어 넓이
 
 	constexpr float ItemWidth{ 35.0f };
 	constexpr float ItemHeight{ 50.0f };

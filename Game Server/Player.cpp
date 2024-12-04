@@ -4,7 +4,8 @@
 
 
 Player::Player(uint32_t p_id, bool dir)
-	: player_id{ p_id }
+	: Object{ 0.0f, 0.0f, myNP::PlayerWidth, myNP::PlayerHeight, 0.5f, 1.0f }
+	, player_id{ p_id }
 	, directon{ dir }
 	, life{ BaseLife }
 {
