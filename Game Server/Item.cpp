@@ -10,7 +10,6 @@ Item::Item(float x, float y, Level* level)
 	, itemID{ ++nextID }
 	, OnAir{ true }
 {
-	//SetVelocity(0.0f, 0.0f); 중력값으로 속도 수정 ㅇㅇ
 }
 
 void Item::Update(int64_t delta_time)

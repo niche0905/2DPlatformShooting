@@ -1,11 +1,9 @@
 #pragma once
 
-
 using BufferType		= std::array<char, myNP::MaxPacketSize>;
 using QueueType			= std::queue<BufferType>;
 using PacketSizeType	= uint8_t;
 using namespace myNP;
-
 
 class ServerNetworkManager
 {
@@ -23,12 +21,6 @@ private:
 
 	int				nextId{ 0 };
 	bool			playing{ false };
-
-
-	// 삭제된 변수
-	// SOCKET socket{NULL}; // 소켓
-	// HANDLE thread{}; // 스레드
-
 
 private:
 	// private 함수
@@ -75,8 +67,6 @@ public:
 		SendPacket<_Packet>(socketArr[client_id], std::forward<Args>(args)...);
 	}
 
-	// 추가된 함수
-
 	// 네트워크를 초기화한다.
 	void NetworkInit();
 
@@ -96,7 +86,6 @@ public:
 	// 큐에 있는 내용을 실질적으로 처리한다.
 	void ProcessPackets();
 
-
 	// getter and setter
 	int GetNextId() { return nextId++ % 2; }
 	void DecreaseNextID() { --nextId; };
@@ -109,7 +98,6 @@ public:
 		socketArr[client_id] = sock;
 	}
 
-
 	// handle recv events
 	void SetRecvEvent(const int c_id) { SetEvent(recvEvent[c_id]); }
 	void WaitforRecvEvent() { WaitForMultipleObjects(2, recvEvent.data(), TRUE, INFINITE); }
@@ -118,11 +106,6 @@ public:
 	void SetProcessEvent() { SetEvent(processEvent[0]); SetEvent(processEvent[1]); }
 	void WaitforProcessEvent(const int c_id) { WaitForSingleObject(processEvent[c_id], INFINITE); }
 	
-
-
-	// 삭제된 함수
-	// void PushBuffer(BufferType buffer);
-	// QueueType& GetQueue();
 };
 
 // worker
@@ -135,7 +118,6 @@ DWORD WINAPI workerRecv(LPVOID arg);
 
 // 매치메이킹 검사(인자: 없음)
 DWORD WINAPI workerLobby(LPVOID arg);
-
 
 template<class _Packet, class ...Args>
 inline void ServerNetworkManager::SendPacket(SOCKET sock, Args ...args) const

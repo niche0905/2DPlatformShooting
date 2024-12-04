@@ -3,6 +3,7 @@
 #include <thread>
 #include <chrono>
 
+// 생성자
 ClientNetworkManager::ClientNetworkManager()
 {
     std::cin.get(addr.data(), addr.size());
@@ -14,7 +15,6 @@ ClientNetworkManager::ClientNetworkManager()
 // 초기화
 void ClientNetworkManager::Init()
 {
-
     // 윈속 초기화
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) return;
@@ -23,13 +23,14 @@ void ClientNetworkManager::Init()
     clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (clientSocket == INVALID_SOCKET) return;
 
-    // 이벤트 핸들 생성
+    // recv 이벤트 생성
     recvEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     if (recvEvent == NULL) {
         closesocket(clientSocket);
         return;
     }
 
+    // process 이벤트 생성
     processEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     if (processEvent == NULL) {
         CloseHandle(recvEvent);
@@ -131,52 +132,34 @@ DWORD WINAPI WorkerRecv(LPVOID arg)
     char buf[MAX_SIZE];
 
     while (true) {
-        // 이벤트 대기
-        //DWORD result = WaitForSingleObject(event, WSA_INFINITE);
-
         // 고정 길이 recv()
         int recvLen = recv(network_mgr.GetSocket(), buf, sizeof(myNP::BASE_PACKET), MSG_WAITALL);
-        //cout << recvLen << "\n";
-
+        
         if (recvLen > 0) {
             // base_packet 길이 만큼 읽었으므로 나머지 데이터 길이 계산
             auto remainingPacketLen = buf[0] - sizeof(myNP::BASE_PACKET);
-
-            //cout << "RECV " << static_cast<int>(buf[1]) << ": ";
-            //myNP::printPacketType(buf[1]);
 
             // 가변 길이 recv()
             if (remainingPacketLen > 0) {
                 while (true)
                 {
-                    //cout << "Test1\n";
                     recvLen = recv(network_mgr.GetSocket(), buf + sizeof(myNP::BASE_PACKET), remainingPacketLen, MSG_WAITALL);
-                    //cout << recvLen << "\n";
                     if (recvLen > 0) {
-
                         // 버퍼를 Push
                         network_mgr.PushBuffer(buf);
-
+                        // Move 패킷을 기준으로 패킷 처리
                         if (buf[1] == myNP::SC_MY_MOVE or buf[1] == myNP::SC_MATCHMAKING) {
-                            // Move 패킷을 기준으로 패킷 처리
-                            //cout << "Sync\n";
-
+                            // 이벤트 요청
                             SetEvent(network_mgr.GetProcessEvent());
-
+                            // 다른 작업 완료 대기
                             WaitForSingleObject(network_mgr.GetRecvEvent(), WSA_INFINITE);
                         }
-
-                        //cout << "RECV : ";
-                        //myNP::printPacketType(buf[1]);
-
                         break;
                     }
-                    //std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
             }
             else {
                 // 버퍼를 Push
-                //cout << "Test2\n";
                 network_mgr.PushBuffer(buf);
             }
         }
@@ -201,7 +184,6 @@ void ClientNetworkManager::PushBuffer(char buf[MAX_SIZE])
 void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
 {
     // 패킷 ID별 다른 처리
-    //cout << "SEND : ";
     switch (packet_id)
     {
         case myNP::CS_MOVE:
@@ -238,14 +220,11 @@ void ClientNetworkManager::SendPacket(char* buf, uint8_t packet_id)
             break;
         }
     }
-    //myNP::printPacketType(packet_id);
 }
 
 // 패킷별 처리
 void ClientNetworkManager::ProcessPacket()
 {
-    // WaitForSingleObject(processEvent, INFINITE);
-
     while (!process_queue.empty()) {
         std::array<char, MAX_SIZE> buffer = process_queue.front();
         process_queue.pop();
@@ -336,8 +315,6 @@ void ClientNetworkManager::ProcessPacket()
         }
         }
     }
-
-    // ResetEvent(processEvent);
 }
 
 // 상대 이동 처리
@@ -346,8 +323,6 @@ void ClientNetworkManager::ProcessPlayerMove(myNP::SC_MOVE_PACKET* move_packet)
     // 바이트 정렬
     move_packet->ntohByteOrder();
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
-    //cout << "받은 좌표\n";
-    //cout << 1-ClientID << " " << move_packet->posX << ", " << move_packet->posY << "\n";
     gameScene->GetOtherPlayer().setPosition(move_packet->posX, move_packet->posY);
     gameScene->GetOtherPlayer().SetDirection(move_packet->dir);
 }
@@ -366,9 +341,6 @@ void ClientNetworkManager::ProcessMatchMaking(myNP::SC_MATCHMAKING_PACKET* match
     cout << "Client ID: " << ClientID << endl;
     playing = true;
     timer.Init();
-    // TODO : 매치메이킹을 만들면 아래처럼 Scene을 로드해야함
-    //        지금은 위치 세팅 해줘야 할 듯 싶음
-    //sceneManager.LoadGameScene();
 }
 
 // 총알 처리
@@ -411,12 +383,10 @@ void ClientNetworkManager::ProcessLifeUpdate(myNP::SC_LIFE_UPDATE_PACKET* life_p
     
     // 0번 플레이어가 죽었으면
     if (0 == life_packet->p_id) {
-        std::cout << "1클라 사망\n";
         gameScene->GetPlayer1().revivePlayer();
     }
     // 1번 플레이어가 죽었으면
     else if (1 == life_packet->p_id) {
-        std::cout << "2클라 사망\n";
         gameScene->GetPlayer2().revivePlayer();
     }
 }

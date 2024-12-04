@@ -7,30 +7,32 @@ constexpr float DamageScalingRatio = 50.0f;     // 피해량 정상화 상수(공기저항 �
 constexpr float DamagePower = 5.0f;             // 데미지 받을 때 수치 조정값
 constexpr float FrictionScale = 5.0f;           // 데미지를 감소 시킬 때 마찰력
 constexpr float AirFrictionScale = 3.0f;        // 데미지를 감소 시킬 때 공기 정항력
-// 송승호 코멘트 09/26
-// 아직 값이 만족스럽진 않음
-// 선형적으로 데미지를 조정하는게 아닌 다른 방식도 탐구해볼 필요 느낌
 
 
 class Player {
 private:
     int32_t playerID{ -1 };
 
-    bool isActive;      // 플레이어 활성화 비활성화를 나타내는 변수
+    // 플레이어 활성화 비활성화를 나타내는 변수
+    bool isActive;
 
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
-    bool direction;     // true : Left(←),	false : Right(→)
+    // true : Left(←),	false : Right(→)
+    bool direction;
     float width;
     float height;
     float speed;
 
-    float damaged;      // 피해 입은 양 -(음수) 왼쪽으로 힘을 받음 +(양수) 오른쪽으로 힘을 받음
+    // 피해 입은 양 -(음수) 왼쪽으로 힘을 받음 +(양수) 오른쪽으로 힘을 받음
+    float damaged;
 
     float jumpHeight;
-    int jumpChance;     // 점프 기회
-    int maxJumpChance;  // 최대 점프 기회 (초기화 할 때 사용)
+    // 점프 기회
+    int jumpChance;
+    // 최대 점프 기회 (초기화 할 때 사용)
+    int maxJumpChance;
     bool OnAir;
     int life;
 
@@ -41,12 +43,12 @@ private:
     sf::Keyboard::Key rightKeyBind;
     sf::Keyboard::Key attackKeyBind;
 
-    // [cham] 9.22
     uint8_t gunId;
     
     std::list<Bullet> bullets;
     int curMag;
-    std::chrono::system_clock::time_point lastFireTime;     // 총을 발사한 마지막 시간
+    // 총을 발사한 마지막 시간
+    std::chrono::system_clock::time_point lastFireTime;
 
     bool fireKeyDown;
     bool leftKeyDown;
@@ -104,13 +106,9 @@ public:
     // 피해량을 조절해준다(업데이트에서 호출)
     void damageControll(long long deltaTime);
 
-    // 플레이어 포지션 set
+    // Setter
     void setPosition(float x, float y);
-    
-    // 플레이어 방향 set
     void SetDirection(const bool value) { direction = value; }
-
-    // 플레이어 총 set
     void setPlayerGun(uint32_t g_id) { gunId = g_id; }
 
     // Getter
