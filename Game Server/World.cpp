@@ -39,8 +39,8 @@ void World::Init()
 void World::Update()
 {
 	// Logging
-	BoundingBox p_bb = p1.GetBB();
-	cout << "P1_BB : " << p_bb.left << " " << p_bb.right << " " << p_bb.top << " " << p_bb.bottom << "\n";
+	//BoundingBox p_bb = p1.GetBB();
+	//cout << "P1_BB : " << p_bb.left << " " << p_bb.right << " " << p_bb.top << " " << p_bb.bottom << "\n";
 	
 	// TODO : 플레이어 위치값 받은거 적용하기 -> Process Queue 에서 해야할 것 같은 내용
 	if (not SNMgr.IsPlaying())
