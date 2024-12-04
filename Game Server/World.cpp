@@ -7,11 +7,19 @@ std::uniform_real_distribution<float> item_spawn_point{ 0.0, 600.0 };
 
 
 World::World()
+	: p1{ 0, true }
+	, p2{ 0, true }
 {
 	tm = new TimerManager();
 
 	level = new Level();
 	level->load();
+
+	// Logging
+	//BoundingBox p_bb = p1.GetBB();
+	//cout << "P_BB : " << p_bb.left << " " << p_bb.right << " " << p_bb.top << " " << p_bb.bottom << "\n";
+	//p1.SetElement(0.0f, 0.0f, myNP::PlayerWidth, myNP::PlayerWidth, 0.5f, 1.0f);
+	//p2.SetElement(0.0f, 0.0f, myNP::PlayerWidth, myNP::PlayerWidth, 0.5f, 1.0f);
 
 	//objects.clear();
 	//objects.reserve(n);
@@ -23,10 +31,17 @@ void World::Init()
 {
 	tm->Update();
 	itemMakingTime = std::chrono::system_clock::now();
+
+	p1.SetElement(0.0f, 0.0f, myNP::PlayerWidth, myNP::PlayerWidth, 0.5f, 1.0f);
+	p2.SetElement(0.0f, 0.0f, myNP::PlayerWidth, myNP::PlayerWidth, 0.5f, 1.0f);
 }
 
 void World::Update()
 {
+	// Logging
+	//BoundingBox p_bb = p1.GetBB();
+	//cout << "P1_BB : " << p_bb.left << " " << p_bb.right << " " << p_bb.top << " " << p_bb.bottom << "\n";
+	
 	// TODO : 플레이어 위치값 받은거 적용하기 -> Process Queue 에서 해야할 것 같은 내용
 	if (not SNMgr.IsPlaying())
 		return;
@@ -121,7 +136,7 @@ void World::CollisionCheck()
 
 		if (p1_collision or p2_collision) {
 			// Logging
-			cout << "Item Collision\n";
+			//cout << "Item Collision\n";
 
 			// 이 코드로 압축 가능
 			SNMgr.SendPacket<myNP::SC_ITEM_REMOVE_PACKET>(static_cast<int32_t>(0), item_id);
@@ -162,7 +177,7 @@ bool World::ItemSpawn()
 		return false;
 
 	// Logging
-	cout << "Item Spawn\n";
+	//cout << "Item Spawn\n";
 
 	float x_pos = item_spawn_point(RANDOM_ENGINE);
 	Item item{ x_pos, itemSpawnHeight, level };
