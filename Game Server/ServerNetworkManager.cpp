@@ -176,12 +176,12 @@ void ServerNetworkManager::ProcessPackets()
 					
 					// TODO : p1.fire 함수를 불러야 함 ㅇㅇ
 					// world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir);
-					world.p1.GunFire(packet->posX, packet->posY, packet->type, packet->dir);
+					world.p1.GunFire(packet->b_id, packet->posX, packet->posY, packet->type, packet->dir);
 				}
 				else if (client_id == 1) {
 					// TODO : p2.fire 함수를 불러야 함 ㅇㅇ
 					// world.p2.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir);
-					world.p2.GunFire(packet->posX, packet->posY, packet->type, packet->dir);
+					world.p2.GunFire(packet->b_id, packet->posX, packet->posY, packet->type, packet->dir);
 				}
 
 				int other_player_id = 1 - client_id;

@@ -66,5 +66,8 @@ public:
 
 	// Getter
 	uint32_t GetBulletId() const { return bulletID; }
+	void SetBulletId(const uint32_t value) { bulletID = value; }
+
 };
+
 

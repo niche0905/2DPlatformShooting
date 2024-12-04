@@ -58,7 +58,7 @@ public:
     void RemoveItem(uint32_t i_id);
 
     // 총알 삭제
-    void RemoveBullet(uint32_t b_id);
+    void RemoveBullet(uint32_t p_id, uint32_t b_id);
 
     // 플레이어 데미지
     void PlayerDamage(float damage, bool dir, int32_t ClientID);

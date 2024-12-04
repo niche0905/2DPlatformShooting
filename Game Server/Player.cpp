@@ -79,13 +79,13 @@ void Player::GunUpdate(uint8_t gun_id)
 }
 
 // ÃÑ ½î´Â ÇÔ¼ö
-Position Player::GunFire(float x, float y, uint8_t bullet_type, bool dir)
+Position Player::GunFire(uint32_t b_id, float x, float y, uint8_t bullet_type, bool dir)
 {
 	Position fire_pos = GetPos();
 
 	// ¿ùµå¿¡ ºÒ·¿ Ãß°¡ÇÏ±â
 	std::cout << "ÃÑ¾Ë »ý¼º. ÇöÀç ÅºÃ¢¼ö: " << curMag << '\n';
-	bullets.emplace_back(x, y, bulletId++, bullet_type, dir);
+	bullets.emplace_back(x, y, b_id, bullet_type, dir);
 
 
 	// ÃÑ¾ËÀ» ´Ù ›§´Ù¸é ±âº» ÃÑÀ¸·Î ÃÊ±âÈ­

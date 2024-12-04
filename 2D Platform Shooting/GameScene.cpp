@@ -157,11 +157,16 @@ void GameScene::RemoveItem(uint32_t i_id)
         });
 }
 
-void GameScene::RemoveBullet(uint32_t b_id)
+void GameScene::RemoveBullet(uint32_t p_id, uint32_t b_id)
 {
-    enemy_bullets.remove_if([b_id](const Bullet& bullet) {
-        return bullet.GetBulletId() == b_id;
-        });
+    if (network_mgr.GetClientID() == p_id) {
+        GetControlPlayer().removeBullet(b_id);
+    }
+    else {
+        enemy_bullets.remove_if([b_id](const Bullet& bullet) {
+            return bullet.GetBulletId() == b_id;
+            });
+    }
 }
 
 void GameScene::PlayerDamage(float damage, bool dir, int32_t ClientID)
@@ -239,7 +244,9 @@ void GameScene::draw()
 
 void GameScene::AddEnemyBullet(float x, float y, bool direction, uint32_t type, uint32_t b_id)
 {
-    enemy_bullets.emplace_back(direction, x, y, GunLoader::Instance().GetGunTable()[type].speed);
+    Bullet new_bullet{ direction, x, y, GunLoader::Instance().GetGunTable()[type].speed };
+    new_bullet.SetBulletId(b_id);
+    enemy_bullets.emplace_back(new_bullet);
 }
 
 

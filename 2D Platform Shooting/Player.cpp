@@ -140,7 +140,13 @@ void Player::fireBullet()
     sf::Vector2f position = shape.getPosition();
     position.y -= 25.0f;
 
-    bullets.push_back(Bullet(direction, position, GunLoader::Instance().GetGunTable()[gunId].speed, GunLoader::Instance().GetGunTable()[gunId].damage));
+    // 내 bullet list에서도 id를 저장할 필요가 있음.
+    Bullet new_bullet{ direction, position,
+        GunLoader::Instance().GetGunTable()[gunId].speed,
+        GunLoader::Instance().GetGunTable()[gunId].damage };
+    new_bullet.SetBulletId(bulletId);
+    bullets.push_back(new_bullet);
+
 
     // FirePacket 보내기
     auto buf = myNP::CS_FIRE_PACKET::MakePacket(bulletId, position.x, position.y, direction, gunId, timer.epochToMillis());
@@ -346,6 +352,13 @@ void Player::damageControll(long long deltaTime)
         damaged += DamageScalingRatio * frictionScale * (deltaTime / myNP::microToSecond);
         damaged = std::min(0.0f, damaged);
     }
+}
+
+void Player::removeBullet(uint32_t b_id)
+{
+    bullets.remove_if([b_id](const Bullet& bullet) {
+        return bullet.GetBulletId() == b_id;
+        });
 }
 
 void Player::setPosition(float x, float y)

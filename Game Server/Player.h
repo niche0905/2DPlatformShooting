@@ -16,7 +16,6 @@ private:
 	int life;
 	uint8_t gunId{0};
 	std::list<Bullet> bullets;
-	uint32_t bulletId{};
 	int curMag;
 
 	bool isActive = true;
@@ -41,7 +40,7 @@ public:
 	void GunInit();
 	void GunUpdate(uint8_t gun_id);
 
-	Position GunFire(float x, float y, uint8_t bullet_type, bool dir);
+	Position GunFire(uint32_t b_id, float x, float y, uint8_t bullet_type, bool dir);
 
 	void Revive();
 	void Dead();

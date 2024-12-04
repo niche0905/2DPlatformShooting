@@ -424,8 +424,7 @@ void ClientNetworkManager::ProcessRemoveItem(myNP::SC_ITEM_REMOVE_PACKET* item_r
 void ClientNetworkManager::ProcessRemoveBullet(myNP::SC_BULLET_REMOVE_PACKET* bullet_remove_packet)
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
-
-    gameScene->RemoveBullet(bullet_remove_packet->b_id);
+    gameScene->RemoveBullet(bullet_remove_packet->p_id, bullet_remove_packet->b_id);
 }
 
 // 플레이어 Damage 처리

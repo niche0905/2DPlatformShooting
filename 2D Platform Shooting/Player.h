@@ -106,6 +106,8 @@ public:
     // 피해량을 조절해준다(업데이트에서 호출)
     void damageControll(long long deltaTime);
 
+    void removeBullet(uint32_t b_id);
+
     // Setter
     void setPosition(float x, float y);
     void SetDirection(const bool value) { direction = value; }
