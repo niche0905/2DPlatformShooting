@@ -18,9 +18,11 @@ public:
 
 	void Update(int64_t delta_time);
 
+	bool isOutBounds(float left, float right);
 	uint32_t GetBulletID() const;
 	uint8_t GetBulletType() const;
 	bool GetDirection() const;
+
 
 };
 

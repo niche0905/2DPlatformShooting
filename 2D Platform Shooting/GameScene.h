@@ -68,7 +68,7 @@ public:
     void RemoveBullet(uint32_t b_id);
 
     // 플레이어 데미지
-    void PlayerDamage(float damage, int32_t ClientID);
+    void PlayerDamage(float damage, bool dir, int32_t ClientID);
 
     // 게임 종료
     void Gameover();

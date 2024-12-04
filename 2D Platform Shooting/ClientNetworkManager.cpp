@@ -463,7 +463,7 @@ void ClientNetworkManager::ProcessPlayerDamage(myNP::SC_PLAYER_DAMAGE_PACKET* pl
 {
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
-    gameScene->PlayerDamage(player_damage_packet->damage, ClientID);
+    gameScene->PlayerDamage(player_damage_packet->damage, player_damage_packet->dir, ClientID);
 }
 
 // 게임 종료 처리

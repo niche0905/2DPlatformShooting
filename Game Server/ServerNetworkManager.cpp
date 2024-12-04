@@ -194,12 +194,15 @@ void ServerNetworkManager::ProcessPackets()
 				// TODO : time gap 만큼 보간해서 위치 조정 해줘야 함
 				//		  + Bullet을 직접 건들이는게 아닌 Player의 GunFire 함수를 이용하자
 				if (client_id == 0) {
+					
 					// TODO : p1.fire 함수를 불러야 함 ㅇㅇ
-					//world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+					// world.p1.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir);
+					world.p1.GunFire(packet->posX, packet->posY, packet->type, packet->dir);
 				}
 				else if (client_id == 1) {
 					// TODO : p2.fire 함수를 불러야 함 ㅇㅇ
-					//world.p2.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir); // <- TODO : 속도 설정 할 수 있어야 함 인자로
+					// world.p2.GetBullets().emplace_back(packet->posX, packet->posY, packet->type, packet->dir);
+					world.p2.GunFire(packet->posX, packet->posY, packet->type, packet->dir);
 				}
 
 				int other_player_id = 1 - client_id;
@@ -324,11 +327,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 		
 		if (not SNMgr.IsPlaying() &&
 			PacketID::CS_MATCHMAKING == packet_id) {
-			// cout << "[Client " << client_id << "] Set Recv event." << "\n";
 			SNMgr.SetRecvEvent(client_id);
-			// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 			SNMgr.WaitforProcessEvent(client_id);
-			// cout << "[Client " << client_id << "] get Process event." << "\n";
 		}
 		
 
@@ -339,11 +339,8 @@ DWORD WINAPI workerRecv(LPVOID arg)
 
 				SNMgr.setProcessQueue(local_queue, client_id);
 				while (not local_queue.empty()) local_queue.pop();
-				// cout << "[Client " << client_id << "] Set Recv event." << "\n";
 				SNMgr.SetRecvEvent(client_id);
-				// cout << "[Client " << client_id << "] Waiting for Process event..." << "\n";
 				SNMgr.WaitforProcessEvent(client_id);
-				// cout << "[Client " << client_id << "] get Process event." << "\n";
 			}
 		}
 	}
@@ -365,11 +362,8 @@ DWORD WINAPI workerLobby(LPVOID arg)
 			SNMgr.setPlaying(true);
 			for (int i = 0; i <= 1; ++i) {
 				SNMgr.SendPacket<myNP::SC_MATCHMAKING_PACKET>(i, true, i);
-				//cout << "Send 7 to " << i << endl;
 			}
 			world.Init();
-			world.p1.SetPlayerID(0);
-			world.p2.SetPlayerID(1);
 			SNMgr.SetProcessEvent();
 		}
 

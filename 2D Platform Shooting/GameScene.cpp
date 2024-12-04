@@ -202,10 +202,10 @@ void GameScene::RemoveBullet(uint32_t b_id)
         });
 }
 
-void GameScene::PlayerDamage(float damage, int32_t ClientID)
+void GameScene::PlayerDamage(float damage, bool dir, int32_t ClientID)
 {
-    if (ClientID == 0) player1->takeDamage(player1->getDirection(), damage);
-    else player2->takeDamage(player2->getDirection(), damage);
+    if (ClientID == 0) player1->takeDamage(dir, damage);
+    else player2->takeDamage(dir, damage);
 }
 
 void GameScene::Gameover()

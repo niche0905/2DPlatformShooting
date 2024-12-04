@@ -14,8 +14,9 @@ private:
 	uint32_t player_id;
 	bool directon;
 	int life;
-	uint8_t gunId;
+	uint8_t gunId{0};
 	std::list<Bullet> bullets;
+	uint32_t bulletId{};
 	int curMag;
 
 	bool isActive = true;
@@ -40,7 +41,7 @@ public:
 	void GunInit();
 	void GunUpdate(uint8_t gun_id);
 
-	Position GunFire();
+	Position GunFire(float x, float y, uint8_t bullet_type, bool dir);
 
 	void Revive();
 	void Dead();

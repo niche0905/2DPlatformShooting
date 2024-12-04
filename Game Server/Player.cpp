@@ -26,10 +26,12 @@ void Player::Update(int64_t delta_time)
 	// Player에서 Level의 *를 가지고 left, right bound에 접근할 수 있어야 함
 	for (auto it = bullets.begin(); it != bullets.end(); ) {
 		it->Update(delta_time);
-		//if (it->isOutBounds(level->leftBound - 1000.0f, level->rightBound + 1000.0f))
-		//	it = bullets.erase(it);
-		//else
-		//	++it;
+		if (it->isOutBounds(-11000.f, 11000.0f)) {
+			it = bullets.erase(it);
+			std::cout << "총알 삭제\n";
+		}
+		else
+			++it;
 	}
 }
 
@@ -75,20 +77,25 @@ void Player::GunUpdate(uint8_t gun_id)
 	);
 }
 
-Position Player::GunFire()
+// 총 쏘는 함수
+Position Player::GunFire(float x, float y, uint8_t bullet_type, bool dir)
 {
 	Position fire_pos = GetPos();
 
-	// TODO : Bullet 생성 및 gunId에 대한 총알로 만들어서 넣어주어야 함
-	
+	// 월드에 불렛 추가하기
+	std::cout << "총알 생성. 현재 탄창수: " << curMag << '\n';
+	bullets.emplace_back(x, y, bulletId++, bullet_type, dir);
+
+
 	// 총알을 다 썻다면 기본 총으로 초기화
-	if (--curMag <= 0) {
+	if (--curMag <= 0 && gunId != 0u) {
+		std::cout << "총 다씀..\n";
 		GunInit();
 		// 서버도 초기화를 해주고 클라이언트에게 전송해준다
 		SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(static_cast<int32_t>(player_id),
 			player_id, BaseGunID
 		);
-		int32_t other_player_id = 1 - player_id;
+		int32_t other_player_id = 1 - static_cast<int32_t>(player_id);
 		SNMgr.SendPacket<myNP::SC_GUN_UPDATE_PACKET>(other_player_id,
 			player_id, BaseGunID
 		);

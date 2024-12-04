@@ -7,6 +7,8 @@ std::uniform_real_distribution<float> item_spawn_point{ 0.0, 600.0 };
 
 
 World::World()
+	: p1{0u, 100.f, 400.f, true}
+	, p2{1u, 400.f, 400.f, true}
 {
 	tm = new TimerManager();
 
@@ -21,8 +23,13 @@ World::World()
 
 void World::Init()
 {
+	// init timer
 	tm->Update();
 	itemMakingTime = std::chrono::system_clock::now();
+	
+	// init player id
+	p1.SetPlayerID(0);
+	p2.SetPlayerID(1);
 }
 
 void World::Update()
@@ -96,10 +103,6 @@ void World::CollisionCheck()
 			bool bullet_dir = (*it).GetDirection();
 
 			float damage = GunLoader::Instance().GetGunTable()[bullet_type].damage;
-			// 방향에 따른 데미지 처리
-			if (bullet_dir) {
-				damage = -damage;
-			}
 
 			// P1의 p_id는 0
 			SNMgr.SendPacket<myNP::SC_PLAYER_DAMAGE_PACKET>(static_cast<int32_t>(0), damage, bullet_dir);

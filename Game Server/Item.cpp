@@ -20,7 +20,7 @@ void Item::Update(int64_t delta_time)
 	}
 
 	// 속도만큼 움직임
-	MovingObject::Update(delta_time);
+	MovingObject::UpdateVelocity(delta_time);
 
 	// 하나라도 밟고있는 플랫폼이 있는지 체크
 	bool blocking = level->Collsion(*this);

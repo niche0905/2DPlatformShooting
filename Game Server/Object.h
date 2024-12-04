@@ -28,7 +28,7 @@ public:
 
 	void SetElement(float pos_x, float pos_y, float width, float height, float pivot_x, float pivot_y);
 
-	void Update(int64_t delta_time);
+	// void Update(int64_t delta_time);
 	void SetPos(float pos_x, float pos_y);
 	void SetPivot(float pivot_x, float pivot_y);
 
