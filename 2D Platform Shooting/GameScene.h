@@ -8,7 +8,6 @@
 
 class GameScene : public Scene {
     sf::RenderWindow window;
-    //sf::Clock clock;
     bool match{ false };
 
     Level level;
@@ -46,12 +45,6 @@ public:
     // 게임의 객체들을 업데이트한다
     virtual void update(long long deltaTime);
 
-    // 총알 충돌 처리 (본인을 제외한 Player)
-    //void bulletHit();
-
-    // 아이템 충돌 처리
-    //void eatItem();
-
     // 적의 총알 업데이트
     void updateEnemyBullets(long long deltaTime);
 
@@ -87,8 +80,10 @@ public:
     void updateTexts();
     void drawTexts();
 
+    // Setter
     void SetTitleFalse() { titleImage.SetShow(false); }
 
+    // Getter
     Player& GetPlayer1() { return *player1; }
     Player& GetPlayer2() { return *player2; }
     Player& GetControlPlayer();

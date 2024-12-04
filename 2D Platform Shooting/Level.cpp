@@ -44,28 +44,6 @@ std::ostream& operator<<(std::ostream& os, const Platform& platform)
 	return os;
 }
 
-/*
-bool Level::save(const std::string& filename)
-{
-	std::ofstream outFile(filename);
-
-	// 파일이 열리지 않았다면
-	if (not outFile.is_open())
-		return false;
-
-	size_t platformCount = platforms.size();
-
-	outFile << platformCount << "\n";
-	for (const auto& platform : platforms) {
-		outFile << platform << "\n";
-	}
-	
-	outFile.close();
-
-	return true;
-}
-*/
-
 bool Level::load()
 {
 	std::vector<StdPlatfom> vec = StdLevel::Instance().GetPlatforms();

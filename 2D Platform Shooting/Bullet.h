@@ -2,9 +2,6 @@
 
 constexpr float BulletWidth = 20.0f;
 constexpr float BulletHeight = 6.0f;
-
-// 총 종류에 따라 속도가 다를것이므로 주석 처리
-// constexpr float BulletSpeed = 600.0f;
 constexpr float BulletDamage = 10.0f;
 
 
@@ -67,6 +64,7 @@ public:
 	// 데미지를 알려준다.
 	float getDamage() const;
 
+	// Getter
 	uint32_t GetBulletId() const { return bulletID; }
 };
 

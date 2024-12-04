@@ -24,10 +24,6 @@ GameScene::GameScene() :
     player1 = new Player{ 100.0f, 400.0f, &level, TextureID::PLAYER1, 0 };
     player2 = new Player{ 400.0f, 400.0f, &level, TextureID::PLAYER2, 1 };
 
-    //items.emplace_back(200.0f, -500.0f, &level);
-    // 시작시 바로 플레어이 중앙으로 옮길지 말지
-    //InitView();
-
     Background.SetPosition(-1200, -1200);
     UI[1].SetPosition(600, 0);
     for (auto& img : resultImage) {
@@ -55,10 +51,7 @@ void GameScene::run()
         handleInput();
 
         timer.Update();
-        //sf::Time dtSFTime = clock.restart();
-        //long long deltaTime = dtSFTime.asMicroseconds();
 
-        //update(deltaTime);
         update(timer.getDeltaTime());
 
         draw();
@@ -121,8 +114,6 @@ void GameScene::updateEnemyBullets(long long deltaTime)
 
 void GameScene::update(long long deltaTime)
 {
-    //network_mgr.Update();
-
     // 모든 업데이트 해야할 항목을 업데이트
     player1->update(deltaTime);
     player2->update(deltaTime);
@@ -146,36 +137,7 @@ void GameScene::update(long long deltaTime)
 
     // 플레이어 위치를 기반으로 view를 설정하는 함수
     Scrolling(deltaTime);
-
-
 }
-
-//void GameScene::bulletHit()
-//{
-//    for (Player& shooter : players) {
-//        for (Player& hitter : players) {
-//            if (&shooter == &hitter)
-//                continue;
-//
-//            shooter.hitTheEnemy(hitter);
-//        }
-//    }
-//}
-//
-
-//void GameScene::eatItem()
-//{
-//    for (Player& player : players) {
-//        for (auto iter{ items.begin() }; iter != items.end();) {
-//            if (iter->checkCollisionBullet(player->getGlobalBounds())) {
-//                iter = items.erase(iter);
-//                player->getItem();
-//                makeTime = std::chrono::system_clock::now();
-//            }
-//            else { ++iter; }
-//        }
-//    }
-//}
 
 void GameScene::MakeItem()
 {
@@ -210,10 +172,7 @@ void GameScene::PlayerDamage(float damage, int32_t ClientID)
 
 void GameScene::Gameover()
 {
-    // 게임 종료
-   
     // 게임 종료 UI 띄우기
-
     if (0 == player1->getLife()) {
         resultImage[1].SetShow(true);
     }
@@ -222,7 +181,7 @@ void GameScene::Gameover()
         resultImage[0].SetShow(true);
     }
 
-    // 그 후에 다시 Title UI 띄우기
+    // TODO: 그 후에 다시 Title UI 띄우기
 
 }
 
@@ -270,8 +229,6 @@ void GameScene::draw()
 
     for (auto& enemy_bullet : enemy_bullets)
         enemy_bullet.draw(window);
-
-
 
     // 문자 그리기
     drawTexts();
@@ -360,49 +317,3 @@ Player& GameScene::GetOtherPlayer()
         return  *player1;
     }
 }
-
-//void Game::buildGun()
-//{
-//    loadGunFromFile(GunSavePath);
-//}
-
-//bool Game::loadGunFromFile(const std::string& filePath)
-//{
-//    std::ifstream inFile(filePath);
-//    if (not inFile.is_open()) {
-//        std::cerr << "Failed to open file: " << filePath << std::endl;
-//        return false;
-//    }
-//
-//    Gun gun;
-//
-//    // [cham] 9.22 
-//    uint8 cnt{};
-//    while (inFile >> gun)
-//    {
-//        gun.id = cnt;
-//        g_guns[cnt++] = gun;
-//    }
-//
-//    inFile.close();
-//
-//    return true;
-//}
-
-//void Game::saveGunFromFile(const std::string& filePath)
-//{
-//    std::ofstream outFile(filePath);
-//    if (not outFile.is_open()) {
-//        std::cerr << "Failed to open file: " << filePath << std::endl;
-//        return;
-//    }
-//
-//    // [cham] 9.22
-//    for (const auto& gun : g_guns | std::views::values) {
-//        outFile << gun << std::endl;
-//    }
-//
-//    outFile.close();
-//
-//    return;
-//}

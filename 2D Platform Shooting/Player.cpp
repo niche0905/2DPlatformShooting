@@ -119,14 +119,6 @@ void Player::handleInput(const sf::Event& event)
         if (event.key.code == sf::Keyboard::W) {
             gunId = 1;
         }
-        //if (event.key.code == sf::Keyboard::R) {
-        //    // revivePlayer();     // 임시로 키 바인딩으로 부활 호출
-        //    auto buf = myNP::CS_MATCHMAKING_PACKET::MakePacket();
-        //    network_mgr.SendPacket(
-        //        reinterpret_cast<char*>(&buf),
-        //        myNP::CS_MATCHMAKING
-        //    );
-        //}
     }
 }
 
@@ -160,19 +152,19 @@ void Player::fireBullet()
 
 void Player::update(long long deltaTime)
 {
-    //static int move_send_number{};
-
     auto& pos = shape.getPosition();
     image.SetPosition(pos.x, pos.y + 25.f);
     image.scale(width * 2, height * 2);
     image.SetReversed(direction);
 
-    updateBullets(deltaTime);   // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
+    // 비활성화 더라도 총알은 움직여야 하기에 위치 조정
+    updateBullets(deltaTime);
 
     if (not isControl())
         return;
 
-    if (not isActive) return;   // 활성화 상태가 아니라면 Update 종료
+    // 활성화 상태가 아니라면 Update 종료
+    if (not isActive) return;
 
     // 좌우 키가 눌리고 있는지
     leftKeyDown = sf::Keyboard::isKeyPressed(leftKeyBind);
@@ -215,6 +207,7 @@ void Player::update(long long deltaTime)
         velocity.y += GravityAcc * GravityMul * (deltaTime / myNP::microToSecond);
     }
 
+    // 피해량 조절
     damageControll(deltaTime);
 
     // 입은 피해량 만큼 넉백하게
@@ -244,29 +237,13 @@ void Player::update(long long deltaTime)
         OnAir = true;
     }
 
-    //// 임시
-    //if (shape.getPosition().y > 1000.0f)    // 1000.0f 밑이라면 죽은 판정(임시임!)
-    //{
-    //    isActive = false;
-    //    revivePlayer();
-    //}
-
-
     // Timer Update
     if (timer.isSyncTime()) {
-        // send move packet.
-        // 임시로 0번. 플레이어 id 저장하기
-
-        //cout << "보내는 좌표\n";
-        //cout << network_mgr.GetClientID() << " " << pos.x << ", " << pos.y << "\n";
-
         auto buf = myNP::CS_MOVE_PACKET::MakePacket(playerID, pos.x, pos.y, direction);
         network_mgr.SendPacket(
             reinterpret_cast<char*>(&buf),
             myNP::CS_MOVE
         );
-
-        //cout << ++move_send_number << endl;
 
         WaitForSingleObject(network_mgr.GetProcessEvent(), WSA_INFINITE);
 
@@ -289,15 +266,12 @@ void Player::updateBullets(long long deltaTime)
 }
 
 void Player::draw(sf::RenderWindow& window) {
-    //std::cout << "Player draw\n";
-
     if (not isActive) return;
 
     for (const Bullet& bullet : bullets) {
         bullet.draw(window);
     }
 
-    // window.draw(shape); // 이미지가 출력이 안되어서 임시
     image.draw(window);
 }
 
