@@ -353,25 +353,25 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
     // Id에 따라서 총알의 속도를 타임갭으로 보간
     std::shared_ptr<GameScene> gameScene = std::dynamic_pointer_cast<GameScene>(currentScene);
 
-    // 시간 차이 계산 (ms 단위)
-    auto time_gap = timer.timeGap(fire_packet->fire_t);
-    int elapsed_ms = time_gap.count() / myNP::microToSecond;
+    //// 시간 차이 계산 (ms 단위)
+    //auto time_gap = timer.timeGap(fire_packet->fire_t);
+    //int elapsed_ms = time_gap.count() / myNP::microToSecond;
 
-    //// 총알의 초기 위치 설정
-    float startX = fire_packet->posX;
-    float startY = fire_packet->posY;
+    ////// 총알의 초기 위치 설정
+    //float startX = fire_packet->posX;
+    //float startY = fire_packet->posY;
 
-    // 총알 속도 (단위: 픽셀/ms)
-    const float BULLET_SPEED = GunLoader::Instance().GetGunTable()[fire_packet->type].speed;
+    //// 총알 속도 (단위: 픽셀/ms)
+    //const float BULLET_SPEED = GunLoader::Instance().GetGunTable()[fire_packet->type].speed;
 
-    // 시간 차이만큼 총알 위치 보간
-    float currentX;
-    if (fire_packet->dir)
-        currentX = startX - (BULLET_SPEED * elapsed_ms);
-    else
-        currentX = startX + (BULLET_SPEED * elapsed_ms);
+    //// 시간 차이만큼 총알 위치 보간
+    //float currentX;
+    //if (fire_packet->dir)
+    //    currentX = startX - (BULLET_SPEED * elapsed_ms);
+    //else
+    //    currentX = startX + (BULLET_SPEED * elapsed_ms);
 
-    gameScene->AddEnemyBullet(currentX, fire_packet->posY, fire_packet->dir, fire_packet->type, fire_packet->b_id);
+    gameScene->AddEnemyBullet(fire_packet->posX, fire_packet->posY, fire_packet->dir, fire_packet->type, fire_packet->b_id);
 }
 
 // 목숨(부활) 처리
