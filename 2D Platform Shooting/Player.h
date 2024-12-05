@@ -112,12 +112,6 @@ public:
 
     // Setter
     void setPosition(float x, float y);
-    
-    // 플레이어 방향 set
-    void SetDirection(const bool value) { direction = value; }
-
-    // Setter
-    void setPosition(float x, float y);
     void SetDirection(const bool value) { direction = value; }
     void setPlayerGun(uint32_t g_id);
 
