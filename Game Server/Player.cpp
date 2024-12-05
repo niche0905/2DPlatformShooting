@@ -29,7 +29,6 @@ void Player::Update(int64_t delta_time)
 		it->Update(delta_time);
 		if (it->isOutBounds(-11000.f, 11000.0f)) {
 			it = bullets.erase(it);
-			std::cout << "ÃÑ¾Ë »èÁ¦\n";
 		}
 		else
 			++it;
