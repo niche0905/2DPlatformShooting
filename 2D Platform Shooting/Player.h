@@ -104,7 +104,11 @@ public:
     // 피해량을 조절해준다(업데이트에서 호출)
     void damageControll(long long deltaTime);
 
-    // 플레이어 포지션 set
+    void removeBullet(uint32_t b_id);
+
+    void decreaseMag();
+
+    // Setter
     void setPosition(float x, float y);
     
     // 플레이어 방향 set

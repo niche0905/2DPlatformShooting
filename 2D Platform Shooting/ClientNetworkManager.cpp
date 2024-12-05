@@ -396,6 +396,7 @@ void ClientNetworkManager::ProcessFirebullet(myNP::SC_FIRE_PACKET* fire_packet)
         currentX = startX + (BULLET_SPEED * elapsed_ms);
 
     gameScene->AddEnemyBullet(currentX, fire_packet->posY, fire_packet->dir, fire_packet->type, fire_packet->b_id);
+    gameScene->GetOtherPlayer().decreaseMag();
 }
 
 // 格见(何劝) 贸府
