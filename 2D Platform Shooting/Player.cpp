@@ -127,13 +127,7 @@ void Player::fireBullet()
     if (not isControl())
         return;
 
-    bulletId++;
-    if (curMag > 0) {
-        if (--curMag == 0) {
-            gunId = 0;
-            curMag = -1;
-        }
-    }
+    decreaseMag();
 
     lastFireTime = std::chrono::system_clock::now();
 
@@ -359,6 +353,17 @@ void Player::removeBullet(uint32_t b_id)
     bullets.remove_if([b_id](const Bullet& bullet) {
         return bullet.GetBulletId() == b_id;
         });
+}
+
+void Player::decreaseMag()
+{
+    bulletId++;
+    if (curMag > 0) {
+        if (--curMag == 0) {
+            gunId = 0;
+            curMag = -1;
+        }
+    }
 }
 
 void Player::setPosition(float x, float y)
